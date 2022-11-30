@@ -307,7 +307,7 @@ void System::CreateFriendship()
 	cout << "Please choose two of the following users: " << endl;
 	showAllUsers();
 	cin >> selection1 >> selection2;
-	this->all_users_[selection1 - 1]->addFriend(this->all_users_[selection2 - 1]);
+//his->all_users_[selection1 - 1]->addFriend(this->all_users_[selection2 - 1]);
 }
 
 //7
