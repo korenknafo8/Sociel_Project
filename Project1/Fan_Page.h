@@ -1,6 +1,8 @@
 #ifndef FAN_PAGE_H
 #define FAN_PAGE_H
 #include"General_Functions.h"
+#include "Status.h"
+
 
 class Status;
 class User;
@@ -10,18 +12,24 @@ class FanPage
 public:
 
 	bool setFanPageName(char* name);
+	char* getFanPageName() const;
 	void setFanPageStatus(Status* status);
-	void showAllStatusesfanPage() const;
 	bool addFanToPage(User* new_fan);
 	bool removeFanFromPage(User* fan);
 	void showFanPageFans() const;
+	void showAllFanPageStatuses() const;
+	void showsFansOfFanPage();
+
+
 
 private:
-	int pysical_size_ = 1;
-	int logical_size_ = 0;
 	char* name_;
-	User* fans;
-	Status** status_list_fp_;
+	Status** status_list_fan_page_;
+	int statuses_physical_size_ = 1;
+	int statuses_logical_size_ = 0;
+	User** fans;
+	int fans_physical_size_ = 1;
+	int fans_logical_size_ = 0;
 
 };
 

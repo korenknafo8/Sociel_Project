@@ -31,5 +31,7 @@ private:
 	int year_;
 };
 
+//void* myRealloc(void* source, int newSize);
+
 
 #endif // !GENERAL_FUNCTIONS_H

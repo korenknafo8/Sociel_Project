@@ -1,6 +1,6 @@
 #include "Fan_Page.h"
-#include <string.h>
-#pragma warning (disable: 4996)
+
+
 
 bool FanPage::setFanPageName(char* name)
 {
@@ -11,14 +11,32 @@ bool FanPage::setFanPageName(char* name)
 
 void FanPage::setFanPageStatus(Status* status)
 {
-	if (this->pysical_size_ = this->logical_size_)
+	if (this->statuses_physical_size_ == this->statuses_logical_size_)
 	{
-		this->pysical_size_ *= 2;
-		//new
-		// coppy
-		//delete
+		this->statuses_physical_size_ *= 2;
+		Status** temp = new Status * [this->statuses_physical_size_];
+		for (int i = 0; i < this->statuses_logical_size_; i++)
+			temp[i] = this->status_list_fan_page_[i];
+		this->status_list_fan_page_ = temp;
+		temp = nullptr;
+		delete[] temp;
 	}
+	this->status_list_fan_page_[this->statuses_logical_size_] = status;
+	this->statuses_logical_size_++;
 
-	this->status_list_fp_[this->logical_size_] = status;
+}
+
+void FanPage::showAllFanPageStatuses() const
+{
+	for (int index = 0; index < this->statuses_logical_size_; index++)
+	{
+		this->status_list_fan_page_[index]->show_status();
+		cout << endl;
+	}
+}
+
+char* FanPage::getFanPageName() const
+{
+	return this->name_;
 
 }

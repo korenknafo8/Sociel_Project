@@ -17,15 +17,19 @@ public:
 	void showMenu() const;
 	void menuSelection(int selection);
 	User* selectionOfUser();
+	FanPage* selectionOfFanPages();
+	void showAllFanPages();
+
+
 
 	//1
 	void addUser();
-	bool setUser(const User* user);
+	bool setUser(User* user);
 	User* createUser();
 
 	//2
 	void addFanPage();
-	bool setFanPage(const FanPage* page);
+	bool setFanPage(FanPage* page);
 	FanPage* createFanPage();
 
 	//3
@@ -39,22 +43,40 @@ public:
 	void showUserStatuses();
 
 	//5
+	void TenLatestFeadOfUser();
 
+	//6
+	void CreateFriendship();
 
+	//7
+	void CancelFriendship();
+
+	//8
+	void addFanOfPage();
+	
+	//9
+	void removeFanOfPage();
+	
 	//10
 	void showAllUsers(); //const
 
+	//11
+	void showRelatedToUserOrPage(); //const
+	void showUsersFrineds();
+	void showsFansOfFanPage();
+
+	//12
 	void setExit();
 	bool getExit();
 
 private:
-	int user_pysical_size = 1;
+	int user_physical_size = 1;
 	int user_log_size = 0;
-	int fan_page_pysical_size = 1;
+	int fan_page_physical_size = 1;
 	int fan_page_log_size = 0;
 	bool _exit = false;
-	User** all_users;
-	FanPage** all_pages;
+	User** all_users_;
+	FanPage** all_fan_pages_;
 
 };
 

@@ -1,4 +1,5 @@
 #include "General_Functions.h"
+#include <stdio.h>
 
 Date::Date()
 {
@@ -7,6 +8,7 @@ Date::Date()
 Date::Date(const int& day, const int& month, const int& year)
 {
 }
+
 
 bool Date::setDay(const int& day)
 {
@@ -40,3 +42,13 @@ int Date::getYear()
 {
 	return this->year_;
 }
+
+/*void* myRealloc(void* source, int newSize)
+{
+	void* newArr;
+	int i;
+	for (i = 0; i < newSize; i++)
+	{
+		memcpy(newArr[i]) 
+	}
+}*/

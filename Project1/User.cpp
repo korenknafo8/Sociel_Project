@@ -1,5 +1,7 @@
 #include "User.h"
+#include "Status.h"
 #include <string.h>
+
 #pragma warning (disable: 4996)
 
 bool User::setUserName(char* name)
@@ -30,25 +32,28 @@ bool User::setUserDOB(Date& DOB)
 	this->_date_of_birth.setDay(DOB.getDay());
 	return true;
 }
+
 char* User::getUserName() const
 {
 	return this->name_;
 
 }
 
+
 void User::setUserStatus(Status* status)
 {
-	if (this->statuses_pysical_size_ = this->statuses_logical_size_)
+	if (this->statuses_physical_size_ == this->statuses_logical_size_)
 	{
-		this->statuses_pysical_size_ *= 2;
-		//new
-		// coppy
-		//delete
+		this->statuses_physical_size_ *= 2;
+		Status** temp = new Status * [this->statuses_physical_size_];
+		for (int i = 0; i < this->statuses_logical_size_; i++)
+			temp[i] = this->status_list_user_[i];
+		this->status_list_user_ = temp;
+		temp = nullptr;
+		delete[] temp;
 	}
-
 	this->status_list_user_[this->statuses_logical_size_] = status;
-	
-
+	this->statuses_logical_size_++;
 }
 /*
 void User::showRecentFreindsStatuses() const
@@ -80,6 +85,27 @@ void User::showAllUserStatuses() const
 {
 	for (int index = 0; index < this->statuses_logical_size_; index++)
 	{
-		;
+		this->status_list_user_[index]->show_status();
+		cout << endl;
 	}
+}
+
+void User::showFriendsStatuses() const
+{
+	for (int i = 0; i < this->friends_logical_size_; i++)
+	{
+		cout << "Statuses of: " << this->friends_[i]->getUserName() << endl;
+		for (int j = 0; j < this->friends_[i]->statuses_logical_size_ && j < 10; j++)
+		{
+			cout << j << " - ";
+			this->friends_[i]->status_list_user_[j]->show_status();
+			cout << endl;
+		}
+	}	
+}
+
+void User::addFriend(User& new_friend)
+{
+	this->friends_[this->friends_logical_size_] = &new_friend;
+	new_friend.friends_[new_friend.friends_logical_size_] = this;
 }
