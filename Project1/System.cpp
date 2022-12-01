@@ -337,7 +337,7 @@ void System::addFanOfPage()
 	showAllUsers();
 	cin >> selection2;
 	this->all_fan_pages_[selection1 - 1]->addFanToPage(this->all_users_[selection2 - 1]);
-	cout << "User " << this->all_users_[selection2 - 1] << "is now a fan of the page " <<
+	cout << "User " << this->all_users_[selection2 - 1] << "is now a fan of the page: " <<
 		this->all_fan_pages_[selection1 -1]->getFanPageName() << endl;
 }
 

@@ -23,10 +23,15 @@ public:
 	Date getUserDOB();
 	void showUsersFriends(); //const
 	int findFriend(char* name);
+	void addLikedFanPage(FanPage* new_page);
+	
 
 
 private:
 	char* name_;
+	FanPage** likedPages_;
+	int fan_pages_physical_size_ = 1;
+	int fan_pages_logical_size_ = 0;
 	Status** status_list_user_;
 	int statuses_physical_size_ = 1;
 	int statuses_logical_size_ = 0;

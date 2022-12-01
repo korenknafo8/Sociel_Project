@@ -89,6 +89,15 @@ void User::addFriend(User* new_friend)
 {
 	if (this->friends_logical_size_ == 0)
 		this->friends_ = new User * [1];
+	if (this->friends_logical_size_ == this->friends_physical_size_)
+	{
+		this->friends_physical_size_ *=2;
+		User** temp = new User * [this->friends_physical_size_];
+		for (int i = 0; i < this->friends_logical_size_; i++)
+			temp[i] = this->friends_[i];
+		this->friends_ = temp;
+		temp = nullptr;
+	}
 	this->friends_[this->friends_logical_size_++] = new_friend;
 	if (new_friend->friends_logical_size_ == 0)
 		new_friend->friends_ = new User * [1];
