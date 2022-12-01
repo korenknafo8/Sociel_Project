@@ -1,6 +1,7 @@
 #include "User.h"
 #include "Status.h"
 #include <string.h>
+#define NOT_FOUND -1
 
 #pragma warning (disable: 4996)
 
@@ -55,30 +56,10 @@ void User::setUserStatus(Status* status)
 	this->status_list_user_[this->statuses_logical_size_] = status;
 	this->statuses_logical_size_++;
 }
-/*
-void User::showRecentFreindsStatuses() const
-{
-	return;
 
-}
-bool User::addFriend(User& new_friend)
-{
-	return;
-
-}
-bool User::friendshipCancelation(User& new_friend)
-{
-	return;
-
-}
-*/
 Date User::getUserDOB()
 {
 	return this->_date_of_birth;
-}
-void User::showUserFriendsList() const
-{
-
 }
 
 void User::showAllUserStatuses() const
@@ -104,8 +85,52 @@ void User::showFriendsStatuses() const
 	}	
 }
 
-void User::addFriend(User& new_friend)
+void User::addFriend(User* new_friend)
 {
-	this->friends_[this->friends_logical_size_] = &new_friend;
-	new_friend.friends_[new_friend.friends_logical_size_] = this;
+	if (this->friends_logical_size_ == 0)
+		this->friends_ = new User * [1];
+	this->friends_[this->friends_logical_size_++] = new_friend;
+	if (new_friend->friends_logical_size_ == 0)
+		new_friend->friends_ = new User * [1];
+	new_friend->friends_[new_friend->friends_logical_size_++] = this;
+
+}
+
+void User::showUsersFriends() //const
+{
+	int index;
+	if (this->friends_logical_size_ != 0) 
+	{
+		cout << "All friends: " << endl;
+		for (index = 0; index < this->friends_logical_size_; index++)
+		{
+			if (this->friends_[index] != NULL)
+				cout << index + 1 << " - " << this->friends_[index]->getUserName() << endl;
+		}
+	}
+	else 
+	{
+		cout << "User " << this->getUserName() << "has no friends to show." << endl;
+	}
+}
+
+void User::friendshipCancelation(int index)
+{
+	int foundIndex = this->friends_[index]->findFriend(this->name_); //in this case allways find the user
+	this->friends_[index]->friends_[foundIndex] = 
+		this->friends_[index]->friends_[this->friends_[index]->friends_logical_size_--];
+	this->friends_[index] = this->friends_[this->friends_logical_size_--];
+}
+
+int User::findFriend(char* name)
+{
+	int index;
+	for (index = 0; index < this->friends_logical_size_; index++)
+	{
+		if (strcmp(name, this->friends_[index]->name_) == 0)
+		{
+			return index;
+		}
+	}
+	return NOT_FOUND;
 }

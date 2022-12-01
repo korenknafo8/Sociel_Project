@@ -14,7 +14,7 @@ public:
 
 private:
 	char* content_; //for first module - text only
-	//Date date_of_Status_;
+	Date date_of_Status_;
 };
 
 #endif // !STATUS_H

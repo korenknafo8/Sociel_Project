@@ -5,6 +5,8 @@
 
 void System::showMenu() const
 {
+	cout << endl;
+	cout << "--------------------------------------------------------" << endl;
 	cout << "Please choose one of the followings below:" << endl <<endl;
 	cout << "1 - Add new User" << endl;
 	cout << "2 - Add new Fan Page" << endl;
@@ -23,10 +25,6 @@ void System::showMenu() const
 }
 void System::menuSelection(int selection) 
 {
-	if(this->user_log_size == 0)
-		this->all_users_ = new User * [1];
-	if(this->fan_page_log_size ==0)
-		this->all_fan_pages_ = new FanPage * [1];
 	switch (selection)
 	{
 	case 1:
@@ -102,7 +100,8 @@ User* System::createUser()
 void System::addUser()
 {
 	User* new_user;
-
+	if (this->user_log_size_ == 0)
+		this->all_users_ = new User * [1];
 	new_user = createUser();
 	setUser(new_user);
 	
@@ -112,18 +111,18 @@ void System::addUser()
 bool System::setUser( User* user)
 {
 	
-	if (this->user_physical_size == this->user_log_size)
+	if (this->user_physical_size_ == this->user_log_size_)
 	{
-		this->user_physical_size *= 2;
-		User** temp = new User * [this->user_physical_size];
-		for (int i = 0; i < this->user_log_size; i++)
+		this->user_physical_size_ *= 2;
+		User** temp = new User * [this->user_physical_size_];
+		for (int i = 0; i < this->user_log_size_; i++)
 			temp[i] = this->all_users_[i];
 		this->all_users_ = temp;
 		temp = nullptr;
 		delete[] temp;
 	}
-	this->all_users_[this->user_log_size] = user;
-	this->user_log_size++;
+	this->all_users_[this->user_log_size_] = user;
+	this->user_log_size_++;
 	return true;
 }
 
@@ -140,25 +139,26 @@ FanPage* System::createFanPage()
 
 bool System::setFanPage(FanPage* page)
 {
-	if (this->fan_page_physical_size == this->fan_page_log_size)
+	if (this->fan_page_physical_size_ == this->fan_page_log_size_)
 	{
-		this->fan_page_physical_size *= 2;
-		FanPage** temp = new FanPage * [this->fan_page_physical_size];
-		for (int i = 0; i < this->fan_page_log_size; i++)
+		this->fan_page_physical_size_ *= 2;
+		FanPage** temp = new FanPage * [this->fan_page_physical_size_];
+		for (int i = 0; i < this->fan_page_log_size_; i++)
 			temp[i] = this->all_fan_pages_[i];
 		this->all_fan_pages_ = temp;
 		temp = nullptr;
 		delete[] temp;
 	}
-	this->all_fan_pages_[this->fan_page_log_size] = page;
-	this->fan_page_log_size++;
+	this->all_fan_pages_[this->fan_page_log_size_] = page;
+	this->fan_page_log_size_++;
 	return true;
 }
 
 void System::addFanPage()
 {
 	FanPage* new_fan_page;
-
+	if (this->fan_page_log_size_ == 0)
+		this->all_fan_pages_ = new FanPage * [1];
 	new_fan_page = createFanPage();
 	setFanPage(new_fan_page);
 }
@@ -167,7 +167,7 @@ void System::showAllUsers() //const
 {
 	int index;
 	cout << "All users: " << endl;
-	for (index = 0; index < this->user_log_size; index++)
+	for (index = 0; index < this->user_log_size_; index++)
 	{
 		cout << index+1 << " - " << this->all_users_[index]->getUserName() << endl;
 	}
@@ -177,7 +177,7 @@ void System::showAllFanPages() //const
 {
 	int index;
 	cout << "All fan pages: " << endl;
-	for (index = 0; index < this->fan_page_log_size; index++)
+	for (index = 0; index < this->fan_page_log_size_; index++)
 	{
 		cout << index + 1 << " - " << this->all_fan_pages_[index]->getFanPageName() << endl;
 	}
@@ -185,12 +185,12 @@ void System::showAllFanPages() //const
 
 void System::setExit()
 {
-	this->_exit = true;
+	this->exit_ = true;
 }
 
 bool System::getExit()
 {
-	return this->_exit;
+	return this->exit_;
 }
 
 void System::addNewStatus()
@@ -307,21 +307,39 @@ void System::CreateFriendship()
 	cout << "Please choose two of the following users: " << endl;
 	showAllUsers();
 	cin >> selection1 >> selection2;
-	//this->all_users_[selection1 - 1]->addFriend(this->all_users_[selection2 - 1]);
+	this->all_users_[selection1 - 1]->addFriend(this->all_users_[selection2 - 1]);
+	cout << "Friendship was successfuly created" <<endl;
 }
 
 //7
 void System::CancelFriendship()
 {
-
+	int selection1, selection2;
+	cout << "Please choose one of the following users: " << endl;
+	showAllUsers();
+	cin >> selection1;
+	cout << "Please choose one of the following friends of " << 
+		this->all_users_[selection1 - 1]->getUserName() << ": " << endl;
+	this->all_users_[selection1 - 1]->showUsersFriends();
+	cin >> selection2;
+	this->all_users_[selection1 - 1]->friendshipCancelation(selection2 -1);
+	cout << "Friendship cancelation has been done successfuly." << endl;
 }
 
 //8
 void System::addFanOfPage()
 {
-
+	int selection1, selection2;
+	cout << "Please choose one of the following fan pages: " << endl;
+	showAllFanPages();
+	cin >> selection1;
+	cout << "Please choose one of the following users: " << endl;
+	showAllUsers();
+	cin >> selection2;
+	this->all_fan_pages_[selection1 - 1]->addFanToPage(this->all_users_[selection2 - 1]);
+	cout << "User " << this->all_users_[selection2 - 1] << "is now a fan of the page " <<
+		this->all_fan_pages_[selection1 -1]->getFanPageName() << endl;
 }
-
 
 //9
 void System::removeFanOfPage()
