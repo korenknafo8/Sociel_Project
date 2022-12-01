@@ -17,12 +17,12 @@ public:
 	void setUserStatus(Status* status);
 	void showAllUserStatuses() const;
 	void showFriendsStatuses() const;
-	void addFriend(User& new_friend);
-	bool friendshipCancelation(User& new_friend);
+	void addFriend(User* new_friend);
+	void friendshipCancelation(int index);
 	char* getUserName() const;
 	Date getUserDOB();
-	void showUserFriendsList() const;
-
+	void showUsersFriends(); //const
+	int findFriend(char* name);
 
 
 private:

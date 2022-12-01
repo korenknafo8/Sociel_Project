@@ -70,11 +70,11 @@ public:
 	bool getExit();
 
 private:
-	int user_physical_size = 1;
-	int user_log_size = 0;
-	int fan_page_physical_size = 1;
-	int fan_page_log_size = 0;
-	bool _exit = false;
+	int user_physical_size_ = 1;
+	int user_log_size_ = 0;
+	int fan_page_physical_size_ = 1;
+	int fan_page_log_size_ = 0;
+	bool exit_ = false;
 	User** all_users_;
 	FanPage** all_fan_pages_;
 
