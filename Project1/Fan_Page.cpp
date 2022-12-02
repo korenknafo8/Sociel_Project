@@ -40,7 +40,7 @@ char* FanPage::getFanPageName() const
 	return this->name_;
 
 }
-
+/*
 void FanPage::addFanToPage(User* new_fan)
 {
 	if (this->fans_logical_size_ == 0)
@@ -53,11 +53,12 @@ void FanPage::addFanToPage(User* new_fan)
 			temp[i] = this->fans_[i];
 		this->fans_ = temp;
 		temp = nullptr;
+		delete[] temp;
 	}
 	this->fans_[this->fans_logical_size_++] = new_fan;
 	new_fan->addLikedFanPage(this);
 }
-
+*/
 void FanPage::removeFanFromPage(User* fan)
 {
 
@@ -77,6 +78,6 @@ void FanPage::showFanPageFans() const
 	}
 	else
 	{
-		cout << "User " << this->fans_[index]->getUserName() << "has no friends to show." << endl;
+		cout << "Fan page " << this->getFanPageName() << "has no fans to show." << endl;
 	}
 }

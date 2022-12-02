@@ -55,6 +55,7 @@ void User::setUserStatus(Status* status)
 	}
 	else if (this->statuses_logical_size_ == 0)
 		this->status_list_user_ = new Status * [1];
+
 	this->status_list_user_[this->statuses_logical_size_++] = status;
 }
 
@@ -88,8 +89,6 @@ void User::showFriendsStatuses() const
 
 void User::addFriend(User* new_friend)
 {
-	if (this->friends_logical_size_ == 0)
-		this->friends_ = new User * [1];
 	if (this->friends_logical_size_ == this->friends_physical_size_)
 	{
 		this->friends_physical_size_ *=2;
@@ -98,12 +97,25 @@ void User::addFriend(User* new_friend)
 			temp[i] = this->friends_[i];
 		this->friends_ = temp;
 		temp = nullptr;
+		delete[] temp;
 	}
+	else if (this->friends_logical_size_ == 0)
+		this->friends_ = new User * [1];
 	this->friends_[this->friends_logical_size_++] = new_friend;
+
 	if (new_friend->friends_logical_size_ == 0)
 		new_friend->friends_ = new User * [1];
+	else if (new_friend->friends_logical_size_ == new_friend->friends_physical_size_)
+	{
+		new_friend->friends_physical_size_ *= 2;
+		User** temp = new User * [new_friend->friends_physical_size_];
+		for (int i = 0; i < new_friend->friends_logical_size_; i++)
+			temp[i] = new_friend->friends_[i];
+		new_friend->friends_ = temp;
+		temp = nullptr;
+		delete[] temp;
+	}
 	new_friend->friends_[new_friend->friends_logical_size_++] = this;
-
 }
 
 void User::showUsersFriends() //const
