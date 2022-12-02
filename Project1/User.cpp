@@ -53,8 +53,9 @@ void User::setUserStatus(Status* status)
 		temp = nullptr;
 		delete[] temp;
 	}
-	this->status_list_user_[this->statuses_logical_size_] = status;
-	this->statuses_logical_size_++;
+	else if (this->statuses_logical_size_ == 0)
+		this->status_list_user_ = new Status * [1];
+	this->status_list_user_[this->statuses_logical_size_++] = status;
 }
 
 Date User::getUserDOB()
@@ -143,3 +144,23 @@ int User::findFriend(char* name)
 	}
 	return NOT_FOUND;
 }
+
+void User::addLikedFanPage(FanPage* new_page)
+{
+	if(this->fan_pages_logical_size_ == this->fan_pages_physical_size_)
+	{
+	this->fan_pages_physical_size_ *= 2;
+	FanPage** temp = new FanPage * [this->fan_pages_physical_size_];
+	for (int i = 0; i < this->fan_pages_logical_size_; i++)
+		temp[i] = this->likedPages_[i];
+	this->likedPages_ = temp;
+	temp = nullptr;
+	delete[] temp;
+	}
+	else if (this->fan_pages_logical_size_ == 0)
+		this->likedPages_ = new FanPage * [1];
+
+	this->likedPages_[this->fan_pages_logical_size_++] = new_page;
+}
+
+

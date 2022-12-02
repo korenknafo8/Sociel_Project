@@ -15,12 +15,9 @@ public:
 	char* getFanPageName() const;
 	void setFanPageStatus(Status* status);
 	void addFanToPage(User* new_fan);
-	bool removeFanFromPage(User* fan);
+	void removeFanFromPage(User* fan);
 	void showFanPageFans() const;
 	void showAllFanPageStatuses() const;
-	void showsFansOfFanPage();
-
-
 
 private:
 	char* name_;

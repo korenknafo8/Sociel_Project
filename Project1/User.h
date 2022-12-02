@@ -6,7 +6,7 @@ using namespace std;
 
 
 class Status;
-
+class FanPage* new_page;
 
 
 class User
