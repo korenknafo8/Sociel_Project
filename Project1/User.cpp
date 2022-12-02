@@ -1,6 +1,4 @@
 #include "User.h"
-#include "Status.h"
-#include <string.h>
 #define NOT_FOUND -1
 
 #pragma warning (disable: 4996)
@@ -40,7 +38,10 @@ char* User::getUserName() const
 
 }
 
-
+/// <summary>
+/// Set a status for a given user
+/// </summary>
+/// <param name="status">status</param>
 void User::setUserStatus(Status* status)
 {
 	if (this->statuses_physical_size_ == this->statuses_logical_size_)

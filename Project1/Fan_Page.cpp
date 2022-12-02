@@ -1,6 +1,4 @@
 #include "Fan_Page.h"
-#include "User.h"
-
 
 bool FanPage::setFanPageName(char* name)
 {
@@ -23,7 +21,6 @@ void FanPage::setFanPageStatus(Status* status)
 	}
 	this->status_list_fan_page_[this->statuses_logical_size_] = status;
 	this->statuses_logical_size_++;
-
 }
 
 void FanPage::showAllFanPageStatuses() const
@@ -40,7 +37,7 @@ char* FanPage::getFanPageName() const
 	return this->name_;
 
 }
-/*
+
 void FanPage::addFanToPage(User* new_fan)
 {
 	if (this->fans_logical_size_ == 0)
@@ -58,7 +55,7 @@ void FanPage::addFanToPage(User* new_fan)
 	this->fans_[this->fans_logical_size_++] = new_fan;
 	new_fan->addLikedFanPage(this);
 }
-*/
+
 void FanPage::removeFanFromPage(User* fan)
 {
 

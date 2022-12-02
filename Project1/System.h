@@ -6,6 +6,8 @@
 #include "Status.h"
 #include "Fan_Page.h"
 #include "User.h"
+#include "DateTimeUtils.h"
+
 #pragma warning (disable: 4996)
 
 using namespace std;

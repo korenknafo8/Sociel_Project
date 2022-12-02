@@ -1,16 +1,11 @@
 #ifndef FAN_PAGE_H
 #define FAN_PAGE_H
-#include"General_Functions.h"
-#include "Status.h"
-
-
-class Status;
-class User;
+#include"DateTimeUtils.h"
+#include "User.h"
 
 class FanPage
 {
 public:
-
 	bool setFanPageName(char* name);
 	char* getFanPageName() const;
 	void setFanPageStatus(Status* status);
@@ -31,4 +26,3 @@ private:
 };
 
 #endif // !FAN_PAGE_H
-

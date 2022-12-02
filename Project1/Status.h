@@ -1,8 +1,8 @@
 #ifndef STATUS_H
 #define STATUS_H
-#include "General_Functions.h"
 #include <string.h>
 #include <iostream>
+#include "DateTimeUtils.h"
 #pragma warning (disable: 4996)
 using namespace std;
 
