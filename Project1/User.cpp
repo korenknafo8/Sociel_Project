@@ -1,18 +1,16 @@
 #include "User.h"
-#define NOT_FOUND -1
-
+using namespace std;
 #pragma warning (disable: 4996)
 
-bool User::setUserName(char* name)
+
+void User::setUserName(char* name)
 {
-	this->name_ = new char[strlen(name)];
-	strcpy(this->name_, name);
-	return true;
+	name_ = new char[strlen(name)];
+	strcpy(name_, name);
 }
 
 bool User::setUserDOB(Date& DOB)
 {
-
 	if (DOB.getYear() < 1902 || DOB.getYear() > 2022)
 	{
 		return false;
@@ -26,9 +24,9 @@ bool User::setUserDOB(Date& DOB)
 		return false;
 	}
 
-	this->_date_of_birth.setYear(DOB.getYear());
-	this->_date_of_birth.setMonth(DOB.getMonth());
-	this->_date_of_birth.setDay(DOB.getDay());
+	this->date_of_birth_.setYear(DOB.getYear());
+	this->date_of_birth_.setMonth(DOB.getMonth());
+	this->date_of_birth_.setDay(DOB.getDay());
 	return true;
 }
 
@@ -62,18 +60,24 @@ void User::setUserStatus(Status* status)
 
 Date User::getUserDOB()
 {
-	return this->_date_of_birth;
+	return this->date_of_birth_;
 }
 
+/// <summary>
+/// 
+/// </summary>
 void User::showAllUserStatuses() const
 {
 	for (int index = 0; index < this->statuses_logical_size_; index++)
 	{
-		this->status_list_user_[index]->show_status();
+		this->status_list_user_[index]->showStatus();
 		cout << endl;
 	}
 }
 
+/// <summary>
+/// Present all/10 statuses of the friends of a single user
+/// </summary>
 void User::showFriendsStatuses() const
 {
 	for (int i = 0; i < this->friends_logical_size_; i++)
@@ -82,12 +86,16 @@ void User::showFriendsStatuses() const
 		for (int j = 0; j < this->friends_[i]->statuses_logical_size_ && j < 10; j++)
 		{
 			cout << j << " - ";
-			this->friends_[i]->status_list_user_[j]->show_status();
+			this->friends_[i]->status_list_user_[j]->showStatus();
 			cout << endl;
 		}
 	}	
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="new_friend"></param>
 void User::addFriend(User* new_friend)
 {
 	if (this->friends_logical_size_ == this->friends_physical_size_)
@@ -103,20 +111,6 @@ void User::addFriend(User* new_friend)
 	else if (this->friends_logical_size_ == 0)
 		this->friends_ = new User * [1];
 	this->friends_[this->friends_logical_size_++] = new_friend;
-
-	if (new_friend->friends_logical_size_ == 0)
-		new_friend->friends_ = new User * [1];
-	else if (new_friend->friends_logical_size_ == new_friend->friends_physical_size_)
-	{
-		new_friend->friends_physical_size_ *= 2;
-		User** temp = new User * [new_friend->friends_physical_size_];
-		for (int i = 0; i < new_friend->friends_logical_size_; i++)
-			temp[i] = new_friend->friends_[i];
-		new_friend->friends_ = temp;
-		temp = nullptr;
-		delete[] temp;
-	}
-	new_friend->friends_[new_friend->friends_logical_size_++] = this;
 }
 
 void User::showUsersFriends() //const
@@ -137,6 +131,10 @@ void User::showUsersFriends() //const
 	}
 }
 
+/// <summary>
+/// Cancel friendship between a user and a given user
+/// </summary>
+/// <param name="index">Index at the friend's list of the other friend</param>
 void User::friendshipCancelation(int index)
 {
 	int foundIndex = this->friends_[index]->findFriend(this->name_); //in this case allways find the user
@@ -145,6 +143,12 @@ void User::friendshipCancelation(int index)
 	this->friends_[index] = this->friends_[this->friends_logical_size_--];
 }
 
+
+/// <summary>
+/// Locate a friend of user in his friend's pointer array and returns it's index
+/// </summary>
+/// <param name="name"></param>
+/// <returns></returns>
 int User::findFriend(char* name)
 {
 	int index;

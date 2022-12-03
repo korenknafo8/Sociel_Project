@@ -3,12 +3,16 @@
 
 Date::Date()
 {
+	day_ = month_ = 2;
+	year_ = 1922;
 }
 
 Date::Date(const int& day, const int& month, const int& year)
 {
+	day_ = day;
+	month_ = month;
+	year_ = year_;
 }
-
 
 bool Date::setDay(const int& day)
 {

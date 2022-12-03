@@ -4,9 +4,8 @@
 #include <string.h>
 #include"DateTimeUtils.h"
 #include "Status.h"
-
-using namespace std;
-
+#define NOT_FOUND -1
+#define DEFUALT -1
 
 class FanPage;
 
@@ -14,7 +13,9 @@ class FanPage;
 class User
 {
 public:
-	bool setUserName(char* name);
+	User();
+	User(char* name, int day, int month, int year);
+	void setUserName(char* name);
 	bool setUserDOB(Date& DOB);
 	void setUserStatus(Status* status);
 	void showAllUserStatuses() const;
@@ -27,8 +28,6 @@ public:
 	int findFriend(char* name);
 	void addLikedFanPage(FanPage* new_page);
 	
-
-
 private:
 	char* name_;
 	FanPage** likedPages_;
@@ -40,7 +39,7 @@ private:
 	User** friends_;
 	int friends_physical_size_ = 1;
 	int friends_logical_size_ = 0;
-	Date _date_of_birth;
+	Date date_of_birth_;
 	//friends feed
 };
 

@@ -5,12 +5,13 @@ using namespace std;
 
 #pragma warning (disable: 4996)
 
-void Status::set_content(char* input) 
+void Status::setContent(char* input) 
 {
+	this->content_ = new char[101];
 	strcpy(this->content_, input);
 	//date
 }
-void Status::show_status()
+void Status::showStatus()
 {
 	cout << this->content_ << endl;
 	//show date

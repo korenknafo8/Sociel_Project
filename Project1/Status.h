@@ -9,8 +9,8 @@ using namespace std;
 class Status
 {
 public:
-	void set_content(char* input);
-	void show_status();
+	void setContent(char* input);
+	void showStatus();
 
 private:
 	char* content_; //for first module - text only

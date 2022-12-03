@@ -14,6 +14,15 @@ using namespace std;
 
 class System 
 {
+private:
+	int user_physical_size_ = 1;
+	int user_log_size_ = 0;
+	int fan_page_physical_size_ = 1;
+	int fan_page_log_size_ = 0;
+	bool exit_ = false;
+	User** all_users_;
+	FanPage** all_fan_pages_;
+
 public:
 	//general
 	void showMenu() const;
@@ -21,17 +30,16 @@ public:
 	User* selectionOfUser();
 	FanPage* selectionOfFanPages();
 	void showAllFanPages();
-
-
+	void initCreation();
 
 	//1
 	void addUser();
-	bool setUser(User* user);
+	void setUser(User* user);
 	User* createUser();
 
 	//2
 	void addFanPage();
-	bool setFanPage(FanPage* page);
+	void setFanPage(FanPage* page);
 	FanPage* createFanPage();
 
 	//3
@@ -48,7 +56,8 @@ public:
 	void TenLatestFeadOfUser();
 
 	//6
-	void CreateFriendship();
+	void makeFriendship();
+	void createFriendship(User* user1, User* user2)
 
 	//7
 	void CancelFriendship();
@@ -70,16 +79,6 @@ public:
 	//12
 	void setExit();
 	bool getExit();
-
-private:
-	int user_physical_size_ = 1;
-	int user_log_size_ = 0;
-	int fan_page_physical_size_ = 1;
-	int fan_page_log_size_ = 0;
-	bool exit_ = false;
-	User** all_users_;
-	FanPage** all_fan_pages_;
-
 };
 
 

@@ -1,6 +1,8 @@
 #include "System.h"
 
-
+/// <summary>
+///	Prints menu
+/// </summary>
 void System::showMenu() const
 {
 	cout << endl;
@@ -21,6 +23,11 @@ void System::showMenu() const
 	cout << "--------------------------------------------------------" << endl << endl;
 
 }
+
+/// <summary>
+/// Taking care of the chosen action from the menu
+/// </summary>
+/// <param name="selection">chosen action</param>
 void System::menuSelection(int selection) 
 {
 	switch (selection)
@@ -41,7 +48,7 @@ void System::menuSelection(int selection)
 		TenLatestFeadOfUser();
 		break;
 	case 6:
-		CreateFriendship();
+		makeFriendship();
 		break;
 	case 7:
 		CancelFriendship();
@@ -65,15 +72,46 @@ void System::menuSelection(int selection)
 	}
 }
 
+/// <summary>
+///	Initial creation of users, fan pages and statuses as required at task.
+/// </summary>
+void System::initCreation()
+{
+	all_users_ = new User * [3];
+	all_users_[0]->setUserName("user1");
+	all_users_[0]->setUserDOB(1, 1, 2001);
+	all_users_[0]->setUserStatus("user1 - Status");
+	all_users_[1]->setUserName("user2");
+	all_users_[1]->setUserDOB(2, 2, 2002);
+	all_users_[1]->setUserStatus("user2 - Status");
+	all_users_[2]->setUserName("user3");
+	all_users_[2]->setUserDOB(3, 3, 2003);
+	all_users_[2]->setUserStatus("user3 - Status");
+	createFriendship(all_users_[0], all_users_[1]);
+	createFriendship(all_users_[1], all_users_[2]);
+
+
+	all_fan_pages_ = new FanPage * [3];
+	all_fan_pages_[0]("page1");
+	all_fan_pages_[0]->addFanToPage(all_users_[0]);
+	all_fan_pages_[1]("page2");
+	all_fan_pages_[1]->addFanToPage(all_users_[1]);
+	all_fan_pages_[2]("page3");
+	all_fan_pages_[2]->addFanToPage(all_users_[2]);
+}
+
+/// <summary> 1
+///	get user details into a user and returns the created user
+/// </summary>
+/// <returns>created user</returns>
 User* System::createUser()
 {
 	User* new_user = new User;
-	Date DOB_of_user;
 	bool date_valid = false;
 	char name[31],enter[1];
 	int month, day, year;
 	cin.getline(enter,1);
-	cout << "Please enter a user name, and press 'Enter' afterwards(max limit : 30 characters) :" << endl;
+	cout << "Please enter a user name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
 	cin.getline(name, 31);
 	new_user->setUserName(name);
 	do
@@ -81,13 +119,11 @@ User* System::createUser()
 	cout << "Please enter a user's date of birth" << endl;
 	cout << "day of birth: ";
 	cin >> day;
-	DOB_of_user.setDay(day);
 	cout <<endl<< "month of birth: ";
 	cin >> month;
-	DOB_of_user.setMonth(month);
 	cout << endl << "year of birth: ";
 	cin >> year;
-	DOB_of_user.setYear(year);
+	Date DOB_of_user(day, month, year);
 	date_valid = new_user->setUserDOB(DOB_of_user);
 	if (!date_valid)
 		cout << "Date is not valid" << endl;
@@ -95,18 +131,23 @@ User* System::createUser()
 	return new_user;
 }
 
+/// <summary>
+///	calls func to create a user and another func to set it into system's pointers array of users
+/// </summary>
 void System::addUser()
 {
 	User* new_user;
-	if (this->user_log_size_ == 0)
-		this->all_users_ = new User * [1];
 	new_user = createUser();
 	setUser(new_user);
 	
 
 }
 
-bool System::setUser( User* user)
+/// <summary>
+/// get a user and set it into the system's pointers array of users
+/// </summary>
+/// <param name="user">a created user given to be entered</param>
+void System::setUser( User* user)
 {
 	
 	if (this->user_physical_size_ == this->user_log_size_)
@@ -121,9 +162,12 @@ bool System::setUser( User* user)
 	}
 	this->all_users_[this->user_log_size_] = user;
 	this->user_log_size_++;
-	return true;
 }
 
+/// <summary>
+///	create a fan-page
+/// </summary>
+/// <returns>created fan-page</returns>
 FanPage* System::createFanPage()
 {
 	FanPage* new_fan_page = new FanPage;
@@ -135,7 +179,11 @@ FanPage* System::createFanPage()
 	return new_fan_page;
 }
 
-bool System::setFanPage(FanPage* page)
+/// <summary>
+///	set a given fan page into the system's fan-page pointers array
+/// </summary>
+/// <param name="page">given page to be entered</param>
+void System::setFanPage(FanPage* page)
 {
 	if (this->fan_page_physical_size_ == this->fan_page_log_size_)
 	{
@@ -149,9 +197,11 @@ bool System::setFanPage(FanPage* page)
 	}
 	this->all_fan_pages_[this->fan_page_log_size_] = page;
 	this->fan_page_log_size_++;
-	return true;
 }
 
+/// <summary>
+/// calls func's that create and set a fan-page into the system's fan-page pointers array
+/// </summary>
 void System::addFanPage()
 {
 	FanPage* new_fan_page;
@@ -160,6 +210,10 @@ void System::addFanPage()
 	new_fan_page = createFanPage();
 	setFanPage(new_fan_page);
 }
+
+/// <summary>
+///	create and set a new status to a user or a fan page
+/// </summary>
 void System::addNewStatus()
 {
 	int selection;
@@ -171,14 +225,15 @@ void System::addNewStatus()
 	case 1:
 		addUserStatus();
 		break;
-
 	case 2:
 		addFanPageStatus();
 		break;
 	}
 }
 
-
+/// <summary>
+///	create and set a status for a user
+/// </summary>
 void System::addUserStatus()
 {
 	Status* status = new Status;
@@ -190,10 +245,13 @@ void System::addUserStatus()
 	cin.getline(enter, 1);
 	cout << "Please enter the status (Max limit 100 characters): " << endl;
 	cin.getline(status_input, 101);
-	status->set_content(status_input);
+	status->setContent(status_input);
 	this->all_users_[selection - 1]->setUserStatus(status);
 }
 
+/// <summary>
+///	create and set a status for a fan page
+/// </summary>
 void System::addFanPageStatus()
 {
 	Status* status = new Status;
@@ -204,11 +262,13 @@ void System::addFanPageStatus()
 	cin >> selection;
 	cout << "Please enter the status (Max limit 100 characters): " << endl;
 	cin.getline(status_input, 101);
-	status->set_content(status_input);
+	status->setContent(status_input);
 	this->all_fan_pages_[selection - 1]->setFanPageStatus(status);
 }
 
-//4
+/// <summary> 4
+/// Ask for a single user or fan page and show it's statustes
+/// </summary>
 void System::showUserOrPageStatuses()
 {
 	int selection;
@@ -227,12 +287,18 @@ void System::showUserOrPageStatuses()
 	}
 }
 
+/// <summary>
+/// Present all statuses of a given user
+/// </summary>
 void System::showUserStatuses()
 {
 	User* chosen = selectionOfUser();
 	chosen->showAllUserStatuses();
 }
 
+/// <summary>
+/// Present all statuses of a given fan page
+/// </summary>
 User* System::selectionOfUser() 
 {
 	int selection;
@@ -274,14 +340,23 @@ void System::TenLatestFeadOfUser()
 }
 
 //6
-void System::CreateFriendship()
+void System::makeFriendship()
 {
 	int selection1, selection2;
 	cout << "Please choose two of the following users: " << endl;
 	showAllUsers();
 	cin >> selection1 >> selection2;
-	this->all_users_[selection1 - 1]->addFriend(this->all_users_[selection2 - 1]);
+	createFriendship(all_users_[selection1 - 1], all_users_[selection2 - 1]);
 	cout << "Friendship was successfuly created" <<endl;
+}
+
+/// <summary>
+/// Create friendship between two given users
+/// </summary>
+void System::createFriendship(User* user1, User* user2)
+{
+	user1->addFriend(user2);
+	user2->addFriend(user1);
 }
 
 //7
