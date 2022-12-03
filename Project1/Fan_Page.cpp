@@ -37,9 +37,10 @@ void FanPage::setFanPageStatus(Status* status)
 
 void FanPage::showAllFanPageStatuses() const
 {
-	for (int index = 0; index < this->statuses_logical_size_; index++)
+	cout << endl << "below are the statuses of " << getFanPageName() << ":" << endl;
+	for (int index = 0; index < statuses_logical_size_; index++)
 	{
-		this->status_list_fan_page_[index]->showStatus();
+		status_list_fan_page_[index]->showStatus();
 		cout << endl;
 	}
 }

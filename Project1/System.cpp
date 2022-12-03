@@ -83,7 +83,12 @@ void System::menuSelection(int selection)
 /// </summary>
 void System::initCreation()
 {
-	
+	initiateUsers();
+	initiateFanPages();
+}
+
+void System::initiateUsers()
+{
 	setUser(new User("Ofir", 10, 10, 1995));
 	setUser(new User("Koren", 10, 10, 1997));
 	setUser(new User("Jimmy", 7, 7, 1940));
@@ -95,8 +100,11 @@ void System::initCreation()
 	all_users_[2]->setUserStatus(new Status("user Jimmy status 2"));
 	createFriendship(all_users_[0], all_users_[1]);
 	createFriendship(all_users_[1], all_users_[2]);
-	createFriendship(all_users_[2], all_users_[3]);
+	createFriendship(all_users_[2], all_users_[0]);
+}
 
+void System::initiateFanPages()
+{
 	setFanPage(new FanPage("Page 1"));
 	setFanPage(new FanPage("Page 2"));
 	setFanPage(new FanPage("Page 3"));
@@ -105,11 +113,7 @@ void System::initCreation()
 	all_fan_pages_[1]->setFanPageStatus(new Status("Page 2 status 1"));
 	all_fan_pages_[1]->setFanPageStatus(new Status("Page 2 status 2"));
 	all_fan_pages_[2]->setFanPageStatus(new Status("Page 3 status 1"));
-	all_fan_pages_[2]->setFanPageStatus(new Status("Page 3 status 2"));
-
-
-
-	
+	all_fan_pages_[2]->setFanPageStatus(new Status("Page 3 status 2"));	
 }
 
 /// <summary> 1
@@ -162,8 +166,7 @@ void System::setUser(User* user)
 		temp = nullptr;
 		delete[] temp;
 	}
-	this->all_users_[this->user_log_size_] = user;
-	this->user_log_size_++;
+	this->all_users_[this->user_log_size_++] = user;
 }
 
 /// <summary>
@@ -253,13 +256,14 @@ void System::addUserStatus()
 void System::addFanPageStatus()
 {
 	int selection;
-	char status_input[101];
-	cout << "Choose one of the following users:" << endl;
-	this->showAllUsers();
+	char status_input[101], enter[1];
+	cout << "Choose one of the following fan pages:" << endl;
+	showAllFanPages();
 	cin >> selection;
+	cin.getline(enter, 1);
 	cout << "Please enter the status (Max limit 100 characters): " << endl;
 	cin.getline(status_input, 101);
-	this->all_fan_pages_[selection - 1]->setFanPageStatus(new Status(status_input));
+	all_fan_pages_[selection - 1]->setFanPageStatus(new Status(status_input));
 }
 
 /// <summary> 4
@@ -298,7 +302,7 @@ void System::showUserStatuses()
 User* System::selectionOfUser() 
 {
 	int selection;
-	cout << "Please choose one of the following users: " << endl;
+	cout << endl << "Please choose one of the following users: " << endl;
 	showAllUsers();
 	cin >> selection;
 	return this->all_users_[selection - 1];
@@ -321,10 +325,10 @@ void System::showsFanPageStatuses()
 FanPage* System::selectionOfFanPages()
 {
 	int selection;
-	cout << "Please choose one of the following FanPages: " << endl;
+	cout << endl << endl << endl << "Please choose one of the following FanPages: " << endl;
 	showAllFanPages();
 	cin >> selection;
-	return this->all_fan_pages_[selection - 1];
+	return all_fan_pages_[selection - 1];
 }
 
 //5
@@ -380,9 +384,9 @@ void System::addFanOfPage()
 	cout << "Please choose one of the following users: " << endl;
 	showAllUsers();
 	cin >> selection2;
-	this->all_fan_pages_[selection1 - 1]->addFanToPage(this->all_users_[selection2 - 1]);
-	cout << "User " << this->all_users_[selection2 - 1] << "is now a fan of the page: " <<
-		this->all_fan_pages_[selection1 -1]->getFanPageName() << endl;
+	all_fan_pages_[selection1 - 1]->addFanToPage(all_users_[selection2 - 1]);
+	cout << "User " << all_users_[selection2 - 1]->getUserName() << " is now a fan of the page: " <<
+		all_fan_pages_[selection1 -1]->getFanPageName() << endl;
 }
 
 //9

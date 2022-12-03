@@ -9,14 +9,12 @@
 
 class FanPage;
 
-
 class User
 {
 public:
 	User(char* name, int day, int month, int year);
 	User(const char* name, int day, int month, int year);
 	void setUserName(const char* name);
-	bool setUserDOB(Date& DOB);
 	void setUserStatus(Status* status);
 	void showAllUserStatuses() const;
 	void showFriendsStatuses() const;
@@ -32,16 +30,14 @@ private:
 	char* name_;
 	FanPage** likedPages_;
 	int fan_pages_physical_size_ = 1;
-	int fan_pages_logical_size_ = 0;
+	int fan_pages_log_size_ = 0;
 	Status** status_list_user_;
 	int statuses_physical_size_ = 1;
-	int statuses_logical_size_ = 0;
+	int statuses_log_size_ = 0;
 	User** friends_;
 	int friends_physical_size_ = 1;
-	int friends_logical_size_ = 0;
+	int friends_log_size_ = 0;
 	Date date_of_birth_;
-	//friends feed
 };
-
 
 #endif // !USER_H

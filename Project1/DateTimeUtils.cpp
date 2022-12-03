@@ -1,8 +1,5 @@
-#include "DateTimeUtils.h"
-#include <stdio.h>
-#include <ctime>
 #define _CRT_SECURE_NO_WARNINGS
-
+#include "DateTimeUtils.h"
 
 Clock::Clock()
 {
@@ -10,15 +7,22 @@ Clock::Clock()
 	time_t curr_time;
 	curr_time = time(NULL);
 	char* timeText = ctime(&curr_time);
-	sscanf(timeText + 11, " %d:%d:%d", &hours, &minutes, &seconds);
-
+	sscanf(timeText + 11, " %d:%d:%d", &hours_, &minutes_, &seconds_);
 }
-
 
 void Clock::showTime() const
 {
-	printf("%02d:%02d:%02d", hours, minutes, seconds);
+	if (hours_ < 10)
+		cout << "0";
+	cout << hours_ << ":";
+	if(minutes_ < 10)
+		cout << "0";
+	cout << minutes_ << ":";
+	if (seconds_ < 10)
+		cout << "0";
+	cout << seconds_;
 }
+
 Date::Date()
 {
 	//sets the current time of the creation
@@ -37,45 +41,16 @@ Date::Date(const int& day, const int& month, const int& year)
 	year_ = year;
 }
 
-bool Date::setDay(const int& day)
+/// <summary>
+/// prints the given day
+/// </summary>
+void Date::showDate() const
 {
-	this->day_ = day;
-	return true;
+	cout << year_ << "/";
+	if (month_ < 10)
+		cout << "0";
+	cout << month_ << "/";
+	if (day_ < 10)
+		cout << "0";
+	cout << day_;
 }
-
-bool Date::setMonth(const int& month)
-{
-	this->month_ = month;
-	return true;
-}
-
-bool Date::setYear(const int& year)
-{
-	this->year_ = year;
-	return true;
-}
-
-int Date::getDay()
-{
-	return this->day_;
-}
-
-int Date::getMonth()
-{
-	return this->month_;
-}
-
-int Date::getYear()
-{
-	return this->year_;
-}
-
-/*void* myRealloc(void* source, int newSize)
-{
-	void* newArr;
-	int i;
-	for (i = 0; i < newSize; i++)
-	{
-		memcpy(newArr[i]) 
-	}
-}*/

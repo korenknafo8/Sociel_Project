@@ -15,9 +15,9 @@ using namespace std;
 class System 
 {
 private:
-	int user_physical_size_ = 3;
+	int user_physical_size_ = 4;
 	int user_log_size_ = 0;
-	int fan_page_physical_size_ = 3;
+	int fan_page_physical_size_ = 4;
 	int fan_page_log_size_ = 0;
 	bool exit_ = false;
 	User** all_users_;
@@ -32,6 +32,9 @@ public:
 	FanPage* selectionOfFanPages();
 	void showAllFanPages();
 	void initCreation();
+	void initiateUsers();
+	void initiateFanPages();
+
 
 	//1
 	void addUser();
