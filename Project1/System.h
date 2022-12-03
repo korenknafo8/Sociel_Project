@@ -23,6 +23,7 @@ private:
 	bool exit_ = false;
 	User** all_users_;
 	FanPage** all_fan_pages_;
+	const int NOT_FOUND = -1;
 
 public:
 	System();
@@ -36,7 +37,7 @@ public:
 	void initiateUsers();
 	void initiateFanPages();
 	bool showAllFanPagesWithFans() const;
-	int findFanPage(int index);
+	int findFanPageIndex(int index);
 
 	//1
 	void addUser();
@@ -63,13 +64,12 @@ public:
 
 	//6
 	void makeFriendship();
-	void createFriendship(User* user1, User* user2);
 
 	//7
 	void cancelFriendship();
 
 	//8
-	void addFanOfPage();
+	void addFanToPage();
 	
 	//9
 	void removeFanOfPage();

@@ -1,6 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "DateTimeUtils.h"
 
+/// <summary>
+/// ctor
+/// </summary>
 Clock::Clock()
 {
 	//using ctime function to set time as current time of the machine
@@ -26,6 +29,9 @@ void Clock::showTime() const
 	cout << seconds_;
 }
 
+/// <summary>
+/// ctor
+/// </summary>
 Date::Date()
 {
 	//sets the current time of the creation
@@ -36,10 +42,10 @@ Date::Date()
 	year_ = ltm->tm_year + 1900;
 	day_ = ltm->tm_mday;
 }
+
 /// <summary>
 /// constractor of the Date class
 /// </summary>
-
 Date::Date(const int& day, const int& month, const int& year)
 {
 	day_ = day;

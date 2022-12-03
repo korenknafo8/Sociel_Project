@@ -22,6 +22,9 @@ FanPage::FanPage(char* name)
 	status_list_fan_page_ = new Status * [statuses_physical_size_];
 }
 
+/// <summary>
+/// destructor
+/// </summary>
 FanPage::~FanPage()
 {
 	for (int i = 0; i < fans_log_size_; i++)
@@ -124,7 +127,7 @@ void FanPage::removeFanFromPage(int index)
 void FanPage::showFanPageFans() const
 {
 	int index;
-		cout << "All friends: " << endl;
+		cout << "All fans: " << endl;
 		for (index = 0; index < fans_log_size_; index++)
 		{
 			if (fans_[index] != NULL)
@@ -139,4 +142,17 @@ void FanPage::showFanPageFans() const
 int FanPage::getFansLogSize() const
 {
 	return fans_log_size_;
+}
+
+int FanPage::findFan(User* fan) const
+{
+	int index;
+	for (index = 0; index < this->fans_log_size_; index++)
+	{
+		if (fan == this->fans_[index])
+		{
+			return index;
+		}
+	}
+	return NOT_FOUND;
 }

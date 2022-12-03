@@ -17,15 +17,14 @@ public:
 	void setUserStatus(Status* status);
 	void showAllUserStatuses() const;
 	void showFriendsStatuses() const;
-	void addFriend(User* new_friend);
+	void makeFriendship(User* new_friend);
 	void friendshipCancelation(int index);
 	char* getUserName() const;
-	Date getUserDOB();
 	void showUsersFriends() const; 
 	void addLikedFanPage(FanPage* new_page);
-	int findFriend(char* name) const;
-	void removeLikedPage(char* name);
-	int findLikedPage(char* name);
+	int findFriend(User* user) const;
+	void removeLikedPage(FanPage* liked_page);
+	int findLikedPage(FanPage* liked_page);
 	int getFriendsLogSize();
 	void showAllLikesPages() const;
 
@@ -42,7 +41,6 @@ private:
 	int friends_log_size_ = 0;
 	Date date_of_birth_;
 	const int NOT_FOUND = -1;
-	const int DEFUALT = -1;
 };
 
 #endif // !USER_H

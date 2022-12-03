@@ -17,6 +17,7 @@ public:
 	void showFanPageFans() const;
 	void showAllFanPageStatuses() const;
 	int getFansLogSize() const;
+	int findFan(User* fan) const;
 
 private:
 	char* name_;
@@ -26,7 +27,7 @@ private:
 	User** fans_;
 	int fans_physical_size_ = 3;
 	int fans_log_size_ = 0;
-
+	const int NOT_FOUND = -1;
 };
 
 #endif // !FAN_PAGE_H
