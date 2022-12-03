@@ -6,7 +6,10 @@
 class FanPage
 {
 public:
-	bool setFanPageName(char* name);
+	FanPage(const char* name);
+	FanPage(char* name);
+
+	void setFanPageName(const char* name);
 	char* getFanPageName() const;
 	void setFanPageStatus(Status* status);
 	void addFanToPage(User* new_fan);

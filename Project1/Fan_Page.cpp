@@ -1,10 +1,22 @@
 #include "Fan_Page.h"
 
-bool FanPage::setFanPageName(char* name)
+FanPage::FanPage(const char* name)
 {
-	this->name_ = new char[strlen(name)];
+	setFanPageName(name);
+	fans_ = new User * [fans_physical_size_];
+	status_list_fan_page_ = new Status * [statuses_physical_size_];
+}
+FanPage::FanPage(char* name)
+{
+	setFanPageName(name);
+	fans_ = new User * [fans_physical_size_];
+	status_list_fan_page_ = new Status * [statuses_physical_size_];
+}
+
+void FanPage::setFanPageName(const char* name)
+{
+	this->name_ = new char[strlen(name)+1];
 	strcpy(this->name_, name);
-	return true;
 }
 
 void FanPage::setFanPageStatus(Status* status)

@@ -4,13 +4,17 @@
 class Clock
 {
 public:
-	int getMinutes();
-	int getHours();
-	bool setMinutes(int m);
-	bool setHours(int h);
-	void show();
+	Clock();
+	/*
+	* Function that show the time in HH:mm:ss Format
+	*/
+	void showTime() const;
+
+	//Ctor
+	Clock();
 private:
-	int hours, minutes;
+	int seconds;
+	int minutes;
 };
 class Date
 {
@@ -26,9 +30,7 @@ public:
 
 
 private:
-	int day_;
-	int month_;
-	int year_;
+	int day_,month_, year_;
 };
 
 //void* myRealloc(void* source, int newSize);

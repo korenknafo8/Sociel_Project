@@ -15,15 +15,16 @@ using namespace std;
 class System 
 {
 private:
-	int user_physical_size_ = 1;
+	int user_physical_size_ = 3;
 	int user_log_size_ = 0;
-	int fan_page_physical_size_ = 1;
+	int fan_page_physical_size_ = 3;
 	int fan_page_log_size_ = 0;
 	bool exit_ = false;
 	User** all_users_;
 	FanPage** all_fan_pages_;
 
 public:
+	System();
 	//general
 	void showMenu() const;
 	void menuSelection(int selection);
@@ -57,10 +58,10 @@ public:
 
 	//6
 	void makeFriendship();
-	void createFriendship(User* user1, User* user2)
+	void createFriendship(User* user1, User* user2);
 
 	//7
-	void CancelFriendship();
+	void cancelFriendship();
 
 	//8
 	void addFanOfPage();

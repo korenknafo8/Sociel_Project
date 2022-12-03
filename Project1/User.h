@@ -13,9 +13,9 @@ class FanPage;
 class User
 {
 public:
-	User();
 	User(char* name, int day, int month, int year);
-	void setUserName(char* name);
+	User(const char* name, int day, int month, int year);
+	void setUserName(const char* name);
 	bool setUserDOB(Date& DOB);
 	void setUserStatus(Status* status);
 	void showAllUserStatuses() const;

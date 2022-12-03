@@ -3,9 +3,27 @@ using namespace std;
 #pragma warning (disable: 4996)
 
 
-void User::setUserName(char* name)
+User::User(char* name, int day, int month, int year) 
 {
-	name_ = new char[strlen(name)];
+	setUserName(name);
+	friends_ = new User * [friends_physical_size_];
+	status_list_user_ = new Status * [statuses_physical_size_];
+	likedPages_ = new FanPage * [fan_pages_physical_size_];
+	date_of_birth_ = Date(day, month, year);
+}
+
+User::User(const char* name, int day, int month, int year)
+{
+	setUserName(name);
+	friends_ = new User * [friends_physical_size_];
+	status_list_user_ = new Status * [statuses_physical_size_];
+	likedPages_ = new FanPage * [fan_pages_physical_size_];
+	date_of_birth_ = Date(day, month, year);
+}
+
+void User::setUserName(const char* name)
+{
+	name_ = new char[strlen(name) + 1];
 	strcpy(name_, name);
 }
 

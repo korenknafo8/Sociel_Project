@@ -1,17 +1,40 @@
 #include "DateTimeUtils.h"
 #include <stdio.h>
+#include <ctime>
+#define _CRT_SECURE_NO_WARNINGS
 
+
+Clock::Clock()
+{
+	//using ctime function to set time as current time of the machine
+	time_t curr_time;
+	curr_time = time(NULL);
+	char* timeText = ctime(&curr_time);
+	sscanf(timeText + 11, " %d:%d:%d", &hours, &minutes, &seconds);
+
+}
+
+
+void Clock::showTime() const
+{
+	printf("%02d:%02d:%02d", hours, minutes, seconds);
+}
 Date::Date()
 {
-	day_ = month_ = 2;
-	year_ = 1922;
+	//sets the current time of the creation
+	time_t curr_time;
+	curr_time = time(NULL);
+	tm* ltm = localtime(&curr_time);
+	month_ = ltm->tm_mon + 1;	
+	year_ = ltm->tm_year + 1900;
+	day_ = ltm->tm_mday;
 }
 
 Date::Date(const int& day, const int& month, const int& year)
 {
 	day_ = day;
 	month_ = month;
-	year_ = year_;
+	year_ = year;
 }
 
 bool Date::setDay(const int& day)
