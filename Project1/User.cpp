@@ -1,6 +1,7 @@
 #include "User.h"
 using namespace std;
 #pragma warning (disable: 4996)
+#include "Fan_Page.h"
 
 
 User::User(char* name, int day, int month, int year) 
@@ -8,7 +9,7 @@ User::User(char* name, int day, int month, int year)
 	setUserName(name);
 	friends_ = new User * [friends_physical_size_];
 	status_list_user_ = new Status * [statuses_physical_size_];
-	likedPages_ = new FanPage * [fan_pages_physical_size_];
+	liked_pages_ = new FanPage * [fan_pages_physical_size_];
 	date_of_birth_ = Date(day, month, year);
 }
 
@@ -17,7 +18,7 @@ User::User(const char* name, int day, int month, int year)
 	setUserName(name);
 	friends_ = new User * [friends_physical_size_];
 	status_list_user_ = new Status * [statuses_physical_size_];
-	likedPages_ = new FanPage * [fan_pages_physical_size_];
+	liked_pages_ = new FanPage * [fan_pages_physical_size_];
 	date_of_birth_ = Date(day, month, year);
 }
 
@@ -125,6 +126,7 @@ void User::showUsersFriends() //const
 	}
 }
 
+
 /// <summary>
 /// Cancel friendship between a user and a given user
 /// </summary>
@@ -132,9 +134,9 @@ void User::showUsersFriends() //const
 void User::friendshipCancelation(int index)
 {
 	int foundIndex = this->friends_[index]->findFriend(this->name_); //in this case allways find the user
-	this->friends_[index]->friends_[foundIndex] = 
-		this->friends_[index]->friends_[this->friends_[index]->friends_log_size_--];
-	this->friends_[index] = this->friends_[this->friends_log_size_--];
+	friends_[index]->friends_[foundIndex] = 
+		friends_[index]->friends_[friends_[index]->friends_log_size_--];
+	friends_[index] = friends_[friends_log_size_--];
 }
 
 
@@ -156,6 +158,29 @@ int User::findFriend(char* name)
 	return NOT_FOUND;
 }
 
+void User::removeLikedPage(char* name)
+{
+	int foundIndex = findLikedPage(name);
+	liked_pages_[foundIndex] = liked_pages_[--fan_pages_log_size_];
+}
+
+int User::findLikedPage(char* name)
+{
+	int index;
+	for (index = 0; index < fan_pages_log_size_; index++)
+	{
+		if (strcmp(name, liked_pages_[index]->getFanPageName()) == 0)
+		{
+			return index;
+		}
+	}
+	return NOT_FOUND;
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="new_page">name of page to add</param>
 void User::addLikedFanPage(FanPage* new_page)
 {
 	if(this->fan_pages_log_size_ == this->fan_pages_physical_size_)
@@ -163,15 +188,18 @@ void User::addLikedFanPage(FanPage* new_page)
 	this->fan_pages_physical_size_ *= 2;
 	FanPage** temp = new FanPage * [this->fan_pages_physical_size_];
 	for (int i = 0; i < this->fan_pages_log_size_; i++)
-		temp[i] = this->likedPages_[i];
-	this->likedPages_ = temp;
+		temp[i] = this->liked_pages_[i];
+	this->liked_pages_ = temp;
 	temp = nullptr;
 	delete[] temp;
 	}
 	else if (this->fan_pages_log_size_ == 0)
-		this->likedPages_ = new FanPage * [1];
+		this->liked_pages_ = new FanPage * [1];
 
-	this->likedPages_[this->fan_pages_log_size_++] = new_page;
+	this->liked_pages_[this->fan_pages_log_size_++] = new_page;
 }
 
-
+int User::getFriendsLogSize()
+{
+	return friends_log_size_;
+}

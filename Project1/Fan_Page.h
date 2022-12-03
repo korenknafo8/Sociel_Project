@@ -13,9 +13,10 @@ public:
 	char* getFanPageName() const;
 	void setFanPageStatus(Status* status);
 	void addFanToPage(User* new_fan);
-	void removeFanFromPage(User* fan);
+	void removeFanFromPage(int index);
 	void showFanPageFans() const;
 	void showAllFanPageStatuses() const;
+	int showFansLogSize() const;
 
 private:
 	char* name_;
@@ -23,8 +24,8 @@ private:
 	int statuses_physical_size_ = 1;
 	int statuses_logical_size_ = 0;
 	User** fans_;
-	int fans_physical_size_ = 1;
-	int fans_logical_size_ = 0;
+	int fans_physical_size_ = 3;
+	int fans_log_size_ = 0;
 
 };
 

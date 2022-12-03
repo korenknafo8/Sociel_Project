@@ -4,8 +4,6 @@
 #include <string.h>
 #include"DateTimeUtils.h"
 #include "Status.h"
-#define NOT_FOUND -1
-#define DEFUALT -1
 
 class FanPage;
 
@@ -23,12 +21,14 @@ public:
 	char* getUserName() const;
 	Date getUserDOB();
 	void showUsersFriends(); //const
-	int findFriend(char* name);
 	void addLikedFanPage(FanPage* new_page);
-	
+	int findFriend(char* name);
+	void removeLikedPage(char* name);
+	int findLikedPage(char* name);
+
 private:
 	char* name_;
-	FanPage** likedPages_;
+	FanPage** liked_pages_;
 	int fan_pages_physical_size_ = 1;
 	int fan_pages_log_size_ = 0;
 	Status** status_list_user_;
@@ -38,6 +38,8 @@ private:
 	int friends_physical_size_ = 1;
 	int friends_log_size_ = 0;
 	Date date_of_birth_;
+	const int NOT_FOUND = -1;
+	const int DEFUALT = -1;
 };
 
 #endif // !USER_H

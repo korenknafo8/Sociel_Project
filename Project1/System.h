@@ -8,6 +8,7 @@
 #include "User.h"
 #include "DateTimeUtils.h"
 
+
 #pragma warning (disable: 4996)
 
 using namespace std;
@@ -30,11 +31,12 @@ public:
 	void menuSelection(int selection);
 	User* selectionOfUser();
 	FanPage* selectionOfFanPages();
-	void showAllFanPages();
+	void showAllFanPages() const;
 	void initCreation();
 	void initiateUsers();
 	void initiateFanPages();
-
+	bool showAllFanPagesWithFans() const;
+	int findFanPage(int index);
 
 	//1
 	void addUser();

@@ -47,47 +47,46 @@ void FanPage::showAllFanPageStatuses() const
 
 char* FanPage::getFanPageName() const
 {
-	return this->name_;
+	return name_;
 
 }
 
 void FanPage::addFanToPage(User* new_fan)
 {
-	if (this->fans_logical_size_ == 0)
+	if (this->fans_log_size_ == 0)
 		this->fans_ = new User * [1];
-	if (this->fans_logical_size_ == this->fans_physical_size_)
+	if (this->fans_log_size_ == this->fans_physical_size_)
 	{
 		this->fans_physical_size_ *= 2;
 		User** temp = new User * [this->fans_physical_size_];
-		for (int i = 0; i < this->fans_logical_size_; i++)
+		for (int i = 0; i < this->fans_log_size_; i++)
 			temp[i] = this->fans_[i];
 		this->fans_ = temp;
 		temp = nullptr;
 		delete[] temp;
 	}
-	this->fans_[this->fans_logical_size_++] = new_fan;
+	this->fans_[this->fans_log_size_++] = new_fan;
 	new_fan->addLikedFanPage(this);
 }
 
-void FanPage::removeFanFromPage(User* fan)
-{
 
+void FanPage::removeFanFromPage(int index)
+{
+	fans_[index] = fans_[--fans_log_size_];
 }
 
 void FanPage::showFanPageFans() const
 {
 	int index;
-	if (this->fans_logical_size_ != 0)
-	{
 		cout << "All friends: " << endl;
-		for (index = 0; index < this->fans_logical_size_; index++)
+		for (index = 0; index < fans_log_size_; index++)
 		{
-			if (this->fans_[index] != NULL)
-				cout << index + 1 << " - " << this->fans_[index]->getUserName() << endl;
+			if (fans_[index] != NULL)
+				cout << index + 1 << " - " << fans_[index]->getUserName() << endl;
 		}
-	}
-	else
-	{
-		cout << "Fan page " << this->getFanPageName() << "has no fans to show." << endl;
-	}
+}
+
+int FanPage::showFansLogSize() const
+{
+	return fans_log_size_;
 }
