@@ -12,6 +12,7 @@ class User
 public:
 	User(char* name, int day, int month, int year);
 	User(const char* name, int day, int month, int year);
+	~User();
 	void setUserName(const char* name);
 	void setUserStatus(Status* status);
 	void showAllUserStatuses() const;
@@ -20,11 +21,13 @@ public:
 	void friendshipCancelation(int index);
 	char* getUserName() const;
 	Date getUserDOB();
-	void showUsersFriends(); //const
+	void showUsersFriends() const; 
 	void addLikedFanPage(FanPage* new_page);
-	int findFriend(char* name);
+	int findFriend(char* name) const;
 	void removeLikedPage(char* name);
 	int findLikedPage(char* name);
+	int getFriendsLogSize();
+	void showAllLikesPages() const;
 
 private:
 	char* name_;

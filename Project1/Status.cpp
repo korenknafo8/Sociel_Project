@@ -23,3 +23,8 @@ Status::Status(const char* text)
 {
 	setContent(text);
 }
+
+Status::~Status()
+{
+	delete[] content_;
+}

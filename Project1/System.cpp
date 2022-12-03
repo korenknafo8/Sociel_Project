@@ -1,9 +1,22 @@
 #include "System.h"
-
+/// <summary>
+/// Dynamic allocation of system arrays
+/// </summary>
 System::System()
 {
 	all_users_ = new User * [user_physical_size_];
 	all_fan_pages_ = new FanPage * [fan_page_physical_size_];
+}
+
+System::~System()
+{
+	for (int i = 0; i < user_log_size_; i++)
+		delete[] all_users_[i];
+	for (int i = 0; i < fan_page_log_size_; i++)
+		delete[] all_fan_pages_[i];
+	delete[] all_users_;
+	delete[] all_fan_pages_;
+
 }
 
 /// <summary>
@@ -86,7 +99,9 @@ void System::initCreation()
 	initiateUsers();
 	initiateFanPages();
 }
-
+/// <summary>
+/// Creating the first users and their statuses 
+/// </summary>
 void System::initiateUsers()
 {
 	setUser(new User("Ofir", 10, 10, 1995));
@@ -102,7 +117,9 @@ void System::initiateUsers()
 	createFriendship(all_users_[1], all_users_[2]);
 	createFriendship(all_users_[2], all_users_[0]);
 }
-
+/// <summary>
+/// Creating the first fan pages and their statuses 
+/// </summary>
 void System::initiateFanPages()
 {
 	setFanPage(new FanPage("Page 1"));
@@ -338,6 +355,10 @@ FanPage* System::selectionOfFanPages()
 }
 
 //5
+
+/// <summary>
+/// prints the 10 latest statuses of a user's friends
+/// </summary>
 void System::TenLatestFeadOfUser()
 {
 	User* chosen = selectionOfUser();
@@ -346,6 +367,10 @@ void System::TenLatestFeadOfUser()
 }
 
 //6
+
+/// <summary>
+/// Making two users friends
+/// </summary>
 void System::makeFriendship()
 {
 	int selection1, selection2;
@@ -366,6 +391,10 @@ void System::createFriendship(User* user1, User* user2)
 }
 
 //7
+
+/// <summary>
+/// canceling two users from being friends
+/// </summary>
 void System::cancelFriendship()
 {
 	int selection1, selection2;
@@ -388,6 +417,10 @@ void System::cancelFriendship()
 }
 
 //8
+
+/// <summary>
+/// Adding a user to be a fan of a page
+/// </summary>
 void System::addFanOfPage()
 {
 	int selection1, selection2;
@@ -403,6 +436,10 @@ void System::addFanOfPage()
 }
 
 //9
+
+/// <summary>
+/// Canceling a user to be a fan of a page
+/// </summary>
 void System::removeFanOfPage()
 {
 	int selection1, selection2, index;
@@ -418,7 +455,11 @@ void System::removeFanOfPage()
 		cout << "The user has been removed successfuly." << endl;
 	}
 }
-
+/// <summary>
+/// Finding the right index of a fan page
+/// </summary>
+/// <param name="counterIndex">the index of the existing fan pages</param>
+/// <returns>The wanted index of a fan page</returns>
 int System::findFanPage(int counterIndex)
 {
 	int foundIndex, counter = 0;
@@ -434,6 +475,10 @@ int System::findFanPage(int counterIndex)
 }
 
 //10
+
+/// <summary>
+/// Prints all users
+/// </summary>
 void System::showAllUsers() //const
 {
 	int index;
@@ -445,6 +490,10 @@ void System::showAllUsers() //const
 }
 
 //11
+
+/// <summary>
+/// Prints aa related to a user or a fan page
+/// </summary>
 void System::showRelatedToUserOrPage() //const
 {
 	int selection;
@@ -463,13 +512,18 @@ void System::showRelatedToUserOrPage() //const
 	}
 }
 
-
+/// <summary>
+/// Prints all the friends of a user
+/// </summary>
 void System::showUsersFrineds()
 {
 	User* chosen = selectionOfUser();
 	chosen->showUsersFriends();
 }
 
+/// <summary>
+/// Prints all the fans of a fan page
+/// </summary>
 void System::showsFansOfFanPage()
 {
 	FanPage* chosen = selectionOfFanPages();
@@ -523,11 +577,19 @@ bool System::showAllFanPagesWithFans() const
 }
 
 //12
+
+/// <summary>
+/// Puting the "true" value in the exit variable
+/// </summary>
 void System::setExit()
 {
 	this->exit_ = true;
 }
 
+/// <summary>
+/// Getting the value of a bool variable
+/// </summary>
+/// <returns></returns>
 bool System::getExit()
 {
 	return this->exit_;

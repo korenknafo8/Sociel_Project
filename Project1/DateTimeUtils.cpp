@@ -10,6 +10,9 @@ Clock::Clock()
 	sscanf(timeText + 11, " %d:%d:%d", &hours_, &minutes_, &seconds_);
 }
 
+/// <summary>
+/// Prints the time with '0' betwing hours/minuts/second if needed
+/// </summary>
 void Clock::showTime() const
 {
 	if (hours_ < 10)
@@ -33,6 +36,9 @@ Date::Date()
 	year_ = ltm->tm_year + 1900;
 	day_ = ltm->tm_mday;
 }
+/// <summary>
+/// constractor of the Date class
+/// </summary>
 
 Date::Date(const int& day, const int& month, const int& year)
 {

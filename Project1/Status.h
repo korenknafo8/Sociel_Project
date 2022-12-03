@@ -12,6 +12,7 @@ public:
 	void setContent(const char* input);
 	void showStatus();
 	Status(const char* text);
+	~Status();
 
 private:
 	char* content_; //for first module - text only

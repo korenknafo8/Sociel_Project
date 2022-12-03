@@ -26,7 +26,7 @@ private:
 
 public:
 	System();
-	//general
+	~System();
 	void showMenu() const;
 	void menuSelection(int selection);
 	User* selectionOfUser();

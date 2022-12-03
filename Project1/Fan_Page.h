@@ -8,7 +8,7 @@ class FanPage
 public:
 	FanPage(const char* name);
 	FanPage(char* name);
-
+	~FanPage();
 	void setFanPageName(const char* name);
 	char* getFanPageName() const;
 	void setFanPageStatus(Status* status);
@@ -16,7 +16,7 @@ public:
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;
 	void showAllFanPageStatuses() const;
-	int showFansLogSize() const;
+	int getFansLogSize() const;
 
 private:
 	char* name_;
