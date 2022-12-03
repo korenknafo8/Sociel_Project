@@ -30,7 +30,7 @@
     <ClCompile Include="Status.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="General_Functions.cpp">
+    <ClCompile Include="DateTimeUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +47,7 @@
     <ClInclude Include="Status.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="General_Functions.h">
+    <ClInclude Include="DateTimeUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

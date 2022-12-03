@@ -1,6 +1,4 @@
 #include "User.h"
-#include "Status.h"
-#include <string.h>
 #define NOT_FOUND -1
 
 #pragma warning (disable: 4996)
@@ -40,7 +38,10 @@ char* User::getUserName() const
 
 }
 
-
+/// <summary>
+/// Set a status for a given user
+/// </summary>
+/// <param name="status">status</param>
 void User::setUserStatus(Status* status)
 {
 	if (this->statuses_physical_size_ == this->statuses_logical_size_)
@@ -53,8 +54,10 @@ void User::setUserStatus(Status* status)
 		temp = nullptr;
 		delete[] temp;
 	}
-	this->status_list_user_[this->statuses_logical_size_] = status;
-	this->statuses_logical_size_++;
+	else if (this->statuses_logical_size_ == 0)
+		this->status_list_user_ = new Status * [1];
+
+	this->status_list_user_[this->statuses_logical_size_++] = status;
 }
 
 Date User::getUserDOB()
@@ -87,8 +90,6 @@ void User::showFriendsStatuses() const
 
 void User::addFriend(User* new_friend)
 {
-	if (this->friends_logical_size_ == 0)
-		this->friends_ = new User * [1];
 	if (this->friends_logical_size_ == this->friends_physical_size_)
 	{
 		this->friends_physical_size_ *=2;
@@ -97,12 +98,25 @@ void User::addFriend(User* new_friend)
 			temp[i] = this->friends_[i];
 		this->friends_ = temp;
 		temp = nullptr;
+		delete[] temp;
 	}
+	else if (this->friends_logical_size_ == 0)
+		this->friends_ = new User * [1];
 	this->friends_[this->friends_logical_size_++] = new_friend;
+
 	if (new_friend->friends_logical_size_ == 0)
 		new_friend->friends_ = new User * [1];
+	else if (new_friend->friends_logical_size_ == new_friend->friends_physical_size_)
+	{
+		new_friend->friends_physical_size_ *= 2;
+		User** temp = new User * [new_friend->friends_physical_size_];
+		for (int i = 0; i < new_friend->friends_logical_size_; i++)
+			temp[i] = new_friend->friends_[i];
+		new_friend->friends_ = temp;
+		temp = nullptr;
+		delete[] temp;
+	}
 	new_friend->friends_[new_friend->friends_logical_size_++] = this;
-
 }
 
 void User::showUsersFriends() //const
@@ -143,3 +157,23 @@ int User::findFriend(char* name)
 	}
 	return NOT_FOUND;
 }
+
+void User::addLikedFanPage(FanPage* new_page)
+{
+	if(this->fan_pages_logical_size_ == this->fan_pages_physical_size_)
+	{
+	this->fan_pages_physical_size_ *= 2;
+	FanPage** temp = new FanPage * [this->fan_pages_physical_size_];
+	for (int i = 0; i < this->fan_pages_logical_size_; i++)
+		temp[i] = this->likedPages_[i];
+	this->likedPages_ = temp;
+	temp = nullptr;
+	delete[] temp;
+	}
+	else if (this->fan_pages_logical_size_ == 0)
+		this->likedPages_ = new FanPage * [1];
+
+	this->likedPages_[this->fan_pages_logical_size_++] = new_page;
+}
+
+

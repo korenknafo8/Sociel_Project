@@ -1,5 +1,5 @@
-#ifndef GENERAL_FUNCTIONS_H
-#define GENERAL_FUNCTIONS_H
+#ifndef DATE_TIME_UTILS_H
+#define DATE_TIME_UTILS_H
 
 class Clock
 {

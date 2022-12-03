@@ -1,6 +1,4 @@
 #include "System.h"
-#include "General_Functions.h"
-
 
 
 void System::showMenu() const
@@ -17,7 +15,7 @@ void System::showMenu() const
 	cout << "7 - Cancel friendship between two Users" << endl;
 	cout << "8 - Make User a fan of a Fan Page" << endl;
 	cout << "9 - Cancel User from being a fan of a Fan Page" << endl;
-	cout << "10 - Show all Users" << endl;
+	cout << "10 - Show all Users and fan pages" << endl;
 	cout << "11 - Show all User's / Fan page's connections" << endl;
 	cout << "12 - Exit" << endl;
 	cout << "--------------------------------------------------------" << endl << endl;
@@ -162,37 +160,6 @@ void System::addFanPage()
 	new_fan_page = createFanPage();
 	setFanPage(new_fan_page);
 }
-
-void System::showAllUsers() //const
-{
-	int index;
-	cout << "All users: " << endl;
-	for (index = 0; index < this->user_log_size_; index++)
-	{
-		cout << index+1 << " - " << this->all_users_[index]->getUserName() << endl;
-	}
-}
-
-void System::showAllFanPages() //const
-{
-	int index;
-	cout << "All fan pages: " << endl;
-	for (index = 0; index < this->fan_page_log_size_; index++)
-	{
-		cout << index + 1 << " - " << this->all_fan_pages_[index]->getFanPageName() << endl;
-	}
-}
-
-void System::setExit()
-{
-	this->exit_ = true;
-}
-
-bool System::getExit()
-{
-	return this->exit_;
-}
-
 void System::addNewStatus()
 {
 	int selection;
@@ -275,7 +242,9 @@ User* System::selectionOfUser()
 	return this->all_users_[selection - 1];
 }
 
-
+/// <summary>
+/// get a fan page and show all his statuses 
+/// </summary>
 void System::showsFanPageStatuses()
 {
 	FanPage* chosen = selectionOfFanPages();
@@ -283,6 +252,10 @@ void System::showsFanPageStatuses()
 
 }
 
+/// <summary>
+///	get a fan page from the header-line
+/// </summary>
+/// <returns></returns>
 FanPage* System::selectionOfFanPages()
 {
 	int selection;
@@ -344,7 +317,27 @@ void System::addFanOfPage()
 //9
 void System::removeFanOfPage()
 {
+	int selection1, selection2;
+	cout << "Please choose one of the following users: " << endl;
+	showAllUsers();
+	cin >> selection1;
+	cout << "Please choose one of the following fans of " << 
+		this->all_fan_pages_[selection1 - 1]->getFanPageName() << ": " << endl;
+	this->all_fan_pages_[selection1 - 1]->showFanPageFans();
+	cin >> selection2;
+	this->all_fan_pages_[selection1 - 1]->removeFanFromPage(this->all_users_[selection2 - 1]);
+	cout << "Fan has been removed from fan page's list successfuly." << endl;
+}
 
+//10
+void System::showAllUsers() //const
+{
+	int index;
+	cout << "All users: " << endl;
+	for (index = 0; index < this->user_log_size_; index++)
+	{
+		cout << index + 1 << " - " << this->all_users_[index]->getUserName() << endl;
+	}
 }
 
 //11
@@ -366,12 +359,39 @@ void System::showRelatedToUserOrPage() //const
 	}
 }
 
+
 void System::showUsersFrineds()
 {
-
+	User* chosen = selectionOfUser();
+	chosen->showUsersFriends();
 }
 
 void System::showsFansOfFanPage()
 {
+	FanPage* chosen = selectionOfFanPages();
+	chosen->showFanPageFans();
+}
 
+/// <summary>
+/// show all fan page entered into the system
+/// </summary>
+void System::showAllFanPages() //const
+{
+	int index;
+	cout << "All fan pages: " << endl;
+	for (index = 0; index < this->fan_page_log_size_; index++)
+	{
+		cout << index + 1 << " - " << this->all_fan_pages_[index]->getFanPageName() << endl;
+	}
+}
+
+//12
+void System::setExit()
+{
+	this->exit_ = true;
+}
+
+bool System::getExit()
+{
+	return this->exit_;
 }

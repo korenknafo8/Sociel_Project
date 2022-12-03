@@ -1,12 +1,14 @@
 #ifndef USER_H
 #define USER_H
-#include"General_Functions.h"
 #include <iostream>
+#include <string.h>
+#include"DateTimeUtils.h"
+#include "Status.h"
+
 using namespace std;
 
 
-class Status;
-
+class FanPage;
 
 
 class User

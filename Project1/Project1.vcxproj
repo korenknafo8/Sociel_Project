@@ -140,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Fan_Page.cpp" />
-    <ClCompile Include="General_Functions.cpp" />
+    <ClCompile Include="DateTimeUtils.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Status.cpp" />
@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fan_Page.h" />
-    <ClInclude Include="General_Functions.h" />
+    <ClInclude Include="DateTimeUtils.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="User.h" />
