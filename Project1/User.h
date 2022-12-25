@@ -4,43 +4,40 @@
 #include <string.h>
 #include"DateTimeUtils.h"
 #include "Status.h"
+#include <list>
+#include <vector>
 
 class FanPage;
 
 class User
 {
+private:
+	string name_;
+	Date date_of_birth_;
+	const int NOT_FOUND = -1;
+	vector<FanPage*>liked_pages_;
+	vector<User*>friends_;
+	list<Status>statuses_;
+
 public:
-	User(char* name, int day, int month, int year);
-	User(const char* name, int day, int month, int year);
+	User(string name, int day, int month, int year);
+	User(const string name, int day, int month, int year);
 	~User();
-	void setUserName(const char* name);
-	void setUserStatus(Status* status);
-	void showAllUserStatuses() const;
+	void setName(const string name);
+	void setUserStatus(Status& status);
+	void showStatuses() const;
 	void showFriendsStatuses() const;
 	void makeFriendship(User* new_friend);
 	void friendshipCancelation(int index);
-	char* getUserName() const;
+	string getName() const;
 	void showUsersFriends() const; 
 	void addLikedFanPage(FanPage* new_page);
 	int findFriend(User* user) const;
 	void removeLikedPage(FanPage* liked_page);
-	int findLikedPage(FanPage* liked_page);
-	int getFriendsLogSize();
+	int findLikedPage(FanPage* liked_page) const;
+	int getFriendsSize();
 	void showAllLikesPages() const;
-
-private:
-	char* name_;
-	FanPage** liked_pages_;
-	int fan_pages_physical_size_ = 1;
-	int fan_pages_log_size_ = 0;
-	Status** status_list_user_;
-	int statuses_physical_size_ = 1;
-	int statuses_log_size_ = 0;
-	User** friends_;
-	int friends_physical_size_ = 1;
-	int friends_log_size_ = 0;
-	Date date_of_birth_;
-	const int NOT_FOUND = -1;
+	User* operator+=(User* other);
 };
 
 #endif // !USER_H

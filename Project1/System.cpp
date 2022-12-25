@@ -4,19 +4,10 @@
 /// </summary>
 System::System()
 {
-	all_users_ = new User * [user_physical_size_];
-	all_fan_pages_ = new FanPage * [fan_page_physical_size_];
 }
 
 System::~System()
 {
-	for (int i = 0; i < user_log_size_; i++)
-		delete[] all_users_[i];
-	for (int i = 0; i < fan_page_log_size_; i++)
-		delete[] all_fan_pages_[i];
-	delete[] all_users_;
-	delete[] all_fan_pages_;
-
 }
 
 /// <summary>
@@ -104,48 +95,62 @@ void System::initCreation()
 /// </summary>
 void System::initiateUsers()
 {
-	setUser(new User("Ofir", 10, 10, 1995));
-	setUser(new User("Koren", 10, 10, 1997));
-	setUser(new User("Jimmy", 7, 7, 1940));
+	User Ofir("Ofir", 10, 10, 1995), Koren("Koren", 10, 10, 1997),
+		Baz("Baz Light-year", 7, 7, 1940);
+	setUser(Ofir);
+	setUser(Koren);
+	setUser(Baz);
+
+
+	/*
 	all_users_[0]->setUserStatus(new Status("user Ofir status 1"));
 	all_users_[0]->setUserStatus(new Status("user Ofir status 2"));
 	all_users_[1]->setUserStatus(new Status("user Koren status 1"));
 	all_users_[1]->setUserStatus(new Status("user Koren status 2"));
-	all_users_[2]->setUserStatus(new Status("user Jimmy status 1"));
-	all_users_[2]->setUserStatus(new Status("user Jimmy status 2"));
+	all_users_[2]->setUserStatus(new Status("user Baz Light-year status 1"));
+	all_users_[2]->setUserStatus(new Status("user Baz Light-year status 2"));
+	*/
+
+	/*
 	all_users_[0]->makeFriendship(all_users_[1]);
 	all_users_[1]->makeFriendship(all_users_[2]);
 	all_users_[2]->makeFriendship(all_users_[0]);
+	*/
 }
+
 /// <summary>
 /// Creating the first fan pages and their statuses 
 /// </summary>
 void System::initiateFanPages()
 {
-	setFanPage(new FanPage("Page 1"));
-	setFanPage(new FanPage("Page 2"));
-	setFanPage(new FanPage("Page 3"));
+	FanPage page1("Page 1"), page2("Page 2"), page3("Page 3");
+
+	setFanPage(page1);
+	setFanPage(page2);
+	setFanPage(page3);
+	/*
 	all_fan_pages_[0]->setFanPageStatus(new Status("Page 1 status 1"));
 	all_fan_pages_[0]->setFanPageStatus(new Status("Page 1 status 2"));
 	all_fan_pages_[1]->setFanPageStatus(new Status("Page 2 status 1"));
 	all_fan_pages_[1]->setFanPageStatus(new Status("Page 2 status 2"));
 	all_fan_pages_[2]->setFanPageStatus(new Status("Page 3 status 1"));
 	all_fan_pages_[2]->setFanPageStatus(new Status("Page 3 status 2"));
+
 	all_fan_pages_[0]->addFanToPage(all_users_[0]);
 	all_fan_pages_[0]->addFanToPage(all_users_[1]);
 	all_fan_pages_[1]->addFanToPage(all_users_[1]);
 	all_fan_pages_[1]->addFanToPage(all_users_[2]);
 	all_fan_pages_[2]->addFanToPage(all_users_[2]);
 	all_fan_pages_[2]->addFanToPage(all_users_[0]);
+	*/
 }
 
 /// <summary> 1
 ///	get user details into a user and returns the created user
 /// </summary>
 /// <returns>created user</returns>
-User* System::createUser()
+User System::createUser()
 {
-	
 	char name[31],enter[1];
 	int month, day, year;
 	cin.getline(enter,1);
@@ -158,7 +163,7 @@ User* System::createUser()
 	cin >> month;
 	cout << endl << "year of birth: ";
 	cin >> year;
-	return new User(name,day,month,year);
+	return User(name,day,month,year);
 }
 
 /// <summary>
@@ -166,63 +171,39 @@ User* System::createUser()
 /// </summary>
 void System::addUser()
 {
-	User* new_user;
-	new_user = createUser();
+	User new_user = createUser();
 	setUser(new_user);
-	
-
 }
 
 /// <summary>
 /// get a user and set it into the system's pointers array of users
 /// </summary>
 /// <param name="user">a created user given to be entered</param>
-void System::setUser(User* user)
+void System::setUser(User& user)
 {
-	if (this->user_physical_size_ == this->user_log_size_)
-	{
-		this->user_physical_size_ *= 2;
-		User** temp = new User * [this->user_physical_size_];
-		for (int i = 0; i < this->user_log_size_; i++)
-			temp[i] = this->all_users_[i];
-		this->all_users_ = temp;
-		temp = nullptr;
-		delete[] temp;
-	}
-	this->all_users_[this->user_log_size_++] = user;
+	all_users_.push_back(user);
 }
 
 /// <summary>
 ///	create a fan-page
 /// </summary>
 /// <returns>created fan-page</returns>
-FanPage* System::createFanPage()
+FanPage System::createFanPage()
 {
 	char name[31], enter[1];
 	cin.getline(enter, 1);
 	cout << "Please enter a fan page name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
 	cin.getline(name, 30);
-	return new FanPage(name);
+	return FanPage(name);
 }
 
 /// <summary>
 ///	set a given fan page into the system's fan-page pointers array
 /// </summary>
 /// <param name="page">given page to be entered</param>
-void System::setFanPage(FanPage* page)
+void System::setFanPage(FanPage& new_page)
 {
-	if (this->fan_page_physical_size_ == this->fan_page_log_size_)
-	{
-		this->fan_page_physical_size_ *= 2;
-		FanPage** temp = new FanPage * [this->fan_page_physical_size_];
-		for (int i = 0; i < this->fan_page_log_size_; i++)
-			temp[i] = this->all_fan_pages_[i];
-		this->all_fan_pages_ = temp;
-		temp = nullptr;
-		delete[] temp;
-	}
-	this->all_fan_pages_[this->fan_page_log_size_] = page;
-	this->fan_page_log_size_++;
+	all_fan_pages_.push_back(new_page);
 }
 
 /// <summary>
@@ -230,10 +211,7 @@ void System::setFanPage(FanPage* page)
 /// </summary>
 void System::addFanPage()
 {
-	FanPage* new_fan_page;
-	if (this->fan_page_log_size_ == 0)
-		this->all_fan_pages_ = new FanPage * [1];
-	new_fan_page = createFanPage();
+	FanPage new_fan_page = createFanPage();
 	setFanPage(new_fan_page);
 }
 
@@ -316,7 +294,7 @@ void System::showUserOrPageStatuses()
 void System::showUserStatuses()
 {
 	User* chosen = selectionOfUser();
-	chosen->showAllUserStatuses();
+	chosen->showStatuses();
 }
 
 /// <summary>
@@ -337,7 +315,7 @@ User* System::selectionOfUser()
 void System::showsFanPageStatuses()
 {
 	FanPage* chosen = selectionOfFanPages();
-	chosen->showAllFanPageStatuses();
+	chosen->showStatuses();
 
 }
 
@@ -421,9 +399,7 @@ void System::addFanToPage()
 	cin >> selection2;
 	index = all_fan_pages_[selection1 - 1]->findFan(all_users_[selection2 - 1]);
 	if (index != NOT_FOUND)
-	{
 		return;
-	}
 	all_fan_pages_[selection1 - 1]->addFanToPage(all_users_[selection2 - 1]);
 	cout << "User " << all_users_[selection2 - 1]->getUserName() << " is now a fan of the page: " <<
 		all_fan_pages_[selection1 -1]->getFanPageName() << endl;

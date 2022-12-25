@@ -9,14 +9,13 @@ using namespace std;
 /// Enters content into status
 /// </summary>
 /// <param name="input">header-line input</param>
-void Status::setContent(const char* input) 
+void Status::setContent(const string input) 
 {
-	this->content_ = new char[strlen(input) + 1];
-	strcpy(this->content_, input);
+	content_ = input;
 }
 
 //prints status
-void Status::showStatus()
+void Status::show() const
 {
 	cout << this->content_ << "    ";
 	date_of_Status_.showDate();
@@ -25,7 +24,7 @@ void Status::showStatus()
 }
 
 //ctr
-Status::Status(const char* text)
+Status::Status(const string text)
 {
 	setContent(text);
 }

@@ -5,29 +5,25 @@
 
 class FanPage
 {
+private:
+	string name_;
+	list<Status>statuses_;
+	vector<User*>fans_;
+	const int NOT_FOUND = -1;
+
 public:
-	FanPage(const char* name);
-	FanPage(char* name);
+	FanPage(const string name);
+	FanPage(string name);
 	~FanPage();
-	void setFanPageName(const char* name);
-	char* getFanPageName() const;
-	void setFanPageStatus(Status* status);
+	void setFanPageName(const string name);
+	string getName() const;
+	void setFanPageStatus(Status& status);
 	void addFanToPage(User* new_fan);
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;
-	void showAllFanPageStatuses() const;
+	void showStatuses() const;
 	int getFansLogSize() const;
 	int findFan(User* fan) const;
-
-private:
-	char* name_;
-	Status** status_list_fan_page_;
-	int statuses_physical_size_ = 1;
-	int statuses_logical_size_ = 0;
-	User** fans_;
-	int fans_physical_size_ = 3;
-	int fans_log_size_ = 0;
-	const int NOT_FOUND = -1;
 };
 
 #endif // !FAN_PAGE_H

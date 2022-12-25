@@ -9,13 +9,13 @@ using namespace std;
 class Status
 {
 public:
-	void setContent(const char* input);
-	void showStatus();
-	Status(const char* text);
+	void setContent(const string input);
+	void show() const;
+	Status(const string text);
 	~Status();
 
 private:
-	char* content_; //for first module - text only
+	string content_; //for first module - text only
 	Date date_of_Status_;
 	Clock time_of_Status_;
 };

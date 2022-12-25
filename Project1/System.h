@@ -8,7 +8,6 @@
 #include "User.h"
 #include "DateTimeUtils.h"
 
-
 #pragma warning (disable: 4996)
 
 using namespace std;
@@ -16,14 +15,10 @@ using namespace std;
 class System 
 {
 private:
-	int user_physical_size_ = 4;
-	int user_log_size_ = 0;
-	int fan_page_physical_size_ = 4;
-	int fan_page_log_size_ = 0;
 	bool exit_ = false;
-	User** all_users_;
-	FanPage** all_fan_pages_;
 	const int NOT_FOUND = -1;
+	list<FanPage> all_fan_pages_;
+	list<User> all_users_;
 
 public:
 	System();
@@ -38,16 +33,17 @@ public:
 	void initiateFanPages();
 	bool showAllFanPagesWithFans() const;
 	int findFanPageIndex(int index);
+	//User
 
 	//1
 	void addUser();
-	void setUser(User* user);
-	User* createUser();
+	void setUser(User& user);
+	User createUser();
 
 	//2
 	void addFanPage();
-	void setFanPage(FanPage* page);
-	FanPage* createFanPage();
+	void setFanPage(FanPage& page);
+	FanPage createFanPage();
 
 	//3
 	void addNewStatus();

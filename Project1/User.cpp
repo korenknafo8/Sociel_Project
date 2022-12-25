@@ -6,12 +6,9 @@ using namespace std;
 /// <summary>
 /// The constractor of a user class
 /// </summary>
-User::User(char* name, int day, int month, int year) 
+User::User(string name, int day, int month, int year) 
 {
-	setUserName(name);
-	friends_ = new User * [friends_physical_size_];
-	status_list_user_ = new Status * [statuses_physical_size_];
-	liked_pages_ = new FanPage * [fan_pages_physical_size_];
+	setName(name);
 	date_of_birth_ = Date(day, month, year);
 }
 
@@ -20,28 +17,23 @@ User::User(char* name, int day, int month, int year)
 /// </summary>
 User::~User()
 {
-	for (int i = 0; i < friends_log_size_; i++)
+	for (int i = 0; i < friends_.size(); i++)
 		delete[] friends_[i];
 	for (int i = 0; i < statuses_log_size_; i++)
 		delete[] status_list_user_[i];
 	for (int i = 0; i < fan_pages_log_size_; i++)
 		delete[] liked_pages_[i];
-	delete[] status_list_user_;
-	delete[] friends_;
-	delete[] liked_pages_;
-	delete[] name_;
-
-
+	//delete[] status_list_user_;
+	//delete[] friends_;
+	//delete[] liked_pages_;
 }
+
 /// <summary>
 /// The constractor of a user class (name as const)
 /// </summary>
-User::User(const char* name, int day, int month, int year)
+User::User(const string name, int day, int month, int year)
 {
-	setUserName(name);
-	friends_ = new User * [friends_physical_size_];
-	status_list_user_ = new Status * [statuses_physical_size_];
-	liked_pages_ = new FanPage * [fan_pages_physical_size_];
+	setName(name);
 	date_of_birth_ = Date(day, month, year);
 }
 
@@ -49,17 +41,16 @@ User::User(const char* name, int day, int month, int year)
 /// Setting a wanted name to a user
 /// </summary>
 /// <param name="name">The wanted name</param>
-void User::setUserName(const char* name)
+void User::setName(const string new_name)
 {
-	name_ = new char[strlen(name) + 1];
-	strcpy(name_, name);
+	name_ = new_name;
 }
 
 /// <summary>
 /// Getting a user name
 /// </summary>
 /// <returns>The name</returns>
-char* User::getUserName() const
+string User::getName() const
 {
 	return this->name_;
 
@@ -69,29 +60,20 @@ char* User::getUserName() const
 /// Set a status for a given user
 /// </summary>
 /// <param name="status">status</param>
-void User::setUserStatus(Status* status)
+void User::setUserStatus(Status& new_status)
 {
-	if (statuses_physical_size_ == statuses_log_size_)
-	{
-		statuses_physical_size_ *= 2;
-		Status** temp = new Status * [statuses_physical_size_];
-		for (int i = 0; i < statuses_log_size_; i++)
-			temp[i] = status_list_user_[i];
-		status_list_user_ = temp;
-		temp = nullptr;
-		delete[] temp;
-	}
-	status_list_user_[statuses_log_size_++] = status;
+	statuses_.push_back(new_status);
 }
 
 /// <summary>
 /// Prints all the statuses of a user
 /// </summary>
-void User::showAllUserStatuses() const
+void User::showStatuses() const
 {
-	for (int index = 0; index < statuses_log_size_; index++)
-	{
-		status_list_user_[index]->showStatus();
+	cout << endl << "below are the statuses of " << getName() << ":" << endl;
+	list<Status>::const_iterator itr = statuses_.end();
+	for (int i = 0; i < statuses_.size(); ++i, --itr) {
+		itr->show();
 		cout << endl;
 	}
 }
@@ -101,16 +83,17 @@ void User::showAllUserStatuses() const
 /// </summary>
 void User::showFriendsStatuses() const
 {
-	for (int i = 0; i < this->friends_log_size_; i++)
+	for (int i = 0; i < friends_.size(); i++)
 	{
-		cout << "Statuses of: " << this->friends_[i]->getUserName() << endl;
-		for (int j = 0; j < this->friends_[i]->statuses_log_size_ && j < 10; j++)
+		cout << "Statuses of: " << friends_[i]->getName() << endl;
+		friends_[i]->showStatuses();
+		for (int j = 0; j < friends_[i]->statuses_.size() && j < 10; j++)
 		{
 			cout << j+1 << " - ";
-			this->friends_[i]->status_list_user_[j]->showStatus();
+			friends_[i]->statuses_;
 			cout << endl;
 		}
-	}	
+	}
 }
 
 /// <summary>
@@ -120,22 +103,10 @@ void User::showFriendsStatuses() const
 void User::makeFriendship(User* new_friend)
 {
 	int index = findFriend(new_friend);
+
 	if (index != NOT_FOUND)
-	{
 		return;
-	}
-	if (this->friends_log_size_ == this->friends_physical_size_)
-	{
-		this->friends_physical_size_ *=2;
-		User** temp = new User * [this->friends_physical_size_];
-		for (int i = 0; i < this->friends_log_size_; i++)
-			temp[i] = this->friends_[i];
-		this->friends_ = temp;
-		temp = nullptr;
-		delete[] temp;
-	}
-	else if (this->friends_log_size_ == 0)
-		this->friends_ = new User * [1];
+
 	this->friends_[this->friends_log_size_++] = new_friend;
 	new_friend->makeFriendship(this);
 }
@@ -146,19 +117,15 @@ void User::makeFriendship(User* new_friend)
 void User::showUsersFriends() const
 {
 	int index;
-	if (this->friends_log_size_ != 0) 
+	if (friends_.size() != 0) 
 	{
 		cout << "All friends: " << endl;
-		for (index = 0; index < this->friends_log_size_; index++)
-		{
-			if (this->friends_[index] != NULL)
-				cout << index + 1 << " - " << this->friends_[index]->getUserName() << endl;
-		}
+		for (index = 0; index < friends_.size(); index++)
+			if (friends_[index] != NULL)
+				cout << index + 1 << " - " << friends_[index]->getName() << endl;
 	}
 	else 
-	{
-		cout << "The user " << this->getUserName() << " has no friends to show." << endl;
-	}
+		cout << "The user " << this->getName() << " has no friends to show." << endl;
 }
 
 
@@ -175,7 +142,6 @@ void User::friendshipCancelation(int index)
 	friends_[index] = friends_[--friends_log_size_];
 }
 
-
 /// <summary>
 /// Locate a friend of user in his friend's pointer array and returns it's index
 /// </summary>
@@ -184,12 +150,10 @@ void User::friendshipCancelation(int index)
 int User::findFriend(User* user) const 
 {
 	int index;
-	for (index = 0; index < this->friends_log_size_; index++)
+	for (index = 0; index < friends_.size(); index++)
 	{
-		if (user == this->friends_[index])
-		{
+		if (user == friends_[index])
 			return index;
-		}
 	}
 	return NOT_FOUND;
 }
@@ -201,7 +165,8 @@ int User::findFriend(User* user) const
 void User::removeLikedPage(FanPage* liked_page)
 {
 	int foundIndex = findLikedPage(liked_page);
-	liked_pages_[foundIndex] = liked_pages_[--fan_pages_log_size_];
+	liked_pages_[foundIndex] = liked_pages_[liked_pages_.size() - 1];
+	liked_pages_.pop_back();
 }
 
 /// <summary>
@@ -209,15 +174,13 @@ void User::removeLikedPage(FanPage* liked_page)
 /// </summary>
 /// <param name="name">The wanted fan page</param>
 /// <returns>The index</returns>
-int User::findLikedPage(FanPage* liked_page)
+int User::findLikedPage(FanPage* liked_page) const
 {
 	int index;
-	for (index = 0; index < fan_pages_log_size_; index++)
+	for (index = 0; index < liked_pages_.size(); index++)
 	{
 		if (liked_page == liked_pages_[index])
-		{
 			return index;
-		}
 	}
 	return NOT_FOUND;
 }
@@ -228,29 +191,16 @@ int User::findLikedPage(FanPage* liked_page)
 /// <param name="new_page">name of page to add</param>
 void User::addLikedFanPage(FanPage* new_page)
 {
-	if(this->fan_pages_log_size_ == this->fan_pages_physical_size_)
-	{
-	this->fan_pages_physical_size_ *= 2;
-	FanPage** temp = new FanPage * [this->fan_pages_physical_size_];
-	for (int i = 0; i < this->fan_pages_log_size_; i++)
-		temp[i] = this->liked_pages_[i];
-	this->liked_pages_ = temp;
-	temp = nullptr;
-	delete[] temp;
-	}
-	else if (this->fan_pages_log_size_ == 0)
-		this->liked_pages_ = new FanPage * [1];
-
-	this->liked_pages_[this->fan_pages_log_size_++] = new_page;
+	liked_pages_.push_back(new_page);
 }
 
 /// <summary>
 /// Getting the amount of friends of a user
 /// </summary>
 /// <returns>The amount of friends</returns>
-int User::getFriendsLogSize()
+int User::getFriendsSize()
 {
-	return friends_log_size_;
+	return friends_.size();
 }
 
 /// <summary>
@@ -259,8 +209,12 @@ int User::getFriendsLogSize()
 void User::showAllLikesPages() const
 {
 	cout << "User's liked pages are:" << endl;
-	for (int i = 0; i < fan_pages_log_size_; i++)
-	{
-		cout << liked_pages_[i]->getFanPageName() << endl << endl;
-	}
+	for (int i = 0; i < liked_pages_.size(); i++)
+		cout << liked_pages_[i]->getName() << endl << endl;
+}
+
+User* User::operator+=(User* other)
+{
+	this->makeFriendship(other);
+	return this;
 }
