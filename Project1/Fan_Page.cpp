@@ -1,13 +1,7 @@
 #include "Fan_Page.h"
 
 /// <summary>
-/// constractor of a FanPage class
-/// </summary>
-/// <param name="name">wanted name as 'const'</param>
-FanPage::FanPage(const string name)
-{
-	setFanPageName(name);
-}
+
 
 /// <summary>
 /// constractor of a FanPage class
@@ -70,9 +64,15 @@ string FanPage::getName() const
 /// <summary>
 /// Adding a user to be a fan of a fan page
 /// </summary>
-void FanPage::addFanToPage(User* new_fan)
+void FanPage::addFanToPage(User& new_fan)
 {
-	fans_.push_back(new_fan);
+	int index = findFan(&new_fan);
+	if (index != NOT_FOUND)
+	{
+		cout << new_fan.getName()<<" is already a fan of this Fan page!" << endl;
+		return;
+	}
+	fans_.push_back(&new_fan);
 }
 
 /// <summary>
@@ -115,4 +115,10 @@ int FanPage::findFan(User* fan) const
 		if (fan == fans_[index])
 			return index;
 	return NOT_FOUND;
+}
+
+FanPage& FanPage::operator+=(User& other)
+{
+	addFanToPage(other);
+	return *this;
 }

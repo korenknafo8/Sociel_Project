@@ -25,14 +25,17 @@ public:
 	~System();
 	void showMenu() const;
 	void menuSelection(int selection);
-	User* selectionOfUser();
-	FanPage* selectionOfFanPages();
+	User& selectionOfUser() const;
+	FanPage& selectionOfFanPages() const;
 	void showAllFanPages() const;
-	void initCreation();
-	void initiateUsers();
-	void initiateFanPages();
+	void initiateCreation();
+	void initiateFanPages(User* user1, User* user2, User* user3);
 	bool showAllFanPagesWithFans() const;
-	int findFanPageIndex(int index);
+	int findFanPageIndex(int index) const;
+	const FanPage& findFanPage(int index) const;
+	const User& findUser(int index) const; 
+	FanPage& findFanPage(int index); 
+	User& findUser(int index);
 	//User
 
 	//1

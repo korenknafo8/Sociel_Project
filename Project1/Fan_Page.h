@@ -10,20 +10,20 @@ private:
 	list<Status>statuses_;
 	vector<User*>fans_;
 	const int NOT_FOUND = -1;
-
+	
 public:
-	FanPage(const string name);
 	FanPage(string name);
 	~FanPage();
 	void setFanPageName(const string name);
 	string getName() const;
 	void setFanPageStatus(Status& status);
-	void addFanToPage(User* new_fan);
+	void addFanToPage(User& new_fan);
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;
 	void showStatuses() const;
 	int getFansLogSize() const;
 	int findFan(User* fan) const;
+	FanPage& operator+=(User& other);
 };
 
 #endif // !FAN_PAGE_H

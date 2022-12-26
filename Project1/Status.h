@@ -12,7 +12,6 @@ public:
 	void setContent(const string input);
 	void show() const;
 	Status(const string text);
-	~Status();
 
 private:
 	string content_; //for first module - text only

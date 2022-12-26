@@ -28,9 +28,3 @@ Status::Status(const string text)
 {
 	setContent(text);
 }
-
-//destructor
-Status::~Status()
-{
-	delete[] content_;
-}

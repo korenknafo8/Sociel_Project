@@ -21,23 +21,24 @@ private:
 
 public:
 	User(string name, int day, int month, int year);
-	User(const string name, int day, int month, int year);
 	~User();
 	void setName(const string name);
 	void setUserStatus(Status& status);
 	void showStatuses() const;
 	void showFriendsStatuses() const;
-	void makeFriendship(User* new_friend);
+	void makeFriendship(User& new_friend);
 	void friendshipCancelation(int index);
 	string getName() const;
-	void showUsersFriends() const; 
+	void showFriends() const; 
 	void addLikedFanPage(FanPage* new_page);
-	int findFriend(User* user) const;
-	void removeLikedPage(FanPage* liked_page);
-	int findLikedPage(FanPage* liked_page) const;
+	int findFriend(User& user) const;
+	void removeLikedPage(FanPage& liked_page);
+	int findLikedPage(FanPage& liked_page) const;
 	int getFriendsSize();
 	void showAllLikesPages() const;
-	User* operator+=(User* other);
+	User& operator+=(User& other);
+	bool operator==(User other);
+
 };
 
 #endif // !USER_H
