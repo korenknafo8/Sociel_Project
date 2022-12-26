@@ -17,8 +17,8 @@ class System
 private:
 	bool exit_ = false;
 	const int NOT_FOUND = -1;
-	list<FanPage> all_fan_pages_;
-	list<User> all_users_;
+	list<FanPage> fan_pages_;
+	list<User> users_;
 
 public:
 	System();
@@ -71,12 +71,12 @@ public:
 	void removeFanOfPage();
 	
 	//10
-	void showAllUsers(); //const
+	void showAllUsers() const;
 
 	//11
-	void showRelatedToUserOrPage(); //const
-	void showUsersFrineds();
-	void showsFansOfFanPage();
+	void showRelatedToUserOrPage() const;
+	void showUsersFrineds() const;
+	void showsFansOfFanPage() const;
 
 	//12
 	void setExit();
