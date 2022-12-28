@@ -25,7 +25,8 @@ public:
 	~System();
 	void showMenu() const;
 	void menuSelection(int selection);
-	User& selectionOfUser() const;
+	const User* selectionOfUser() const;
+	void showUsersFrineds();
 	FanPage& selectionOfFanPages() const;
 	void showAllFanPages() const;
 	void initiateCreation();
@@ -33,7 +34,7 @@ public:
 	bool showAllFanPagesWithFans() const;
 	int findFanPageIndex(int index) const;
 	const FanPage& findFanPage(int index) const;
-	const User& findUser(int index) const; 
+	const User* findUser(int index) const; 
 	FanPage& findFanPage(int index); 
 	User& findUser(int index);
 	//User
@@ -41,12 +42,12 @@ public:
 	//1
 	void addUser();
 	void setUser(User& user);
-	User createUser();
+	User& createUser();
 
 	//2
 	void addFanPage();
 	void setFanPage(FanPage& page);
-	FanPage createFanPage();
+	FanPage& createFanPage();
 
 	//3
 	void addNewStatus();
@@ -56,7 +57,7 @@ public:
 	//4
 	void showUserOrPageStatuses();
 	void showsFanPageStatuses();
-	void showUserStatuses();
+	void showUserStatuses() const;
 
 	//5
 	void TenLatestFeadOfUser();

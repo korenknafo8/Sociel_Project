@@ -28,3 +28,13 @@ Status::Status(const string text)
 {
 	setContent(text);
 }
+
+bool Status::operator!=(Status other)
+{
+	return content_ != other.content_;
+}
+
+bool Status::operator==(Status other)
+{
+	return content_ == other.content_;
+}

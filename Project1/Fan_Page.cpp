@@ -120,5 +120,6 @@ int FanPage::findFan(User* fan) const
 FanPage& FanPage::operator+=(User& other)
 {
 	addFanToPage(other);
+	other.addLikedFanPage(this);
 	return *this;
 }

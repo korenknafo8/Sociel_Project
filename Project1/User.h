@@ -38,6 +38,8 @@ public:
 	void showAllLikesPages() const;
 	User& operator+=(User& other);
 	bool operator==(User other);
+	bool operator>(User other);
+
 
 };
 

@@ -17,10 +17,7 @@ User::User(string name, int day, int month, int year)
 /// </summary>
 User::~User()
 {
-	for (int i = 0; i < friends_.size(); i++)
-		delete[] friends_[i];
-	for (int i = 0; i < liked_pages_.size(); i++)
-		delete[] liked_pages_[i];
+	
 }
 
 /// <summary>
@@ -96,9 +93,7 @@ void User::makeFriendship(User& new_friend)
 		cout << "This friend is already exist" << endl;
 		return;
 	}
-
 	friends_.push_back(&new_friend);
-	new_friend.makeFriendship(*this);
 }
 
 /// <summary>
@@ -205,11 +200,17 @@ void User::showAllLikesPages() const
 
 User& User::operator+=(User& other)
 {
-	this->makeFriendship(other);
+	makeFriendship(other);
+	other.makeFriendship(*this);
 	return *this;
 }
 
 bool User::operator==(User other)
 {
 	return name_ == other.name_;
+}
+
+bool User::operator>(User other)
+{
+	return friends_.size() > other.friends_.size();
 }
