@@ -1,4 +1,6 @@
 #include "System.h"
+#include <string>
+#include <iostream>
 /// <summary>
 /// Dynamic allocation of system arrays
 /// </summary>
@@ -122,21 +124,24 @@ void System::initiateFanPages(User* user1,User* user2,User* user3)
 		staPage2_A("user Koren status 1"), staPage2_B("user Koren status 2")
 		, staPage3_A("user Baz status 1"), staPage3_B("user Baz status 2");
 
-	page1.setFanPageStatus(staPage1_A);
-	page1.setFanPageStatus(staPage1_B);
-	page2.setFanPageStatus(staPage2_A);
-	page2.setFanPageStatus(staPage2_B);
-	page3.setFanPageStatus(staPage3_A);
-	page3.setFanPageStatus(staPage3_B);
-	page1 += *user1;
-	page1 += *user2;
-	page2 += *user1;
-	page2 += *user3;
-	page3 += *user3;
-	page3 += *user2;
 	setFanPage(page1);
 	setFanPage(page2);
 	setFanPage(page3);
+	FanPage* Ptr_page1 = findFanPage(0);
+	FanPage* Ptr_page2 = findFanPage(1);
+	FanPage* Ptr_page3 = findFanPage(2);
+	Ptr_page1->setFanPageStatus(staPage1_A);
+	Ptr_page1->setFanPageStatus(staPage1_B);
+	Ptr_page2->setFanPageStatus(staPage2_A);
+	Ptr_page2->setFanPageStatus(staPage2_B);
+	Ptr_page3->setFanPageStatus(staPage3_A);
+	Ptr_page3->setFanPageStatus(staPage3_B);
+	(*Ptr_page1) += *user1;
+	(*Ptr_page1) += *user2;
+	(*Ptr_page2) += *user1;
+	(*Ptr_page2) += *user3;
+	(*Ptr_page3) += *user3;
+	(*Ptr_page3) += *user2;
 }
 
 /// <summary> 1
@@ -145,10 +150,12 @@ void System::initiateFanPages(User* user1,User* user2,User* user3)
 /// <returns>created user</returns>
 User& System::createUser()
 {
-	string name;
+	string name,enter;
 	int month, day, year;
+	getline(cin, enter);
 	cout << "Please enter a user name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
-	cin >> name;
+	getline(cin, name);
+	//cin >> name;
 	cout << "Please enter a user's date of birth" << endl;
 	cout << "day of birth: ";
 	cin >> day;
@@ -184,9 +191,10 @@ void System::setUser(User& user)
 /// <returns>created fan-page</returns>
 FanPage& System::createFanPage()
 {
-	string name;
+	string name,enter;
+	getline(cin, enter);
 	cout << "Please enter a fan page name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
-	cin >> name;
+	getline(cin, name);
 	FanPage* new_page = new FanPage(name);
 	return *new_page;
 }
@@ -235,12 +243,13 @@ void System::addNewStatus()
 void System::addUserStatus()
 {
 	int selection;
-	string status_input;
+	string status_input,enter;
 	cout << "Choose one of the following users:" << endl;
 	this->showAllUsers();
 	cin >> selection;
 	cout << endl << "Please enter the status (Max limit 100 characters): " << endl;
-	cin >> status_input;
+	getline(cin, enter);
+	getline(cin, status_input);
 	Status new_status(status_input);
 	User* user = findUser(selection - 1);
 	user->setUserStatus(new_status);
@@ -252,12 +261,13 @@ void System::addUserStatus()
 void System::addFanPageStatus()
 {
 	int selection;
-	string status_input;
+	string status_input,enter;
 	cout << endl << "Choose one of the following fan pages:" << endl;
 	showAllFanPages();
 	cin >> selection;
 	cout << "Please enter the status (Max limit 100 characters): " << endl;
-	cin >> status_input;
+	getline(cin, enter);
+	getline(cin, status_input);
 	Status status(status_input);
 	FanPage* ptr_page = findFanPage(selection - 1);
 	ptr_page->setFanPageStatus(status);

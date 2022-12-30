@@ -3,6 +3,7 @@
 
 #include "Fan_Page.h"
 #include "User.h"
+#include <string.h>
 
 #pragma warning (disable: 4996)
 

@@ -62,6 +62,20 @@ void User::showStatuses() const
 }
 
 /// <summary>
+/// Prints all the statuses of a user
+/// </summary>
+void User::show10LatestStatuses() const
+{
+	cout << endl << "below are the statuses of " << getName() << ":" << endl;
+	list<Status>::const_iterator itr = statuses_.end();
+	for (int i = 0; i < statuses_.size() && i<10; ++i) {
+		cout << i + 1 << " - ";
+		(--itr)->show();
+		cout << endl;
+	}
+}
+
+/// <summary>
 /// Present all or 10 latest statuses of the friends of a single user
 /// </summary>
 void User::showFriendsStatuses() const
@@ -69,13 +83,7 @@ void User::showFriendsStatuses() const
 	for (int i = 0; i < friends_.size(); i++)
 	{
 		cout << endl << "Statuses of: " << friends_[i]->getName() << endl;
-		friends_[i]->showStatuses();
-		for (int j = 0; j < friends_[i]->statuses_.size() && j < 10; j++)
-		{
-			cout << j+1 << " - ";
-			friends_[i]->statuses_;
-			cout << endl;
-		}
+		friends_[i]->show10LatestStatuses();
 	}
 }
 
@@ -119,8 +127,8 @@ void User::friendshipCancelation(int index)
 	int this_index = friends_[index]->findFriend(*this); //in this case allways find the user
 	friends_[index]->friends_[this_index] = friends_[index]->friends_[friends_.size()-1];
 	friends_[index] = friends_[friends_.size()-1];
-	friends_.pop_back();
 	friends_[index]->friends_.pop_back();
+	friends_.pop_back();
 }
 
 /// <summary>
