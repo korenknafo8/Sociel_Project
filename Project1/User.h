@@ -28,7 +28,7 @@ public:
 	void setUserStatus(Status status);
 	void showStatuses() const;
 	void showFriendsStatuses() const;
-	void makeFriendship(User& new_friend);
+	void addFriend(User& new_friend);
 	void friendshipCancelation(int index);
 	string getName() const;
 	void showFriends() const; 

@@ -68,7 +68,7 @@ void User::showFriendsStatuses() const
 {
 	for (int i = 0; i < friends_.size(); i++)
 	{
-		cout << "Statuses of: " << friends_[i]->getName() << endl;
+		cout << endl << "Statuses of: " << friends_[i]->getName() << endl;
 		friends_[i]->showStatuses();
 		for (int j = 0; j < friends_[i]->statuses_.size() && j < 10; j++)
 		{
@@ -83,17 +83,13 @@ void User::showFriendsStatuses() const
 /// Adding the user to be in the friends list of another user
 /// </summary>
 /// <param name="new_friend">The wanted user</param>
-void User::makeFriendship(User& new_friend)
+void User::addFriend(User& other)
 {
-	int index = findFriend(new_friend);
-
-	
-	if (index != NOT_FOUND)
+	if (findFriend(other) == NOT_FOUND)
 	{
-		cout << "This friend is already exist" << endl;
-		return;
+	friends_.push_back(&other);
+	other.addFriend(*this); //add 'this' to 'other''s friend's list
 	}
-	friends_.push_back(&new_friend);
 }
 
 /// <summary>
@@ -110,7 +106,7 @@ void User::showFriends() const
 				cout << index + 1 << " - " << friends_[index]->getName() << endl;
 	}
 	else 
-		cout << "The user " << this->getName() << " has no friends to show." << endl;
+		cout << "The user " << getName() << " has no friends to show." << endl;
 }
 
 
@@ -134,8 +130,7 @@ void User::friendshipCancelation(int index)
 /// <returns></returns>
 int User::findFriend(User& user) const 
 {
-	int index;
-	for (index = 0; index < friends_.size(); index++)
+	for (int index = 0; index < friends_.size(); index++)
 	{
 		if (&user == friends_[index])
 			return index;
@@ -200,8 +195,7 @@ void User::showAllLikesPages() const
 
 User& User::operator+=(User& other)
 {
-	makeFriendship(other);
-	other.makeFriendship(*this);
+	addFriend(other);
 	return *this;
 }
 

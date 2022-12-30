@@ -8,8 +8,8 @@ void main()
 	Facebook.initiateCreation(); //initiate first users, fan pages and statuses
 	while (!Facebook.getExit())
 	{
-	Facebook.showMenu(); // still does not set users and statuses into 'all_users' and 'all statuses'
-	cin >> selection;
-	Facebook.menuSelection(selection);
+		Facebook.showMenu(); // still does not set users and statuses into 'all_users' and 'all statuses'
+		cin >> selection;
+		Facebook.menuSelection(selection);
 	}
 }

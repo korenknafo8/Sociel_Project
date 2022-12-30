@@ -44,11 +44,10 @@ void FanPage::showStatuses() const
 {
 	cout << endl << "below are the statuses of " << getName() << ":" << endl;
 	list<Status>::const_iterator itr = statuses_.end();
-	for (int i = 0; i < statuses_.size(); ++i, --itr) {
-		itr->show();
+	for (int i = 0; i < statuses_.size(); ++i) {
+		(--itr)->show();
 		cout << endl;
 	}
-
 }
 
 /// <summary>
@@ -58,7 +57,6 @@ void FanPage::showStatuses() const
 string FanPage::getName() const
 {
 	return name_;
-
 }
 
 /// <summary>

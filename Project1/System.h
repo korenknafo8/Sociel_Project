@@ -22,17 +22,17 @@ public:
 	void showMenu() const;
 	void menuSelection(int selection);
 	const User* selectionOfUser() const;
+	const FanPage* selectionOfFanPages() const;
 	void showUsersFrineds();
-	FanPage& selectionOfFanPages() const;
 	void showAllFanPages() const;
 	void initiateCreation();
 	void initiateFanPages(User* user1, User* user2, User* user3);
 	bool showAllFanPagesWithFans() const;
 	int findFanPageIndex(int index) const;
-	const FanPage& findFanPage(int index) const;
+	const FanPage* findFanPage(int index) const;
+	FanPage* findFanPage(int index);
 	const User* findUser(int index) const;
-	FanPage& findFanPage(int index);
-	User& findUser(int index);
+	User* findUser(int index);
 	//User
 
 	//1
