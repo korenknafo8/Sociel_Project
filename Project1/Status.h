@@ -9,7 +9,7 @@ using namespace std;
 class Status
 {
 public:
-	void setContent(const string input);
+	void setContent(const string& input);
 	void show() const;
 	Status(const string text);
 	bool operator!=(Status other);

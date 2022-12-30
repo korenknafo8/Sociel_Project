@@ -43,7 +43,7 @@ string User::getName() const
 /// Set a status for a given user
 /// </summary>
 /// <param name="status">status</param>
-void User::setUserStatus(Status& new_status)
+void User::setUserStatus(Status new_status)
 {
 	statuses_.push_back(new_status);
 }
@@ -55,14 +55,14 @@ void User::showStatuses() const
 {
 	cout << endl << "below are the statuses of " << getName() << ":" << endl;
 	list<Status>::const_iterator itr = statuses_.end();
-	for (int i = 0; i < statuses_.size(); ++i, --itr) {
-		itr->show();
+	for (int i = 0; i < statuses_.size(); ++i) {
+		(--itr)->show();
 		cout << endl;
 	}
 }
 
 /// <summary>
-/// Present all/10 statuses of the friends of a single user
+/// Present all or 10 latest statuses of the friends of a single user
 /// </summary>
 void User::showFriendsStatuses() const
 {

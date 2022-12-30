@@ -9,7 +9,7 @@ using namespace std;
 /// Enters content into status
 /// </summary>
 /// <param name="input">header-line input</param>
-void Status::setContent(const string input) 
+void Status::setContent(const string& input) 
 {
 	content_ = input;
 }

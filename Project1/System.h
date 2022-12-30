@@ -1,12 +1,8 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include <iostream>
-#include <string.h>
-#include "Status.h"
 #include "Fan_Page.h"
 #include "User.h"
-#include "DateTimeUtils.h"
 
 #pragma warning (disable: 4996)
 
@@ -34,8 +30,8 @@ public:
 	bool showAllFanPagesWithFans() const;
 	int findFanPageIndex(int index) const;
 	const FanPage& findFanPage(int index) const;
-	const User* findUser(int index) const; 
-	FanPage& findFanPage(int index); 
+	const User* findUser(int index) const;
+	FanPage& findFanPage(int index);
 	User& findUser(int index);
 	//User
 

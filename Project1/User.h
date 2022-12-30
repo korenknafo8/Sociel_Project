@@ -1,11 +1,13 @@
 #ifndef USER_H
 #define USER_H
+
 #include <iostream>
-#include <string.h>
 #include"DateTimeUtils.h"
 #include "Status.h"
 #include <list>
 #include <vector>
+#include <string.h>
+using namespace std;
 
 class FanPage;
 
@@ -23,7 +25,7 @@ public:
 	User(string name, int day, int month, int year);
 	~User();
 	void setName(const string name);
-	void setUserStatus(Status& status);
+	void setUserStatus(Status status);
 	void showStatuses() const;
 	void showFriendsStatuses() const;
 	void makeFriendship(User& new_friend);
@@ -39,8 +41,6 @@ public:
 	User& operator+=(User& other);
 	bool operator==(User other);
 	bool operator>(User other);
-
-
 };
 
 #endif // !USER_H

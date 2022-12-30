@@ -31,6 +31,7 @@ void System::showMenu() const
 	cout << "11 - Show all User's / Fan page's connections" << endl;
 	cout << "12 - Exit" << endl;
 	cout << "--------------------------------------------------------" << endl << endl;
+	cout << "Enter a number between 12 to 1: ";
 
 }
 
@@ -87,14 +88,11 @@ void System::menuSelection(int selection)
 /// </summary>
 void System::initiateCreation()
 {
-	User Ofir("Ofir", 10, 10, 1995), Koren("Koren", 10, 10, 1997),
-		Baz("Baz Light-year", 7, 7, 1940);
+	User Ofir("Ofir", 2, 2, 1996), Koren("Koren", 16, 8, 1997),
+		Baz("Baz Light-year", 15, 10, 2021);
 	Status staOfir1("user Ofir status 1"), staOfir2("user Ofir status 2"),
 		staKoren1("user Koren status 1"), staKoren2("user Koren status 2")
 		, staBaz1("user Baz status 1"), staBaz2("user Baz status 2");
-	setUser(Ofir);
-	setUser(Koren);
-	setUser(Baz);
 	Ofir += Koren;
 	Koren += Baz;
 	Baz+=Ofir;
@@ -105,6 +103,9 @@ void System::initiateCreation()
 	Baz.setUserStatus(staBaz1);
 	Baz.setUserStatus(staBaz2);
 	initiateFanPages(&Ofir, &Koren, &Baz);
+	setUser(Ofir);
+	setUser(Koren);
+	setUser(Baz);
 }
 
 /// <summary>
@@ -140,11 +141,10 @@ void System::initiateFanPages(User* user1,User* user2,User* user3)
 /// <returns>created user</returns>
 User& System::createUser()
 {
-	char name[31],enter[1];
+	string name;
 	int month, day, year;
-	cin.getline(enter,1);
 	cout << "Please enter a user name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
-	cin.getline(name, 31);
+	cin >> name;
 	cout << "Please enter a user's date of birth" << endl;
 	cout << "day of birth: ";
 	cin >> day;
@@ -180,10 +180,9 @@ void System::setUser(User& user)
 /// <returns>created fan-page</returns>
 FanPage& System::createFanPage()
 {
-	char name[31], enter[1];
-	cin.getline(enter, 1);
+	string name;
 	cout << "Please enter a fan page name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
-	cin.getline(name, 30);
+	cin >> name;
 	FanPage* new_page = new FanPage(name);
 	return *new_page;
 }
@@ -232,13 +231,12 @@ void System::addNewStatus()
 void System::addUserStatus()
 {
 	int selection;
-	char status_input[101], enter[1];
+	string status_input;
 	cout << "Choose one of the following users:" << endl;
 	this->showAllUsers();
 	cin >> selection;
-	cin.getline(enter, 1);
-	cout << "Please enter the status (Max limit 100 characters): " << endl;
-	cin.getline(status_input, 101);
+	cout << endl << "Please enter the status (Max limit 100 characters): " << endl;
+	cin >> status_input;
 	Status new_status(status_input);
 	User user = findUser(selection - 1);
 	user.setUserStatus(new_status);
@@ -250,13 +248,12 @@ void System::addUserStatus()
 void System::addFanPageStatus()
 {
 	int selection;
-	char status_input[101], enter[1];
+	string status_input;
 	cout << "Choose one of the following fan pages:" << endl;
 	showAllFanPages();
 	cin >> selection;
-	cin.getline(enter, 1);
 	cout << "Please enter the status (Max limit 100 characters): " << endl;
-	cin.getline(status_input, 101);
+	cin >> status_input;
 	Status status(status_input);
 	FanPage page = findFanPage(selection - 1);
 	page.setFanPageStatus(status);
