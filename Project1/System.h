@@ -47,10 +47,14 @@ public:
 	User* findUser(int index);
 	bool isUserNameExist(string name) const;
 	bool isPageNameExist(string name) const;
-	const string initName() const noexcept(false);
+	const string initUserName() const noexcept(false);
 	Date initDOB();
 	int pageSelection(int num_pages_with_fans) const noexcept(false);
-	int fanSelection(int size) const noexcept(false);
+	int userSelection(int size) const noexcept(false);
+	const string initFanPageName() const noexcept(false);
+	bool isFanPageNameExist(string name) const;
+	int isUserOrFanPage(int choise) const;
+	int UserOrPageCheck() const;
 
 	//1
 	void addUser();

@@ -44,20 +44,20 @@ void System::menuSelection(int selection)
 {
 	switch (selection)
 	{
-	case ADD_USER:
+	case ADD_USER: // 1
 		addUser();
 		break;
-	case ADD_PAGE:
+	case ADD_PAGE: // 2
 		addFanPage();
 		break;
 	case ADD_STATUS:
-		addNewStatus();
+		addNewStatus(); // 3
 		break;
 	case SHOW_STATUSES:
 		showUserOrPageStatuses();
 		break;
 	case SHOW_FEAD:
-		TenLatestFeadOfUser();
+		TenLatestFeadOfUser(); // 5
 		break;
 	case MAKE_FRIENDSHIP:
 		makeFriendship();
@@ -65,10 +65,10 @@ void System::menuSelection(int selection)
 	case CANCEL_FRIENDSHIP:
 		cancelFriendship();
 		break;
-	case ADD_FAN: //8
+	case ADD_FAN: 
 		addFanToPage();
 		break;
-	case REMOVE_PAGE: //9
+	case REMOVE_PAGE: 
 		removeFanOfPage();
 		break;
 	case SHOW_ALL: //10
@@ -157,7 +157,7 @@ User& System::createUser()
 	{
 		try
 		{
-			name = initName();
+			name = initUserName();
 			date_of_birth = initDOB();
 			isValidData = true;
 		}
@@ -173,10 +173,10 @@ User& System::createUser()
 	return *userPtr;
 }
 
-const string System::initName() const noexcept(false)
+const string System::initUserName() const noexcept(false)
 {
 	string name;
-	cout << "Enter a user name:" << endl;
+	cout << "Enter a User's name:" << endl;
 	do
 	{
 		getline(cin, name);
@@ -191,6 +191,31 @@ bool System::isUserNameExist(string name) const
 {
 	list<User>::const_iterator itr = users_.begin();
 	for (int index = 0; index < users_.size(); index++, itr++)
+	{
+		if ((*itr).getName() == name)
+			return true;
+	}
+	return false;
+}
+
+const string System::initFanPageName() const noexcept(false)
+{
+	string name;
+	cout << "Enter a Fan-Page's name:" << endl;
+	do
+	{
+		getline(cin, name);
+	} while (name[0] == 0); //override 'enter' previously in the headerline
+	if (isFanPageNameExist(name))
+		throw nameExistException();
+
+	return name;
+}
+
+bool System::isFanPageNameExist(string name) const
+{
+	list<FanPage>::const_iterator itr = fan_pages_.begin();
+	for (int index = 0; index < fan_pages_.size(); index++, itr++)
 	{
 		if ((*itr).getName() == name)
 			return true;
@@ -246,10 +271,28 @@ void System::setUser(User& user)
 /// <returns>created fan-page</returns>
 FanPage& System::createFanPage()
 {
-	string name, enter;
+	/*string name, enter;
 	getline(cin, enter);
 	cout << "Please enter a fan page name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
 	getline(cin, name);
+	FanPage* new_page = new FanPage(name);
+	return *new_page;
+	*/
+	string name;
+	bool isValidData = false;
+	while (!isValidData)
+	{
+		try
+		{
+			name = initFanPageName();
+			isValidData = true;
+		}
+		catch (nameExistException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+		if (!isValidData)
+			cout << "Enter data again.\n";
+	}
+
 	FanPage* new_page = new FanPage(name);
 	return *new_page;
 }
@@ -280,7 +323,7 @@ void System::addNewStatus()
 	int selection;
 	cout << "1 - Add status for a user" << endl;
 	cout << "2 - Add status for a Fan Page" << endl;
-	cin >> selection;
+	selection = UserOrPageCheck();
 	switch (selection)
 	{
 	case 1:
@@ -336,7 +379,8 @@ void System::showUserOrPageStatuses()
 	int selection;
 	cout << "1 - Show statuses of a user" << endl;
 	cout << "2 - Show statuses of a Fan Page" << endl;
-	cin >> selection;
+
+	selection = UserOrPageCheck();
 	switch (selection)
 	{
 	case 1:
@@ -354,8 +398,22 @@ void System::showUserOrPageStatuses()
 /// </summary>
 void System::showUserStatuses() const
 {
-	const User* chosen = selectionOfUser();
-	chosen->showStatuses();
+	int selection;
+	bool isSelectionValid = false;
+	while (!isSelectionValid)
+	{
+		cout << endl << "Please choose one of the following Users: " << endl;
+		showAllUsers();
+		try
+		{
+			selection = userSelection(users_.size());
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+	}
+	const User* user = findUser(selection - 1);
+	user->showStatuses();
 }
 
 /// <summary>
@@ -376,6 +434,22 @@ const User* System::selectionOfUser() const
 /// </summary>
 void System::showsFanPageStatuses()
 {
+	int selection;
+	bool isSelectionValid = false;
+	while (!isSelectionValid)
+	{
+		cout << endl << "Please choose one of the following Fan PAges: " << endl;
+		showAllUsers();
+		try
+		{
+			selection = fanPageSelection(fan_pages_.size());
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+	}
+	const User* user = findUser(selection - 1);
+
 	const FanPage* ptr_page = selectionOfFanPages();
 	ptr_page->showStatuses();
 
@@ -402,10 +476,25 @@ const FanPage* System::selectionOfFanPages() const
 /// </summary>
 void System::TenLatestFeadOfUser()
 {
-	const User* chosen = selectionOfUser();
-	chosen->showFriendsStatuses();
 
+	int selection;
+	bool isSelectionValid = false;
+	while (!isSelectionValid)
+	{
+		cout << endl << "Please choose one of the following Users: " << endl;
+		showAllUsers();
+		try
+		{
+			selection = userSelection(users_.size());
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+	}
+	User* user = findUser(selection - 1);
+	user->showFriendsStatuses();
 }
+
 
 //6
 
@@ -503,7 +592,7 @@ void System::removeFanOfPage()
 		ptr_page->showFanPageFans();
 			try
 			{
-				selection = fanSelection(ptr_page->getFansSize());
+				selection = userSelection(ptr_page->getFansSize());
 				isSelectionValid = true;
 			}
 			catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
@@ -526,7 +615,7 @@ int System:: pageSelection(int num_pages_with_fans) const noexcept(false)
 	return selection;
 }
 
-int System::fanSelection(int size) const noexcept(false)
+int System::userSelection(int size) const noexcept(false)
 {
 	int selection;
 	cin >> selection;
@@ -615,7 +704,7 @@ void System::showRelatedToUserOrPage() const
 	int selection;
 	cout << "1 - Show friends of a user" << endl;
 	cout << "2 - Show fans of a Fan Page" << endl;
-	cin >> selection;
+	selection = UserOrPageCheck();
 	switch (selection)
 	{
 	case 1:
@@ -710,4 +799,34 @@ void System::setExit()
 bool System::getExit()
 {
 	return this->exit_;
+}
+
+int System::isUserOrFanPage(int choise) const
+{
+	
+	if (choise >2|| choise <1)
+		throw selectionOutOfRangeException();
+
+	return choise;
+}
+
+int System::UserOrPageCheck() const
+{
+	int selection;
+	bool isValidData = false;
+	while (!isValidData)
+	{
+		try
+		{
+			cin >> selection;
+			selection = isUserOrFanPage(selection);
+			isValidData = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+		if (!isValidData)
+			cout << "Enter choise again.\n";
+	}
+	return selection;
+		
 }
