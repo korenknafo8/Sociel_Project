@@ -101,8 +101,8 @@ void User::addFriend(User& other)
 {
 	if (findFriend(other) == NOT_FOUND)
 	{
-	friends_.push_back(&other);
-	other.addFriend(*this); //add 'this' to 'other''s friend's list
+		friends_.push_back(&other);
+		other.addFriend(*this); //add 'this' to 'other''s friend's list
 	}
 }
 
@@ -123,7 +123,6 @@ void User::showFriends() const
 		cout << "The user " << getName() << " has no friends to show." << endl;
 }
 
-
 /// <summary>
 /// Cancel friendship between a user and a given user
 /// </summary>
@@ -132,8 +131,8 @@ void User::friendshipCancelation(int index)
 {
 	int this_index = friends_[index]->findFriend(*this); //in this case allways find the user
 	friends_[index]->friends_[this_index] = friends_[index]->friends_[friends_.size()-1];
-	friends_[index] = friends_[friends_.size()-1];
 	friends_[index]->friends_.pop_back();
+	friends_[index] = friends_[friends_.size()-1];
 	friends_.pop_back();
 }
 

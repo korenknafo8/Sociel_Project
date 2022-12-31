@@ -33,7 +33,7 @@ void System::showMenu() const
 	cout << "11 - Show all User's / Fan page's connections" << endl;
 	cout << "12 - Exit" << endl;
 	cout << "--------------------------------------------------------" << endl << endl;
-	cout << "Enter a number between 12 to 1: ";
+	cout << "Enter a number between 1 to 12: ";
 }
 
 /// <summary>
@@ -50,25 +50,25 @@ void System::menuSelection(int selection)
 	case ADD_PAGE: // 2
 		addFanPage();
 		break;
-	case ADD_STATUS:
-		addNewStatus(); // 3
+	case ADD_STATUS: //3
+		addNewStatus(); 
 		break;
-	case SHOW_STATUSES:
+	case SHOW_STATUSES: //4
 		showUserOrPageStatuses();
 		break;
 	case SHOW_FEAD:
 		TenLatestFeadOfUser(); // 5
 		break;
-	case MAKE_FRIENDSHIP:
+	case MAKE_FRIENDSHIP: //6
 		makeFriendship();
 		break;
-	case CANCEL_FRIENDSHIP:
+	case CANCEL_FRIENDSHIP: //7
 		cancelFriendship();
 		break;
 	case ADD_FAN: 
 		addFanToPage();
 		break;
-	case REMOVE_PAGE: 
+	case REMOVE_PAGE: //9
 		removeFanOfPage();
 		break;
 	case SHOW_ALL: //10
@@ -90,7 +90,7 @@ void System::menuSelection(int selection)
 void System::initiateCreation()
 {
 	User Ofir("Ofir", 2, 2, 1996), Koren("Koren", 16, 8, 1997),
-		Baz("Baz Light-year", 15, 10, 2021);
+		Baz("Baz Light-years", 15, 10, 2021);
 	Status staOfir1("user Ofir status 1"), staOfir2("user Ofir status 2"),
 		staKoren1("user Koren status 1"), staKoren2("user Koren status 2")
 		, staBaz1("user Baz status 1"), staBaz2("user Baz status 2");
@@ -406,7 +406,7 @@ void System::showUserStatuses() const
 		showAllUsers();
 		try
 		{
-			selection = userSelection(users_.size());
+			selection = selectionInRange(users_.size());
 			isSelectionValid = true;
 		}
 		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
@@ -442,7 +442,7 @@ void System::showsFanPageStatuses()
 		showAllUsers();
 		try
 		{
-			selection = fanPageSelection(fan_pages_.size());
+			selection = selectionInRange(fan_pages_.size());
 			isSelectionValid = true;
 		}
 		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
@@ -476,7 +476,6 @@ const FanPage* System::selectionOfFanPages() const
 /// </summary>
 void System::TenLatestFeadOfUser()
 {
-
 	int selection;
 	bool isSelectionValid = false;
 	while (!isSelectionValid)
@@ -485,7 +484,7 @@ void System::TenLatestFeadOfUser()
 		showAllUsers();
 		try
 		{
-			selection = userSelection(users_.size());
+			selection = selectionInRange(users_.size());
 			isSelectionValid = true;
 		}
 		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
@@ -497,20 +496,29 @@ void System::TenLatestFeadOfUser()
 
 
 //6
-
 /// <summary>
 /// Making two users friends
 /// </summary>
 void System::makeFriendship()
 {
 	int selection1, selection2;
-	cout << "Please choose two of the following users: " << endl;
-	showAllUsers();
-	cin >> selection1 >> selection2;
+	bool isSelectionValid = false;
+	while (!isSelectionValid)
+	{
+		cout << "Please choose two of the following users: " << endl;
+		showAllUsers();
+		try
+		{
+			twoSelectionsInRange(users_.size(), &selection1, &selection2);
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (FriendHimselfException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+	}
 	User* user1 = findUser(selection1 - 1);
 	User* user2 = findUser(selection2 - 1);
 	*user1 += *user2;
-	cout << "Friendship was successfuly created" << endl;
 }
 
 /// <summary> 7
@@ -518,49 +526,72 @@ void System::makeFriendship()
 /// </summary>
 void System::cancelFriendship()
 {
-	int selection1, selection2;
-	cout << "Please choose one of the following users: " << endl;
-	showAllUsers();
-	cin >> selection1;
-	User* user1 = findUser(selection1 - 1);
-	cout << "Please choose one of the following friends of " <<
-		user1->getName() << ": " << endl;
-	user1->showFriends();
-	if (user1->getFriendsSize() > 0)
+	int selection;
+	bool isSelectionValid = false;
+	while (!isSelectionValid)
 	{
-		cin >> selection2;
-		user1->friendshipCancelation(selection2 - 1);
-		cout << "Friendship cancelation has been done successfuly." << endl;
+		cout << endl << "Please choose one of the following Users: " << endl;
+		showAllUsers();
+		try
+		{
+			selection = selectionInRange(users_.size());
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
 	}
-	else
+	User* user = findUser(selection - 1);
+	isSelectionValid = false;
+	while (!isSelectionValid)
 	{
-		cout << "User has no friends to cancel";
+		try
+		{
+			selection = friendSelection(*user);
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (lonelyException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+		user->friendshipCancelation(selection - 1);
 	}
 }
 
 //8
-
 /// <summary>
 /// Adding a user to be a fan of a page
 /// </summary>
 void System::addFanToPage()
 {
-	int selection1, selection2, index;
-	cout << "Please choose one of the following fan pages: " << endl;
-	showAllFanPages();
-	cin >> selection1;
-	cout << "Please choose one of the following users: " << endl;
-	showAllUsers();
-	cin >> selection2;
-	FanPage* ptr_page = findFanPage(selection1 - 1);
-	User* user = findUser(selection2 - 1);
-	ptr_page->addFanToPage(*user);
-	cout << "User " << user->getName() << " is now a fan of the page: " <<
-		ptr_page->getName() << endl;
+	int page_selection, user_selection;
+	bool isSelectionValid = false;
+	while (!isSelectionValid)
+	{
+		try
+		{
+			cout << endl << "Please choose one of the following fan pages: " << endl;
+			showAllFanPages();
+			page_selection = selectionInRange(fan_pages_.size());
+
+			cout << "Please choose one of the following users: " << endl;
+			showAllUsers();
+			user_selection = selectionInRange(users_.size());
+
+			FanPage* ptr_page = findFanPage(page_selection - 1);
+			User* user = findUser(user_selection - 1);
+			ptr_page->addFanToPage(*user);
+			cout << "User " << user->getName() << " is now a fan of the page: " <<
+			ptr_page->getName() << endl;
+			
+			isSelectionValid = true;
+		}
+		catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (alreadyFriendsException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+	}
+
 }
 
 //9
-
 /// <summary>
 /// Canceling a user to be a fan of a page
 /// </summary>
@@ -575,7 +606,7 @@ void System::removeFanOfPage()
 		{
 			try
 			{
-				selection = pageSelection(num_pages_with_fans);
+				selection = selectionInRange(num_pages_with_fans);
 				index = findFanPageIndex(selection - 1);
 				isSelectionValid = true;
 			}
@@ -592,7 +623,7 @@ void System::removeFanOfPage()
 		ptr_page->showFanPageFans();
 			try
 			{
-				selection = userSelection(ptr_page->getFansSize());
+				selection = selectionInRange(ptr_page->getFansSize());
 				isSelectionValid = true;
 			}
 			catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
@@ -605,17 +636,7 @@ void System::removeFanOfPage()
 	}
 }
 
-int System:: pageSelection(int num_pages_with_fans) const noexcept(false)
-{
-	int selection;
-	cin >> selection;
-	if (selection > num_pages_with_fans || selection < 1)
-		throw selectionOutOfRangeException();
-
-	return selection;
-}
-
-int System::userSelection(int size) const noexcept(false)
+int System::selectionInRange(int size) const noexcept(false)
 {
 	int selection;
 	cin >> selection;
@@ -625,6 +646,32 @@ int System::userSelection(int size) const noexcept(false)
 	return selection;
 }
 
+int System::friendSelection(User& user) const noexcept(false)
+{
+	int size = user.getFriendsSize();
+
+	if (size == 0)
+		throw lonelyException();
+
+	int selection;
+	cout << "Please choose one of the following friends of " <<
+		user.getName() << ": " << endl;
+	user.showFriends();
+	cin >> selection;
+	if (selection > size || selection < 1)
+		throw selectionOutOfRangeException();
+
+	return selection;
+}
+
+void System::twoSelectionsInRange(int size, int* selection1, int* selection2) const noexcept(false)
+{
+	cin >> *selection1 >> *selection2;
+	if (*selection1 > size || *selection1 < 1 || *selection2 > size || *selection2 < 1)
+		throw selectionOutOfRangeException();
+	if (*selection1 == *selection2)
+		throw FriendHimselfException();
+}
 
 /// <summary>
 /// Finding the right index of a fan page

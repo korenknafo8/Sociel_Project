@@ -18,12 +18,13 @@ public:
 	User* getFan(int index) const;
 	string getName() const;
 	void setFanPageStatus(Status& status);
-	void addFanToPage(User& new_fan);
+	void addFanToPage(User& new_fan) const noexcept(false);
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;
 	void showStatuses() const;
 	int getFansSize() const;
 	int findFan(User* fan) const;
+	int findFan(const User* fan) const;
 	FanPage& operator+=(User& other);
 };
 

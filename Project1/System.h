@@ -49,8 +49,9 @@ public:
 	bool isPageNameExist(string name) const;
 	const string initUserName() const noexcept(false);
 	Date initDOB();
-	int pageSelection(int num_pages_with_fans) const noexcept(false);
-	int userSelection(int size) const noexcept(false);
+	int selectionInRange(int size) const noexcept(false);
+	int friendSelection(User& user) const noexcept(false);
+	void twoSelectionsInRange(int size, int* selection1, int* selection2) const noexcept(false);
 	const string initFanPageName() const noexcept(false);
 	bool isFanPageNameExist(string name) const;
 	int isUserOrFanPage(int choise) const;
@@ -103,8 +104,5 @@ public:
 	void setExit();
 	bool getExit();
 };
-
-
-
 
 #endif // !SYSTEM_H

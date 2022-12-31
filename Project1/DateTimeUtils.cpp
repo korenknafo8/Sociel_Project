@@ -59,7 +59,9 @@ Date::Date(const int& day, const int& month, const int& year)
 	month_ = month;
 	year_ = year;
 	if (day > 30 || day < 1 || month > 12 || month < 1)
-		throw unvalidDateException();
+		throw unvalidDateException();	
+	if (year < 1902)
+		throw dateOldException();
 	if (year > curr_year)
 		throw futureDateException();
 	else if (year ==  curr_year && month > curr_month)

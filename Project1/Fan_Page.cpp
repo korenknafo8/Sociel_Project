@@ -62,14 +62,11 @@ string FanPage::getName() const
 /// <summary>
 /// Adding a user to be a fan of a fan page
 /// </summary>
-void FanPage::addFanToPage(User& new_fan)
+void FanPage::addFanToPage(User& new_fan) const noexcept(false)
 {
 	int index = findFan(&new_fan);
 	if (index != NOT_FOUND)
-	{
-		cout << new_fan.getName()<<" is already a fan of this Fan page!" << endl;
-		return;
-	}
+		throw fanAlreadyException();
 	fans_.push_back(&new_fan);
 }
 
@@ -115,6 +112,16 @@ int FanPage::findFan(User* fan) const
 			return index;
 	return NOT_FOUND;
 }
+
+int FanPage::findFan(const User* fan) const
+{
+	int index;
+	for (index = 0; index < fans_.size(); index++)
+		if (fan == fans_[index])
+			return index;
+	return NOT_FOUND;
+}
+
 User* FanPage::getFan(int index) const
 {
 	return fans_[index];
