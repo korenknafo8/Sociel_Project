@@ -39,7 +39,7 @@ public:
 	void showAllFanPages() const;
 	void initiateCreation();
 	void initiateFanPages(User* user1, User* user2, User* user3);
-	bool showAllFanPagesWithFans() const;
+	int showAllFanPagesWithFans() const;
 	int findFanPageIndex(int index) const;
 	const FanPage* findFanPage(int index) const;
 	FanPage* findFanPage(int index);
@@ -49,7 +49,8 @@ public:
 	bool isPageNameExist(string name) const;
 	const string initName() const noexcept(false);
 	Date initDOB();
-	//User
+	int pageSelection(int num_pages_with_fans) const noexcept(false);
+	int fanSelection(int size) const noexcept(false);
 
 	//1
 	void addUser();

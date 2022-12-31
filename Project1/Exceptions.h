@@ -8,10 +8,10 @@ public:
 	virtual const char* what() const override { return "System Failure.\n"; }
 };
 	
-class IndexOutOfRange : public SystemException
+class selectionOutOfRangeException : public SystemException
 {
 public:
-	virtual const char* what() const override { return "Input was not a number in range.\n"; }
+	virtual const char* what() const override { return "Selection was out of range.\n"; }
 };
 
 class nameExistException : public SystemException
@@ -25,19 +25,6 @@ class unvalidDateException : public SystemException
 public:
 	virtual const char* what() const override { return "Unvalid date.\n"; }
 };
-
-class userFindException : public SystemException
-{
-public:
-	virtual const char* what() const override { return "User was not found.\n"; }
-};
-
-class fanPageFindException : public SystemException
-{
-public:
-	virtual const char* what() const override { return "fan Page was not found.\n"; }
-};
-
 
 class futureDateException : public SystemException
 {

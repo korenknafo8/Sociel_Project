@@ -102,7 +102,7 @@ void FanPage::showFanPageFans() const
 /// Getting the amount of fan of a fan page
 /// </summary>
 /// <returns>The amount</returns>
-int FanPage::getFansLogSize() const
+int FanPage::getFansSize() const
 {
 	return fans_.size();
 }

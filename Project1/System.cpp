@@ -65,7 +65,7 @@ void System::menuSelection(int selection)
 	case CANCEL_FRIENDSHIP:
 		cancelFriendship();
 		break;
-	case ADD_FAN:
+	case ADD_FAN: //8
 		addFanToPage();
 		break;
 	case REMOVE_PAGE: //9
@@ -181,7 +181,6 @@ const string System::initName() const noexcept(false)
 	{
 		getline(cin, name);
 	} while (name[0] == 0); //override 'enter' previously in the headerline
-
 	if (isUserNameExist(name))
 		throw nameExistException();
 
@@ -478,21 +477,66 @@ void System::addFanToPage()
 /// </summary>
 void System::removeFanOfPage()
 {
-	int page_selection, fan_selection, index;
-	if (showAllFanPagesWithFans())
+	int selection, index, num_pages_with_fans;
+	bool isSelectionValid = false;
+	num_pages_with_fans = showAllFanPagesWithFans();
+	if (num_pages_with_fans)
 	{
-		cin >> page_selection;
-		FanPage* ptr_page = findFanPage(page_selection - 1);
-		index = findFanPageIndex(page_selection - 1);
+		while (!isSelectionValid)
+		{
+			try
+			{
+				selection = pageSelection(num_pages_with_fans);
+				index = findFanPageIndex(selection - 1);
+				isSelectionValid = true;
+			}
+			catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+			catch (...) { cout << "Unkown Error" << endl; }
+			if (!isSelectionValid)
+				showAllFanPagesWithFans();
+		} 
+		isSelectionValid = false;
+		FanPage* ptr_page = findFanPage(index);
+		while (!isSelectionValid)
+		{
 		cout << endl << "Please choose one of the following fans of " << ptr_page->getName() << ": " << endl;
 		ptr_page->showFanPageFans();
-		cin >> fan_selection;
-		User* user = ptr_page->getFan(fan_selection - 1);
-		ptr_page->removeFanFromPage(fan_selection - 1);
+			try
+			{
+				selection = fanSelection(ptr_page->getFansSize());
+				isSelectionValid = true;
+			}
+			catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
+			catch (...) { cout << "Unkown Error" << endl; }
+		}
+		User* user = ptr_page->getFan(selection - 1);
+		ptr_page->removeFanFromPage(selection - 1);
 		user->removeLikedPage(*ptr_page);
-		cout << "The user has been removed successfuly." << endl;
+		cout << "Fan was removed successfuly." << endl;
 	}
 }
+
+int System:: pageSelection(int num_pages_with_fans) const noexcept(false)
+{
+	int selection;
+	cin >> selection;
+	if (selection > num_pages_with_fans || selection < 1)
+		throw selectionOutOfRangeException();
+
+	return selection;
+}
+
+int System::fanSelection(int size) const noexcept(false)
+{
+	int selection;
+	cin >> selection;
+	if (selection > size || selection < 1)
+		throw selectionOutOfRangeException();
+
+	return selection;
+}
+
+
 /// <summary>
 /// Finding the right index of a fan page
 /// </summary>
@@ -505,7 +549,7 @@ int System::findFanPageIndex(int counterIndex) const
 	{
 		const FanPage* ptr_page = findFanPage(foundIndex);
 
-		if (ptr_page->getFansLogSize() > 0)
+		if (ptr_page->getFansSize() > 0)
 		{
 			if (counter == counterIndex)
 				return foundIndex;
@@ -626,14 +670,14 @@ void System::showAllFanPages() const
 /// <summary>
 /// show all fan page entered into the system
 /// </summary>
-bool System::showAllFanPagesWithFans() const
+int System::showAllFanPagesWithFans() const
 {
 	int index, counter = 0;
 	for (index = 0; index < fan_pages_.size(); index++)
 	{
 		const FanPage* ptr_page = findFanPage(index);
 
-		if (ptr_page->getFansLogSize() > 0)
+		if (ptr_page->getFansSize() > 0)
 		{
 			if (counter == 0)
 				cout << "Please choose one of the following fan-pages:" << endl;
@@ -644,9 +688,9 @@ bool System::showAllFanPagesWithFans() const
 	if(counter == 0)
 	{
 		cout << "No fan pages with fans are exist";
-		return false;
+		return counter;
 	}
-	return true;
+	return counter;
 }
 
 //12

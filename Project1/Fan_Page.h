@@ -22,7 +22,7 @@ public:
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;
 	void showStatuses() const;
-	int getFansLogSize() const;
+	int getFansSize() const;
 	int findFan(User* fan) const;
 	FanPage& operator+=(User& other);
 };
