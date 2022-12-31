@@ -15,6 +15,7 @@ public:
 	FanPage(string name);
 	~FanPage();
 	void setFanPageName(const string name);
+	User* getFan(int index) const;
 	string getName() const;
 	void setFanPageStatus(Status& status);
 	void addFanToPage(User& new_fan);

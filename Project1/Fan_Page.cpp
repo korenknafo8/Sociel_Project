@@ -79,7 +79,8 @@ void FanPage::addFanToPage(User& new_fan)
 /// <param name="index">The index of the fan in 'fans_' array</param>
 void FanPage::removeFanFromPage(int index)
 {
-	fans_[index] = fans_[fans_.size() - 1];
+	if(fans_.size()>1)
+		fans_[index] = fans_[fans_.size() - 1];
 	fans_.pop_back();
 }
 
@@ -113,6 +114,10 @@ int FanPage::findFan(User* fan) const
 		if (fan == fans_[index])
 			return index;
 	return NOT_FOUND;
+}
+User* FanPage::getFan(int index) const
+{
+	return fans_[index];
 }
 
 FanPage& FanPage::operator+=(User& other)

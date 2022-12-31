@@ -478,17 +478,17 @@ void System::addFanToPage()
 /// </summary>
 void System::removeFanOfPage()
 {
-	int selection1, selection2, index;
+	int page_selection, fan_selection, index;
 	if (showAllFanPagesWithFans())
 	{
-		cin >> selection1;
-		FanPage* ptr_page = findFanPage(selection1 - 1);
-		index = findFanPageIndex(selection1 - 1);
+		cin >> page_selection;
+		FanPage* ptr_page = findFanPage(page_selection - 1);
+		index = findFanPageIndex(page_selection - 1);
 		cout << endl << "Please choose one of the following fans of " << ptr_page->getName() << ": " << endl;
 		ptr_page->showFanPageFans();
-		cin >> selection2;
-		ptr_page->removeFanFromPage(selection2 - 1);
-		User* user = findUser(selection2 - 1);
+		cin >> fan_selection;
+		User* user = ptr_page->getFan(fan_selection - 1);
+		ptr_page->removeFanFromPage(fan_selection - 1);
 		user->removeLikedPage(*ptr_page);
 		cout << "The user has been removed successfuly." << endl;
 	}

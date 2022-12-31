@@ -46,6 +46,7 @@ public:
 	const User* findUser(int index) const;
 	User* findUser(int index);
 	bool isUserNameExist(string name) const;
+	bool isPageNameExist(string name) const;
 	const string initName() const noexcept(false);
 	Date initDOB();
 	//User
