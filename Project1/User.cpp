@@ -12,6 +12,12 @@ User::User(string name, int day, int month, int year)
 	date_of_birth_ = Date(day, month, year);
 }
 
+User::User(string name, Date date_of_birth)
+{
+	setName(name);
+	date_of_birth_ = date_of_birth;
+}
+
 /// <summary>
 /// destructor
 /// </summary>

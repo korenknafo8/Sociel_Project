@@ -1,6 +1,6 @@
 #include "System.h"
-#include <string>
 #include <iostream>
+#include <string>
 /// <summary>
 /// Dynamic allocation of system arrays
 /// </summary>
@@ -19,13 +19,13 @@ void System::showMenu() const
 {
 	cout << endl;
 	cout << "--------------------------------------------------------" << endl;
-	cout << "Please choose one of the followings actions below:" << endl <<endl;
+	cout << "Please choose one of the followings actions below:" << endl << endl;
 	cout << "1 - Add new User" << endl;
 	cout << "2 - Add new Fan Page" << endl;
 	cout << "3 - Add new status to a User / Fan Page" << endl;
 	cout << "4 - Show all User's / Fan Page's statuses" << endl;
 	cout << "5 - Show 10 latest statuses of a specific User's friends" << endl;
-	cout << "6 - Create friendship between two Users" <<endl;
+	cout << "6 - Create friendship between two Users" << endl;
 	cout << "7 - Cancel friendship between two Users" << endl;
 	cout << "8 - Make User a fan of a Fan Page" << endl;
 	cout << "9 - Cancel user from being a fan of a Fan Page" << endl;
@@ -40,45 +40,45 @@ void System::showMenu() const
 /// Taking care of the chosen action from the menu
 /// </summary>
 /// <param name="selection">chosen action</param>
-void System::menuSelection(int selection) 
+void System::menuSelection(int selection)
 {
 	switch (selection)
 	{
-	case 1:
+	case ADD_USER:
 		addUser();
 		break;
-	case 2:
+	case ADD_PAGE:
 		addFanPage();
 		break;
-	case 3:
+	case ADD_STATUS:
 		addNewStatus();
 		break;
-	case 4:
+	case SHOW_STATUSES:
 		showUserOrPageStatuses();
 		break;
-	case 5:
+	case SHOW_FEAD:
 		TenLatestFeadOfUser();
 		break;
-	case 6:
+	case MAKE_FRIENDSHIP:
 		makeFriendship();
 		break;
-	case 7:
+	case CANCEL_FRIENDSHIP:
 		cancelFriendship();
 		break;
-	case 8:
+	case ADD_FAN:
 		addFanToPage();
 		break;
-	case 9:
+	case REMOVE_PAGE: //9
 		removeFanOfPage();
 		break;
-	case 10:
+	case SHOW_ALL: //10
 		showAllUsers();
 		showAllFanPages();
 		break;
-	case 11:
+	case SHOW_RELATIONS: //11
 		showRelatedToUserOrPage();
 		break;
-	case 12:	
+	case EXIT:	//12
 		setExit();
 		break;
 	}
@@ -117,7 +117,7 @@ void System::initiateCreation()
 /// <summary>
 /// Creating the first fan pages and their statuses 
 /// </summary>
-void System::initiateFanPages(User* user1,User* user2,User* user3)
+void System::initiateFanPages(User* user1, User* user2, User* user3)
 {
 	FanPage page1("Page 1"), page2("Page 2"), page3("Page 3");
 	Status staPage1_A("user Ofir status 1"), staPage1_B("user Ofir status 2"),
@@ -150,21 +150,77 @@ void System::initiateFanPages(User* user1,User* user2,User* user3)
 /// <returns>created user</returns>
 User& System::createUser()
 {
-	string name,enter;
-	int month, day, year;
-	getline(cin, enter);
-	cout << "Please enter a user name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
-	getline(cin, name);
-	//cin >> name;
+	string name;
+	Date date_of_birth;
+	bool isValidData = false;
+	while (!isValidData)
+	{
+		try
+		{
+			name = initName();
+			date_of_birth = initDOB();
+			isValidData = true;
+		}
+		catch (nameExistException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (unvalidDateException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (futureDateException& exception) { cout << "Error: " << exception.what() << endl; }
+		catch (...) { cout << "Unkown Error" << endl; }
+		if (!isValidData)
+			cout << "Enter data again.\n";
+	}
+
+	User* userPtr = new User(name, date_of_birth);
+	return *userPtr;
+}
+
+const string System::initName() const noexcept(false)
+{
+	string name;
+	cout << "Enter a user name:" << endl;
+	do
+	{
+		getline(cin, name);
+	} while (name[0] == 0); //override 'enter' previously in the headerline
+
+	if (isUserNameExist(name))
+		throw nameExistException();
+
+	return name;
+}
+
+bool System::isUserNameExist(string name) const
+{
+	list<User>::const_iterator itr = users_.begin();
+	for (int index = 0; index < users_.size(); index++, itr++)
+	{
+		if ((*itr).getName() == name)
+			return true;
+	}
+	return false;
+}
+
+bool System::isPageNameExist(string name) const
+{
+	list<FanPage>::const_iterator itr = fan_pages_.begin();
+	for (int index = 0; index < fan_pages_.size(); index++, itr++)
+	{
+		if ((*itr).getName() == name)
+			return true;
+	}
+	return false;
+}
+
+Date System::initDOB()
+{
+	int day, month, year;
 	cout << "Please enter a user's date of birth" << endl;
 	cout << "day of birth: ";
 	cin >> day;
-	cout <<endl<< "month of birth: ";
+	cout << endl << "month of birth: ";
 	cin >> month;
 	cout << endl << "year of birth: ";
 	cin >> year;
-	User* userPtr = new User(name, day, month, year);
-	return *userPtr;
+	return Date(day, month, year);
 }
 
 /// <summary>
@@ -191,7 +247,7 @@ void System::setUser(User& user)
 /// <returns>created fan-page</returns>
 FanPage& System::createFanPage()
 {
-	string name,enter;
+	string name, enter;
 	getline(cin, enter);
 	cout << "Please enter a fan page name, and press 'Enter' afterwards(max limit : 30 characters):" << endl;
 	getline(cin, name);
@@ -243,7 +299,7 @@ void System::addNewStatus()
 void System::addUserStatus()
 {
 	int selection;
-	string status_input,enter;
+	string status_input, enter;
 	cout << "Choose one of the following users:" << endl;
 	this->showAllUsers();
 	cin >> selection;
@@ -261,7 +317,7 @@ void System::addUserStatus()
 void System::addFanPageStatus()
 {
 	int selection;
-	string status_input,enter;
+	string status_input, enter;
 	cout << endl << "Choose one of the following fan pages:" << endl;
 	showAllFanPages();
 	cin >> selection;
@@ -363,10 +419,10 @@ void System::makeFriendship()
 	cout << "Please choose two of the following users: " << endl;
 	showAllUsers();
 	cin >> selection1 >> selection2;
-	User* user1 = findUser(selection1-1);
-	User* user2 = findUser(selection2-1);
+	User* user1 = findUser(selection1 - 1);
+	User* user2 = findUser(selection2 - 1);
 	*user1 += *user2;
-	cout << "Friendship was successfuly created" <<endl;
+	cout << "Friendship was successfuly created" << endl;
 }
 
 /// <summary> 7
@@ -411,7 +467,7 @@ void System::addFanToPage()
 	FanPage* ptr_page = findFanPage(selection1 - 1);
 	User* user = findUser(selection2 - 1);
 	ptr_page->addFanToPage(*user);
-	cout << "User "<< user->getName() << " is now a fan of the page: " <<
+	cout << "User " << user->getName() << " is now a fan of the page: " <<
 		ptr_page->getName() << endl;
 }
 
@@ -451,7 +507,7 @@ int System::findFanPageIndex(int counterIndex) const
 
 		if (ptr_page->getFansLogSize() > 0)
 		{
-			if(counter == counterIndex)
+			if (counter == counterIndex)
 				return foundIndex;
 			counter++;
 		}
@@ -461,31 +517,31 @@ int System::findFanPageIndex(int counterIndex) const
 const FanPage* System::findFanPage(int index) const
 {
 	list<FanPage>::const_iterator itr = fan_pages_.begin();
-	for (int i=0; i < index; i++)
+	for (int i = 0; i < index; i++)
 		itr++;
 	return &(*itr);
 }
 
-const User* System::findUser(int index) const 
+const User* System::findUser(int index) const
 {
 	list<User>::const_iterator itr = users_.begin();
-	for (int i=0; i < index; i++)
+	for (int i = 0; i < index; i++)
 		itr++;
 	return &(*itr);
 }
 
-FanPage* System::findFanPage(int index) 
+FanPage* System::findFanPage(int index)
 {
 	list<FanPage>::iterator itr = fan_pages_.begin();
-	for (int i=0; i < index; i++)
+	for (int i = 0; i < index; i++)
 		itr++;
 	return &(*itr);
 }
 
-User* System::findUser(int index) 
+User* System::findUser(int index)
 {
 	list<User>::iterator itr = users_.begin();
-	for (int i=0; i < index; i++)
+	for (int i = 0; i < index; i++)
 		itr++;
 	return &(*itr);
 }
@@ -500,7 +556,7 @@ void System::showAllUsers() const
 	int index;
 	list<User>::const_iterator itr = users_.begin();
 	cout << "All users: " << endl;
-	for (index = 0; index < users_.size(); index++,itr++)
+	for (index = 0; index < users_.size(); index++, itr++)
 		cout << index + 1 << " - " << itr->getName() << endl;
 	cout << endl;
 }
@@ -542,7 +598,7 @@ void System::showUsersFrineds() const
 /// </summary>
 void System::showUsersFrineds()
 {
-	const User *chosen = selectionOfUser();
+	const User* chosen = selectionOfUser();
 	chosen->showFriends();
 }
 
@@ -561,9 +617,9 @@ void System::showsFansOfFanPage() const
 void System::showAllFanPages() const
 {
 	int index;
-		list<FanPage>::const_iterator itr = fan_pages_.begin();
+	list<FanPage>::const_iterator itr = fan_pages_.begin();
 	cout << "All fan pages: " << endl;
-	for (index = 0; index < fan_pages_.size(); index++,itr++)
+	for (index = 0; index < fan_pages_.size(); index++, itr++)
 		cout << index + 1 << " - " << itr->getName() << endl;
 }
 
@@ -575,32 +631,22 @@ bool System::showAllFanPagesWithFans() const
 	int index, counter = 0;
 	for (index = 0; index < fan_pages_.size(); index++)
 	{
-		const FanPage* ptr_page = findFanPage(index - 1);
+		const FanPage* ptr_page = findFanPage(index);
+
 		if (ptr_page->getFansLogSize() > 0)
-			counter++;
-	}
-
-	if (counter > 0)
-	{
-		counter = 0;
-		cout << "Please choose one from the following fan pages (with fans):" << endl;
-		for (index = 0; index < fan_pages_.size(); index++)
 		{
-			const FanPage* ptr_page = findFanPage(index-1);
-
-			if (ptr_page->getFansLogSize() > 0)
-			{
-				counter++;
-				cout << counter << " - " << ptr_page->getName() << endl;
-			}
+			if (counter == 0)
+				cout << "Please choose one of the following fan-pages:" << endl;
+			counter++;
+			cout << counter << " - " << ptr_page->getName() << endl;
 		}
-		return true;
 	}
-	else
+	if(counter == 0)
 	{
 		cout << "No fan pages with fans are exist";
 		return false;
 	}
+	return true;
 }
 
 //12

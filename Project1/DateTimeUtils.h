@@ -2,6 +2,7 @@
 #define DATE_TIME_UTILS_H
 #include <ctime>
 #include <iostream>
+#include "Exceptions.h"
 using namespace std;
 
 class Clock

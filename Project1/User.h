@@ -22,7 +22,8 @@ private:
 	list<Status>statuses_;
 
 public:
-	User(string name, int day, int month, int year);
+	User(string name, int day, int month, int year); //for init
+	User(string name, Date date_of_birth); //for add user
 	~User();
 	void setName(const string name);
 	void setUserStatus(Status status);

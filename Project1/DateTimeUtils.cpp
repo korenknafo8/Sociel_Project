@@ -48,9 +48,24 @@ Date::Date()
 /// </summary>
 Date::Date(const int& day, const int& month, const int& year)
 {
+	time_t curr_time;
+	curr_time = time(NULL);
+	tm* ltm = localtime(&curr_time);
+	int curr_day = ltm->tm_mday;
+	int curr_month = ltm->tm_mon + 1;
+	int curr_year = ltm->tm_year + 1900;
+
 	day_ = day;
 	month_ = month;
 	year_ = year;
+	if (day > 30 || day < 1 || month > 12 || month < 1)
+		throw unvalidDateException();
+	if (year > curr_year)
+		throw futureDateException();
+	else if (year ==  curr_year && month > curr_month)
+		throw futureDateException();
+	else if (year == curr_year && month == curr_month && day > curr_day)
+		throw futureDateException();
 }
 
 /// <summary>

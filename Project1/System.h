@@ -3,9 +3,20 @@
 
 #include "Fan_Page.h"
 #include "User.h"
-#include <string.h>
-
 #pragma warning (disable: 4996)
+
+const int ADD_USER = 1;
+const int ADD_PAGE = 2;
+const int ADD_STATUS = 3;
+const int SHOW_STATUSES = 4;
+const int SHOW_FEAD = 5;
+const int MAKE_FRIENDSHIP = 6;
+const int CANCEL_FRIENDSHIP = 7;
+const int ADD_FAN = 8;
+const int REMOVE_PAGE = 9;
+const int SHOW_ALL = 10;
+const int SHOW_RELATIONS = 11;
+const int EXIT = 12;
 
 using namespace std;
 
@@ -34,6 +45,9 @@ public:
 	FanPage* findFanPage(int index);
 	const User* findUser(int index) const;
 	User* findUser(int index);
+	bool isUserNameExist(string name) const;
+	const string initName() const noexcept(false);
+	Date initDOB();
 	//User
 
 	//1
