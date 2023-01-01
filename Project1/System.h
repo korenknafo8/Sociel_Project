@@ -3,8 +3,9 @@
 
 #include "Fan_Page.h"
 #include "User.h"
-#pragma warning (disable: 4996)
 
+const int USER_CHOISE = 1;
+const int PAGE_CHOISE = 2;
 const int ADD_USER = 1;
 const int ADD_PAGE = 2;
 const int ADD_STATUS = 3;
@@ -18,8 +19,6 @@ const int SHOW_ALL = 10;
 const int SHOW_RELATIONS = 11;
 const int EXIT = 12;
 
-using namespace std;
-
 class System 
 {
 private:
@@ -29,10 +28,8 @@ private:
 	list<User> users_;
 
 public:
-	System();
-	~System();
 	void showMenu() const;
-	void menuSelection(int selection);
+	void menuSelection(int selection) noexcept;
 	const User* selectionOfUser() const;
 	const FanPage* selectionOfFanPages() const;
 	void showUsersFrineds();

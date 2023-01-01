@@ -30,6 +30,11 @@ class alreadyFriendsException : public SystemException
 {
 public:
 	virtual const char* what() const override { return "Selected users are already friends.\n"; }
+
+};class alreadyFanException : public SystemException
+{
+public:
+	virtual const char* what() const override { return "Selected user is already a fan of this page.\n"; }
 };
 
 class nameExistException : public SystemException

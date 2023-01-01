@@ -62,11 +62,11 @@ string FanPage::getName() const
 /// <summary>
 /// Adding a user to be a fan of a fan page
 /// </summary>
-void FanPage::addFanToPage(User& new_fan) const noexcept(false)
+void FanPage::addFanToPage(User& new_fan) noexcept(false)
 {
 	int index = findFan(&new_fan);
 	if (index != NOT_FOUND)
-		throw fanAlreadyException();
+		throw alreadyFanException();
 	fans_.push_back(&new_fan);
 }
 
