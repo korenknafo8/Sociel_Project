@@ -18,6 +18,8 @@ const int REMOVE_PAGE = 9;
 const int SHOW_ALL = 10;
 const int SHOW_RELATIONS = 11;
 const int EXIT = 12;
+const int PICTURE = 1;
+const int VIDEO = 2;
 
 class System 
 {

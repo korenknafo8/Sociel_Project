@@ -32,48 +32,52 @@ void System::showMenu() const
 /// <param name="selection">chosen action</param>
 void System::menuSelection(int selection) noexcept
 {
-	switch (selection)
+	try
 	{
-	case ADD_USER: // 1
-		addUser();
-		break;
-	case ADD_PAGE: // 2
-		addFanPage();
-		break;
-	case ADD_STATUS: //3
-		addNewStatus();
-		break;
-	case SHOW_STATUSES: //4
-		showUserOrPageStatuses();
-		break;
-	case SHOW_FEAD:
-		TenLatestFeadOfUser(); // 5
-		break;
-	case MAKE_FRIENDSHIP: //6
-		makeFriendship();
-		break;
-	case CANCEL_FRIENDSHIP: //7
-		cancelFriendship();
-		break;
-	case ADD_FAN: //8
-		addFanToPage();
-		break;
-	case REMOVE_PAGE: //9
-		removeFanOfPage();
-		break;
-	case SHOW_ALL: //10
-		showAllUsers();
-		showAllFanPages();
-		break;
-	case SHOW_RELATIONS: //11
-		showRelatedToUserOrPage();
-		break;
-	case EXIT:	//12
-		setExit();
-		break;
-	default:
-		throw selectionOutOfRangeException();
+		switch (selection)
+		{
+		case ADD_USER: // 1
+			addUser();
+			break;
+		case ADD_PAGE: // 2
+			addFanPage();
+			break;
+		case ADD_STATUS:
+			addNewStatus();
+			break;
+		case SHOW_STATUSES: //4
+			showUserOrPageStatuses();
+			break;
+		case SHOW_FEAD:
+			TenLatestFeadOfUser(); // 5
+			break;
+		case MAKE_FRIENDSHIP: //6
+			makeFriendship();
+			break;
+		case CANCEL_FRIENDSHIP: //7
+			cancelFriendship();
+			break;
+		case ADD_FAN: //8
+			addFanToPage();
+			break;
+		case REMOVE_PAGE: //9
+			removeFanOfPage();
+			break;
+		case SHOW_ALL: //10
+			showAllUsers();
+			showAllFanPages();
+			break;
+		case SHOW_RELATIONS: //11
+			showRelatedToUserOrPage();
+			break;
+		case EXIT:	//12
+			setExit();
+			break;
+		default:
+			throw selectionOutOfRangeException();
+		}
 	}
+	catch (selectionOutOfRangeException& exception) { cout << "Error: " << exception.what() << endl; }
 }
 
 /// <summary>
@@ -327,16 +331,49 @@ void System::addNewStatus()
 void System::addUserStatus()
 {
 	int selection;
-	string status_input, enter;
+	string status_input, media_description, enter;
 	cout << "Choose one of the following users:" << endl;
 	this->showAllUsers();
 	cin >> selection;
+	User* user = findUser(selection - 1);
 	cout << endl << "Please enter the status (Max limit 100 characters): " << endl;
 	getline(cin, enter);
 	getline(cin, status_input);
-	Status new_status(status_input);
-	User* user = findUser(selection - 1);
+	cout << "would you like to add a video or a picture for your status?" << endl;
+	cout << "0 - No" << endl << "1 - Picture" << endl << "2 - Video" << endl;
+	cin >> selection;
+	switch (selection)
+	{
+	case 0:
+		Status new_status(status_input);
+		break;
+	case 1:
+		media_description = getPicture();
+		Status_Picture new_status_picture(status_input, media_description);
+		break;
+	case 2:
+		media_description = getVideo();
+		Status_Picture new_status_video(status_input, media_description);
+	}
 	user->setUserStatus(new_status);
+}
+
+string System::getPicture() const
+{
+	string enter, media_description;
+	cout << endl << "Please enter a picture description:" << endl;
+	getline(cin, enter);
+	getline(cin, media_description);
+	return media_description;
+}
+
+string System::getVideo() const
+{
+	string enter, status_description;
+	cout << endl << "Please enter a picture description:" << endl;
+	getline(cin, enter);
+	getline(cin, status_description);
+	return status_description;
 }
 
 /// <summary>
