@@ -37,6 +37,16 @@ void FanPage::setFanPageStatus(Status& new_status)
 	statuses_.push_back(new_status);
 }
 
+void FanPage::setFanPageStatus(Status_Picture& new_status)
+{
+	statuses_.push_back(new_status);
+}
+
+void FanPage::setFanPageStatus(Status_Video& new_status)
+{
+	statuses_.push_back(new_status);
+}
+
 /// <summary>
 /// Prints all statuses of a fan page
 /// </summary>

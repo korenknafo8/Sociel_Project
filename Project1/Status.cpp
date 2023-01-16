@@ -5,36 +5,33 @@ using namespace std;
 
 #pragma warning (disable: 4996)
 
-/// <summary>
-/// Enters content into status
-/// </summary>
-/// <param name="input">header-line input</param>
-void Status::setContent(const string& input) 
-{
-	content_ = input;
-}
-
 //prints status
 void Status::show() const
 {
-	cout << this->content_ << "    ";
+	cout << status_text_ << "    ";
 	date_of_Status_.showDate();
 	cout << " ";
 	time_of_Status_.showTime();
 }
 
-//ctr
-Status::Status(const string text)
+void Status_Picture::show() const
 {
-	setContent(text);
+	Status::show();
+	cout << picture_description_ << endl;
+}
+
+void Status_Video::show() const
+{
+	Status::show();
+	cout << video_description_ << endl;
 }
 
 bool Status::operator!=(Status other)
 {
-	return content_ != other.content_;
+	return status_text_ != other.status_text_;
 }
 
 bool Status::operator==(Status other)
 {
-	return content_ == other.content_;
+	return status_text_ == other.status_text_;
 }

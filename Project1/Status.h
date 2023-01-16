@@ -9,14 +9,13 @@ using namespace std;
 class Status
 {
 public:
-	void setContent(const string& input);
-	void show() const;
-	Status(const string text);
+	Status(const string text) { status_text_ = text; };
+	virtual void show() const;
 	bool operator!=(Status other);
 	bool operator==(Status other);
 
 private:
-	string content_;
+	string status_text_;
 	Date date_of_Status_;
 	Clock time_of_Status_;
 };
@@ -25,9 +24,8 @@ private:
 class Status_Picture : public Status
 {
 public:
-	Status_Picture();
-	~Status_Picture();
-
+	Status_Picture(string text, string ststus_picture) : Status(text) { picture_description_ = ststus_picture; };
+	virtual void show() const override;
 private:
 	string picture_description_;
 };
@@ -37,9 +35,8 @@ class Status_Video : public Status
 {
 
 public:
-	Status_Video();
-	~Status_Video();
-
+	Status_Video(string text, string ststus_video) : Status(text) { video_description_ = ststus_video; };
+	virtual void show() const override;
 private:
 	string video_description_;
 };

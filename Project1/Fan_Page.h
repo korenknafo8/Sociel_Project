@@ -6,9 +6,9 @@
 class FanPage
 {
 private:
-	string name_;
-	list<Status>statuses_;
 	vector<User*>fans_;
+	list<Status>statuses_;
+	string name_;
 	const int NOT_FOUND = -1;
 	
 public:
@@ -18,6 +18,8 @@ public:
 	User* getFan(int index) const;
 	string getName() const;
 	void setFanPageStatus(Status& status);
+	void setFanPageStatus(Status_Picture& status);
+	void setFanPageStatus(Status_Video& status);
 	void addFanToPage(User& new_fan) noexcept(false);
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;

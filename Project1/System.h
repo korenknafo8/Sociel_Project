@@ -4,22 +4,10 @@
 #include "Fan_Page.h"
 #include "User.h"
 
-const int USER_CHOISE = 1;
-const int PAGE_CHOISE = 2;
-const int ADD_USER = 1;
-const int ADD_PAGE = 2;
-const int ADD_STATUS = 3;
-const int SHOW_STATUSES = 4;
-const int SHOW_FEAD = 5;
-const int MAKE_FRIENDSHIP = 6;
-const int CANCEL_FRIENDSHIP = 7;
-const int ADD_FAN = 8;
-const int REMOVE_PAGE = 9;
-const int SHOW_ALL = 10;
-const int SHOW_RELATIONS = 11;
-const int EXIT = 12;
-const int PICTURE = 1;
-const int VIDEO = 2;
+enum userFanPageEnum { USER_CHOISE = 1, PAGE_CHOISE };
+enum menuSelectionEnum { ADD_USER = 1, ADD_PAGE, ADD_STATUS, SHOW_STATUSES, SHOW_FEAD, MAKE_FRIENDSHIP, CANCEL_FRIENDSHIP, ADD_FAN,
+REMOVE_PAGE, SHOW_ALL, SHOW_RELATIONS, EXIT };
+enum statusChoiseEnum { REGULAR_STATUS, PICTURE_STATUS, VIDEO_STATUS };
 
 class System 
 {
@@ -45,7 +33,6 @@ public:
 	const User* findUser(int index) const;
 	User* findUser(int index);
 	bool isUserNameExist(string name) const;
-	bool isPageNameExist(string name) const;
 	const string initUserName() const noexcept(false);
 	Date initDOB();
 	int selectionInRange(int size) const noexcept(false);
@@ -55,6 +42,8 @@ public:
 	bool isFanPageNameExist(string name) const;
 	int isUserOrFanPage(int choise) const;
 	int UserOrPageCheck() const;
+	string getVideo() const;
+	string getPicture() const;
 
 	//1
 	void addUser();

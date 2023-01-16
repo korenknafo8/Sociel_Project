@@ -75,11 +75,11 @@ Date::Date(const int& day, const int& month, const int& year)
 /// </summary>
 void Date::showDate() const
 {
-	cout << year_ << "/";
 	if (month_ < 10)
 		cout << "0";
 	cout << month_ << "/";
 	if (day_ < 10)
 		cout << "0";
-	cout << day_;
+	cout << day_ << "/";
+	cout << year_;
 }

@@ -331,31 +331,31 @@ void System::addNewStatus()
 void System::addUserStatus()
 {
 	int selection;
-	string status_input, media_description, enter;
+	string status_text, media_description, enter;
 	cout << "Choose one of the following users:" << endl;
 	this->showAllUsers();
 	cin >> selection;
 	User* user = findUser(selection - 1);
 	cout << endl << "Please enter the status (Max limit 100 characters): " << endl;
 	getline(cin, enter);
-	getline(cin, status_input);
+	getline(cin, status_text);
 	cout << "would you like to add a video or a picture for your status?" << endl;
 	cout << "0 - No" << endl << "1 - Picture" << endl << "2 - Video" << endl;
 	cin >> selection;
 	switch (selection)
 	{
-	case 0:
-		Status new_status(status_input);
+	case REGULAR_STATUS:
+		user->setUserStatus(Status(status_text));
 		break;
-	case 1:
+	case PICTURE_STATUS:
 		media_description = getPicture();
-		Status_Picture new_status_picture(status_input, media_description);
+		user->setUserStatus(Status_Picture(status_text, media_description));
 		break;
-	case 2:
+	case VIDEO_STATUS:
 		media_description = getVideo();
-		Status_Picture new_status_video(status_input, media_description);
+		user->setUserStatus(Status_Video(status_text, media_description));
+		break;
 	}
-	user->setUserStatus(new_status);
 }
 
 string System::getPicture() const
@@ -377,21 +377,36 @@ string System::getVideo() const
 }
 
 /// <summary>
-///	create and set a status for a fan page
+///	create and set a status for a user
 /// </summary>
 void System::addFanPageStatus()
 {
 	int selection;
-	string status_input, enter;
+	string status_text, media_description, enter;
 	cout << endl << "Choose one of the following fan pages:" << endl;
 	showAllFanPages();
 	cin >> selection;
-	cout << "Please enter the status (Max limit 100 characters): " << endl;
+	FanPage* page = findFanPage(selection - 1);
+	cout << endl << "Please enter the status (Max limit 100 characters): " << endl;
 	getline(cin, enter);
-	getline(cin, status_input);
-	Status status(status_input);
-	FanPage* ptr_page = findFanPage(selection - 1);
-	ptr_page->setFanPageStatus(status);
+	getline(cin, status_text);
+	cout << "would you like to add a video or a picture for your status?" << endl;
+	cout << "0 - No" << endl << "1 - Picture" << endl << "2 - Video" << endl;
+	cin >> selection;
+	switch (selection)
+	{
+	case REGULAR_STATUS:
+		page->setFanPageStatus(Status(status_text));
+		break;
+	case PICTURE_STATUS:
+		media_description = getPicture();
+		page->setFanPageStatus(Status_Picture(status_text, media_description));
+		break;
+	case VIDEO_STATUS:
+		media_description = getVideo();
+		page->setFanPageStatus(Status_Video(status_text, media_description));
+		break;
+	}
 }
 
 /// <summary> 4

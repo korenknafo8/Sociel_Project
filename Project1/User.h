@@ -14,12 +14,12 @@ class FanPage;
 class User
 {
 private:
-	string name_;
-	Date date_of_birth_;
-	const int NOT_FOUND = -1;
 	vector<FanPage*>liked_pages_;
 	vector<User*>friends_;
 	list<Status>statuses_;
+	string name_;
+	Date date_of_birth_;
+	const int NOT_FOUND = -1;
 
 public:
 	User(string name, int day, int month, int year); //for init
@@ -27,6 +27,8 @@ public:
 	~User();
 	void setName(const string name);
 	void setUserStatus(Status status);
+	void setUserStatus(Status_Picture status);
+	void setUserStatus(Status_Video status);
 	void showStatuses() const;
 	void show10LatestStatuses() const;
 	void showFriendsStatuses() const;

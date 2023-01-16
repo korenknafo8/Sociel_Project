@@ -54,6 +54,16 @@ void User::setUserStatus(Status new_status)
 	statuses_.push_back(new_status);
 }
 
+void User::setUserStatus(Status_Picture new_status)
+{
+	statuses_.push_back(new_status);
+}
+
+void User::setUserStatus(Status_Video new_status)
+{
+	statuses_.push_back(new_status);
+}
+
 /// <summary>
 /// Prints all the statuses of a user
 /// </summary>
