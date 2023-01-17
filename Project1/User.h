@@ -25,10 +25,10 @@ public:
 	User(string name, int day, int month, int year); //for init
 	User(string name, Date date_of_birth); //for add user
 	~User();
-	void setName(const string name);
-	void setUserStatus(Status status);
-	void setUserStatus(Status_Picture status);
-	void setUserStatus(Status_Video status);
+	void setName(const string& name);
+	void setUserStatus(Status& status);
+	void setUserStatus(Status_Picture& status);
+	void setUserStatus(Status_Video& status);
 	void showStatuses() const;
 	void show10LatestStatuses() const;
 	void showFriendsStatuses() const;
@@ -43,8 +43,12 @@ public:
 	int getFriendsSize();
 	void showAllLikesPages() const;
 	User& operator+=(User& other);
-	bool operator==(User other);
-	bool operator>(User other);
+	bool operator==(User& other);
+	bool operator>(User& other);
+	bool operator>(FanPage& other);
+	friend ostream& operator<<(std::ostream& os, const User& user);
+	void writeConnections(ofstream& file) const;
+
 };
 
 #endif // !USER_H

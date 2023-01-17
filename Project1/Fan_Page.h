@@ -1,5 +1,6 @@
 #ifndef FAN_PAGE_H
 #define FAN_PAGE_H
+#include <fstream>
 #include"DateTimeUtils.h"
 #include "User.h"
 
@@ -28,6 +29,10 @@ public:
 	int findFan(User* fan) const;
 	int findFan(const User* fan) const;
 	FanPage& operator+=(User& other);
+	bool operator>(FanPage& other);
+	bool operator>(User& user);
+	friend ostream& operator<<(std::ostream& os, const FanPage& fanpage);
+	
 };
 
 #endif // !FAN_PAGE_H

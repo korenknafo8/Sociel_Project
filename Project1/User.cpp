@@ -30,7 +30,7 @@ User::~User()
 /// Setting a wanted name to a user
 /// </summary>
 /// <param name="name">The wanted name</param>
-void User::setName(const string new_name)
+void User::setName(const string& new_name)
 {
 	name_ = new_name;
 }
@@ -49,17 +49,17 @@ string User::getName() const
 /// Set a status for a given user
 /// </summary>
 /// <param name="status">status</param>
-void User::setUserStatus(Status new_status)
+void User::setUserStatus(Status& new_status)
 {
 	statuses_.push_back(new_status);
 }
 
-void User::setUserStatus(Status_Picture new_status)
+void User::setUserStatus(Status_Picture& new_status)
 {
 	statuses_.push_back(new_status);
 }
 
-void User::setUserStatus(Status_Video new_status)
+void User::setUserStatus(Status_Video& new_status)
 {
 	statuses_.push_back(new_status);
 }
@@ -222,12 +222,47 @@ User& User::operator+=(User& other)
 	return *this;
 }
 
-bool User::operator==(User other)
+bool User::operator==(User& other)
 {
 	return name_ == other.name_;
 }
 
-bool User::operator>(User other)
+bool User::operator>(User& other)
 {
 	return friends_.size() > other.friends_.size();
+}
+
+bool User::operator>(FanPage& other)
+{
+	return friends_.size() > other.getFansSize();
+}
+
+ostream& operator<<(std::ostream& os, const User& user)
+{
+	os << user.name_ << "\n" << user.date_of_birth_ << endl;
+	int numOfPosts = user.statuses_.size();
+	os << numOfPosts << endl;
+
+	for (int i = 0; i < numOfPosts; i++)
+	{
+		os << *user.statuses_[i] << endl;
+	}
+	return os;
+}
+
+void User::writeConnections(ofstream& file) const
+{
+	int friendSize = friends_.size();
+	int fanPageSize = liked_pages_.size();
+	file << friendSize << endl;
+	for (int i = 0; i < friendSize; i++)
+	{
+		file << friends_[i]->getName() << endl;
+	}
+	file << fanPageSize << endl;
+	for (int i = 0; i < fanPageSize; i++)
+	{
+		file << liked_pages_[i]->getName() << endl;
+	}
+
 }

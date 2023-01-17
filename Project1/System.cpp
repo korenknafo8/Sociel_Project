@@ -909,3 +909,46 @@ int System::UserOrPageCheck() const
 	}
 	return selection;
 }
+void System::saveToFile(string filename) const
+{
+	ofstream file(filename, ios::trunc);
+	usersToFile(file);
+	fanPagesToFile(file);
+	writeConnectionsToFile(file);
+	file.close();
+}
+
+void System::usersToFile(ofstream& file) const
+{
+	int size = users_.size();
+	file << size << endl;
+	for (int i = 0; i < users_.size(); i++)
+	{
+		
+		file << findUser(i) << endl;
+	}
+}
+
+void System::fanPagesToFile(ofstream& file) const
+{
+
+	int size = fan_pages_.size();
+	list<FanPage>::const_iterator itr = fan_pages_.begin();
+	for (int i = 0; i < size; i++, itr++)
+	{
+		file << *itr << endl;
+	}
+
+}
+
+void System::writeConnectionsToFile(ofstream& file) const
+{
+
+	int size = users_.size();
+	list<User>::const_iterator itr = users_.begin();
+	for (int i = 0; i < size; i++,itr++)
+	{
+		itr->writeConnections(file);
+	}
+
+}

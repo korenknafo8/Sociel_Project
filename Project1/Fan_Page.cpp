@@ -143,3 +143,27 @@ FanPage& FanPage::operator+=(User& other)
 	other.addLikedFanPage(this);
 	return *this;
 }
+
+bool FanPage::operator>(FanPage& other)
+{
+
+	return fans_.size() > other.fans_.size();
+	
+}
+
+bool FanPage::operator>(User& user)
+{
+	return fans_.size() > user.getFriendsSize();
+}
+
+ostream& operator<<(std::ostream& os, const FanPage& fanpage)
+{
+	os << fanpage.name_ << endl;
+	int numOfPosts = fanpage.statuses_.size();
+	os << numOfPosts << endl;
+	for (int i = 0; i < numOfPosts; i++)
+	{
+		os << statuses_[i] << endl;
+	}
+	return os;
+}

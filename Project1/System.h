@@ -91,6 +91,16 @@ public:
 	//12
 	void setExit();
 	bool getExit();
+
+
+	//Save to file
+	void saveToFile(string filename) const;
+	void usersToFile(ofstream& file) const;
+	void fanPagesToFile(ofstream& file) const;
+	void writeConnectionsToFile(ofstream& file) const;
+
+	
+
 };
 
 #endif // !SYSTEM_H
