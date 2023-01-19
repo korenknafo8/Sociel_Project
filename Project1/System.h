@@ -98,6 +98,7 @@ public:
 	void usersToFile(ofstream& file) const;
 	void fanPagesToFile(ofstream& file) const;
 	void writeConnectionsToFile(ofstream& file) const;
+	void initialize(string filename);
 
 	
 

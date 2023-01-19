@@ -87,9 +87,13 @@ void System::initiateCreation()
 {
 	User Ofir("Ofir", 2, 2, 1996), Koren("Koren", 16, 8, 1997),
 		Baz("Baz Light-years", 15, 10, 2021);
-	Status staOfir1("user Ofir status 1"), staOfir2("user Ofir status 2"),
-		staKoren1("user Koren status 1"), staKoren2("user Koren status 2")
-		, staBaz1("user Baz status 1"), staBaz2("user Baz status 2");
+
+	Status* staOfir1 = new Status("user Ofir status 1");
+	Status* staOfir2 = new Status("user Ofir status 2");
+	Status* staKoren1 = new Status("user Koren status 1");
+	Status* staKoren2 = new Status("user Koren status 2");
+	Status* staBaz1 = new Status("user Baz status 1");
+	Status* staBaz2 = new Status("user Baz status 2");
 	setUser(Ofir);
 	setUser(Koren);
 	setUser(Baz);
@@ -116,10 +120,13 @@ void System::initiateCreation()
 void System::initiateFanPages(User* user1, User* user2, User* user3)
 {
 	FanPage page1("Page 1"), page2("Page 2"), page3("Page 3");
-	Status staPage1_A("user Ofir status 1"), staPage1_B("user Ofir status 2"),
-		staPage2_A("user Koren status 1"), staPage2_B("user Koren status 2")
-		, staPage3_A("user Baz status 1"), staPage3_B("user Baz status 2");
 
+	Status* staPage1_A = new Status("Page 1 status 1");
+	Status* staPage1_B = new Status("Page 1 status 2");
+	Status* staPage2_A = new Status("Page 2 status 1");
+	Status* staPage2_B = new Status("Page 2 status 2");
+	Status* staPage3_A = new Status("Page 3 status 1");
+	Status* staPage3_B = new Status("Page 3 status 2");
 	setFanPage(page1);
 	setFanPage(page2);
 	setFanPage(page3);
@@ -345,15 +352,15 @@ void System::addUserStatus()
 	switch (selection)
 	{
 	case REGULAR_STATUS:
-		user->setUserStatus(Status(status_text));
+		user->setUserStatus(new Status(status_text));
 		break;
 	case PICTURE_STATUS:
 		media_description = getPicture();
-		user->setUserStatus(Status_Picture(status_text, media_description));
+		user->setUserStatus(new Status_Picture(status_text, media_description));
 		break;
 	case VIDEO_STATUS:
 		media_description = getVideo();
-		user->setUserStatus(Status_Video(status_text, media_description));
+		user->setUserStatus(new Status_Video(status_text, media_description));
 		break;
 	}
 }
@@ -396,15 +403,15 @@ void System::addFanPageStatus()
 	switch (selection)
 	{
 	case REGULAR_STATUS:
-		page->setFanPageStatus(Status(status_text));
+		page->setFanPageStatus(new Status(status_text));
 		break;
 	case PICTURE_STATUS:
 		media_description = getPicture();
-		page->setFanPageStatus(Status_Picture(status_text, media_description));
+		page->setFanPageStatus(new Status_Picture(status_text, media_description));
 		break;
 	case VIDEO_STATUS:
 		media_description = getVideo();
-		page->setFanPageStatus(Status_Video(status_text, media_description));
+		page->setFanPageStatus(new Status_Video(status_text, media_description));
 		break;
 	}
 }

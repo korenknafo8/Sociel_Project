@@ -49,19 +49,19 @@ string User::getName() const
 /// Set a status for a given user
 /// </summary>
 /// <param name="status">status</param>
-void User::setUserStatus(Status& new_status)
+void User::setUserStatus(Status* new_status)
 {
-	statuses_.push_back(new_status);
+	all_Statuses_.push_back(new_status);
 }
 
-void User::setUserStatus(Status_Picture& new_status)
+void User::setUserStatus(Status_Picture* new_status)
 {
-	statuses_.push_back(new_status);
+	all_Statuses_.push_back(new_status);
 }
 
-void User::setUserStatus(Status_Video& new_status)
+void User::setUserStatus(Status_Video* new_status)
 {
-	statuses_.push_back(new_status);
+	all_Statuses_.push_back(new_status);
 }
 
 /// <summary>
@@ -240,12 +240,12 @@ bool User::operator>(FanPage& other)
 ostream& operator<<(std::ostream& os, const User& user)
 {
 	os << user.name_ << "\n" << user.date_of_birth_ << endl;
-	int numOfPosts = user.statuses_.size();
+	int numOfPosts = user.all_Statuses_.size();
 	os << numOfPosts << endl;
 
 	for (int i = 0; i < numOfPosts; i++)
 	{
-		os << *user.statuses_[i] << endl;
+		os << user.all_Statuses_[i] << endl;
 	}
 	return os;
 }

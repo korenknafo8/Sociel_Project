@@ -32,19 +32,19 @@ void FanPage::setFanPageName(const string name)
 /// Adding a wanted status to a fan page
 /// </summary>
 /// <param name="status">The status</param>
-void FanPage::setFanPageStatus(Status& new_status)
+void FanPage::setFanPageStatus(Status* new_status)
 {
-	statuses_.push_back(new_status);
+	all_statuses_.push_back(new_status);
 }
 
-void FanPage::setFanPageStatus(Status_Picture& new_status)
+void FanPage::setFanPageStatus(Status_Picture* new_status)
 {
-	statuses_.push_back(new_status);
+	all_statuses_.push_back(new_status);
 }
 
-void FanPage::setFanPageStatus(Status_Video& new_status)
+void FanPage::setFanPageStatus(Status_Video* new_status)
 {
-	statuses_.push_back(new_status);
+	all_statuses_.push_back(new_status);
 }
 
 /// <summary>
@@ -159,11 +159,11 @@ bool FanPage::operator>(User& user)
 ostream& operator<<(std::ostream& os, const FanPage& fanpage)
 {
 	os << fanpage.name_ << endl;
-	int numOfPosts = fanpage.statuses_.size();
+	int numOfPosts = fanpage.all_statuses_.size();
 	os << numOfPosts << endl;
 	for (int i = 0; i < numOfPosts; i++)
 	{
-		os << statuses_[i] << endl;
+		os << fanpage.all_statuses_[i] << endl;
 	}
 	return os;
 }
