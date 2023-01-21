@@ -7,7 +7,6 @@
 enum userFanPageEnum { USER_CHOISE = 1, PAGE_CHOISE };
 enum menuSelectionEnum { ADD_USER = 1, ADD_PAGE, ADD_STATUS, SHOW_STATUSES, SHOW_FEAD, MAKE_FRIENDSHIP, CANCEL_FRIENDSHIP, ADD_FAN,
 REMOVE_PAGE, SHOW_ALL, SHOW_RELATIONS, EXIT };
-enum statusChoiseEnum { REGULAR_STATUS, PICTURE_STATUS, VIDEO_STATUS };
 
 class System 
 {
@@ -44,6 +43,10 @@ public:
 	int UserOrPageCheck() const;
 	string getVideo() const;
 	string getPicture() const;
+	void initializeSystem(const string& file);
+	int fileToUsers(ifstream& file);
+	int fileToPages(ifstream& file);
+	void makeUsersConnections(ifstream& file, int numOfUser);
 
 	//1
 	void addUser();

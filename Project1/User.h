@@ -17,7 +17,7 @@ private:
 	vector<FanPage*>liked_pages_;
 	vector<User*>friends_;
 	list<Status>statuses_;
-	vector<Status*>all_Statuses_;
+	vector<Status*>all_statuses_;
 	string name_;
 	Date date_of_birth_;
 	const int NOT_FOUND = -1;
@@ -27,9 +27,9 @@ public:
 	User(string name, Date date_of_birth); //for add user
 	~User();
 	void setName(const string& name);
-	void setUserStatus(Status* status);
-	void setUserStatus(Status_Picture* status);
-	void setUserStatus(Status_Video* status);
+	void setStatus(Status* status);
+	void setStatus(Status_Picture* status);
+	void setStatus(Status_Video* status);
 	void showStatuses() const;
 	void show10LatestStatuses() const;
 	void showFriendsStatuses() const;

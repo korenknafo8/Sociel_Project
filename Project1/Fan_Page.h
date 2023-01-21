@@ -19,9 +19,9 @@ public:
 	void setFanPageName(const string name);
 	User* getFan(int index) const;
 	string getName() const;
-	void setFanPageStatus(Status* status);
-	void setFanPageStatus(Status_Picture* status);
-	void setFanPageStatus(Status_Video* status);
+	void setStatus(Status* status);
+	void setStatus(Status_Picture* status);
+	void setStatus(Status_Video* status);
 	void addFanToPage(User& new_fan) noexcept(false);
 	void removeFanFromPage(int index);
 	void showFanPageFans() const;

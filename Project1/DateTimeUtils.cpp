@@ -83,8 +83,15 @@ void Date::showDate() const
 	cout << day_ << "/";
 	cout << year_;
 }
+
 ostream& operator<<(std::ostream& os, const Date& date)
 {
-	os << date.day_ << "/" << date.month_ << "/" << date.year_;
+	os << date.day_ << " " << date.month_ << " " << date.year_;
+	return os;
+}
+
+ostream& operator<<(std::ostream& os, const Clock& clock)
+{
+	os << clock.seconds_ << " " << clock.minutes_ << " " << clock.hours_;
 	return os;
 }

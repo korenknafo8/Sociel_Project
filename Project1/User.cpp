@@ -49,19 +49,19 @@ string User::getName() const
 /// Set a status for a given user
 /// </summary>
 /// <param name="status">status</param>
-void User::setUserStatus(Status* new_status)
+void User::setStatus(Status* new_status)
 {
-	all_Statuses_.push_back(new_status);
+	all_statuses_.push_back(new_status);
 }
 
-void User::setUserStatus(Status_Picture* new_status)
+void User::setStatus(Status_Picture* new_status)
 {
-	all_Statuses_.push_back(new_status);
+	all_statuses_.push_back(new_status);
 }
 
-void User::setUserStatus(Status_Video* new_status)
+void User::setStatus(Status_Video* new_status)
 {
-	all_Statuses_.push_back(new_status);
+	all_statuses_.push_back(new_status);
 }
 
 /// <summary>
@@ -69,11 +69,17 @@ void User::setUserStatus(Status_Video* new_status)
 /// </summary>
 void User::showStatuses() const
 {
-	cout << endl << "below are the statuses of " << getName() << ":" << endl;
-	list<Status>::const_iterator itr = statuses_.end();
-	for (int i = 0; i < statuses_.size(); ++i) {
+	if (all_statuses_.size() == 0)
+		cout << "No statuses to show." << endl;
+	else
+	{
+		cout << endl << "below are the statuses of " << getName() << ":" << endl;
+		list<Status>::const_iterator itr = statuses_.end();
+		for (int i = 0; i < statuses_.size(); ++i)
+		{
 		(--itr)->show();
 		cout << endl;
+		}
 	}
 }
 
@@ -240,12 +246,12 @@ bool User::operator>(FanPage& other)
 ostream& operator<<(std::ostream& os, const User& user)
 {
 	os << user.name_ << "\n" << user.date_of_birth_ << endl;
-	int numOfPosts = user.all_Statuses_.size();
+	int numOfPosts = user.all_statuses_.size();
 	os << numOfPosts << endl;
 
 	for (int i = 0; i < numOfPosts; i++)
 	{
-		os << user.all_Statuses_[i] << endl;
+		os << user.all_statuses_[i] << endl;
 	}
 	return os;
 }
@@ -264,5 +270,4 @@ void User::writeConnections(ofstream& file) const
 	{
 		file << liked_pages_[i]->getName() << endl;
 	}
-
 }

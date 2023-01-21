@@ -32,17 +32,17 @@ void FanPage::setFanPageName(const string name)
 /// Adding a wanted status to a fan page
 /// </summary>
 /// <param name="status">The status</param>
-void FanPage::setFanPageStatus(Status* new_status)
+void FanPage::setStatus(Status* new_status)
 {
 	all_statuses_.push_back(new_status);
 }
 
-void FanPage::setFanPageStatus(Status_Picture* new_status)
+void FanPage::setStatus(Status_Picture* new_status)
 {
 	all_statuses_.push_back(new_status);
 }
 
-void FanPage::setFanPageStatus(Status_Video* new_status)
+void FanPage::setStatus(Status_Video* new_status)
 {
 	all_statuses_.push_back(new_status);
 }
@@ -52,11 +52,17 @@ void FanPage::setFanPageStatus(Status_Video* new_status)
 /// </summary>
 void FanPage::showStatuses() const
 {
-	cout << endl << "below are the statuses of " << getName() << ":" << endl;
-	list<Status>::const_iterator itr = statuses_.end();
-	for (int i = 0; i < statuses_.size(); ++i) {
-		(--itr)->show();
-		cout << endl;
+	if (all_statuses_.size() == 0)
+		cout << "No statuses to show." << endl;
+	else
+	{
+		cout << endl << "below are the statuses of " << getName() << ":" << endl;
+		list<Status>::const_iterator itr = statuses_.end();
+		for (int i = 0; i < statuses_.size(); ++i)
+		{
+			(--itr)->show();
+			cout << endl;
+		}
 	}
 }
 

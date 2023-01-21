@@ -8,7 +8,7 @@ using namespace std;
 //prints status
 void Status::show() const
 {
-	cout << status_text_ << "    ";
+	cout << text_ << "    ";
 	date_of_Status_.showDate();
 	cout << " ";
 	time_of_Status_.showTime();
@@ -28,10 +28,29 @@ void Status_Video::show() const
 
 bool Status::operator!=(Status other)
 {
-	return status_text_ != other.status_text_;
+	return text_ != other.text_;
 }
 
 bool Status::operator==(Status other)
 {
-	return status_text_ == other.status_text_;
+	return text_ == other.text_;
+}
+
+ostream& operator<<(ostream& os, const Status& status)
+{
+	os << status.status_type_ <<  status.date_of_Status_ << status.time_of_Status_;
+	os << "\n" << status.text_;
+	if (status.status_type_ != TEXT_STATUS)
+		status.toFile(os);
+	return os;
+}
+
+void Status_Video::toFile(ostream& os) const
+{
+	os << "\n" << video_description_;
+}
+
+void Status_Picture::toFile(ostream& os) const
+{
+	os << "\n" << picture_description_;
 }

@@ -101,12 +101,12 @@ void System::initiateCreation()
 	User* Ptr_Koren = findUser(1);
 	User* Ptr_Baz = findUser(2);
 
-	Ptr_Ofir->setUserStatus(staOfir1);
-	Ptr_Ofir->setUserStatus(staOfir2);
-	Ptr_Koren->setUserStatus(staKoren1);
-	Ptr_Koren->setUserStatus(staKoren2);
-	Ptr_Baz->setUserStatus(staBaz1);
-	Ptr_Baz->setUserStatus(staBaz2);
+	Ptr_Ofir->setStatus(staOfir1);
+	Ptr_Ofir->setStatus(staOfir2);
+	Ptr_Koren->setStatus(staKoren1);
+	Ptr_Koren->setStatus(staKoren2);
+	Ptr_Baz->setStatus(staBaz1);
+	Ptr_Baz->setStatus(staBaz2);
 	initiateFanPages(Ptr_Ofir, Ptr_Koren, Ptr_Baz);
 
 	(*Ptr_Ofir) += (*Ptr_Koren);
@@ -133,12 +133,12 @@ void System::initiateFanPages(User* user1, User* user2, User* user3)
 	FanPage* Ptr_page1 = findFanPage(0);
 	FanPage* Ptr_page2 = findFanPage(1);
 	FanPage* Ptr_page3 = findFanPage(2);
-	Ptr_page1->setFanPageStatus(staPage1_A);
-	Ptr_page1->setFanPageStatus(staPage1_B);
-	Ptr_page2->setFanPageStatus(staPage2_A);
-	Ptr_page2->setFanPageStatus(staPage2_B);
-	Ptr_page3->setFanPageStatus(staPage3_A);
-	Ptr_page3->setFanPageStatus(staPage3_B);
+	Ptr_page1->setStatus(staPage1_A);
+	Ptr_page1->setStatus(staPage1_B);
+	Ptr_page2->setStatus(staPage2_A);
+	Ptr_page2->setStatus(staPage2_B);
+	Ptr_page3->setStatus(staPage3_A);
+	Ptr_page3->setStatus(staPage3_B);
 	(*Ptr_page1) += *user1;
 	(*Ptr_page1) += *user2;
 	(*Ptr_page2) += *user1;
@@ -347,20 +347,20 @@ void System::addUserStatus()
 	getline(cin, enter);
 	getline(cin, status_text);
 	cout << "would you like to add a video or a picture for your status?" << endl;
-	cout << "0 - No" << endl << "1 - Picture" << endl << "2 - Video" << endl;
+	cout << "1 - No" << endl << "2 - Picture" << endl << "3 - Video" << endl;
 	cin >> selection;
 	switch (selection)
 	{
-	case REGULAR_STATUS:
-		user->setUserStatus(new Status(status_text));
+	case TEXT_STATUS:
+		user->setStatus(new Status(status_text));
 		break;
 	case PICTURE_STATUS:
 		media_description = getPicture();
-		user->setUserStatus(new Status_Picture(status_text, media_description));
+		user->setStatus(new Status_Picture(status_text, media_description));
 		break;
 	case VIDEO_STATUS:
 		media_description = getVideo();
-		user->setUserStatus(new Status_Video(status_text, media_description));
+		user->setStatus(new Status_Video(status_text, media_description));
 		break;
 	}
 }
@@ -398,20 +398,20 @@ void System::addFanPageStatus()
 	getline(cin, enter);
 	getline(cin, status_text);
 	cout << "would you like to add a video or a picture for your status?" << endl;
-	cout << "0 - No" << endl << "1 - Picture" << endl << "2 - Video" << endl;
+	cout << "1 - No" << endl << "2 - Picture" << endl << "3 - Video" << endl;
 	cin >> selection;
 	switch (selection)
 	{
-	case REGULAR_STATUS:
-		page->setFanPageStatus(new Status(status_text));
+	case TEXT_STATUS:
+		page->setStatus(new Status(status_text));
 		break;
 	case PICTURE_STATUS:
 		media_description = getPicture();
-		page->setFanPageStatus(new Status_Picture(status_text, media_description));
+		page->setStatus(new Status_Picture(status_text, media_description));
 		break;
 	case VIDEO_STATUS:
 		media_description = getVideo();
-		page->setFanPageStatus(new Status_Video(status_text, media_description));
+		page->setStatus(new Status_Video(status_text, media_description));
 		break;
 	}
 }
@@ -890,7 +890,7 @@ bool System::getExit()
 int System::isUserOrFanPage(int choise) const
 {
 
-	if (choise > 2 || choise < 1)
+	if (choise > PAGE_CHOISE || choise < USER_CHOISE)
 		throw selectionOutOfRangeException();
 
 	return choise;
@@ -916,7 +916,8 @@ int System::UserOrPageCheck() const
 	}
 	return selection;
 }
-void System::saveToFile(string filename) const
+
+void System::dataToFile(string filename) const
 {
 	ofstream file(filename, ios::trunc);
 	usersToFile(file);
@@ -929,10 +930,10 @@ void System::usersToFile(ofstream& file) const
 {
 	int size = users_.size();
 	file << size << endl;
-	for (int i = 0; i < users_.size(); i++)
+	list<User>::const_iterator itr = users_.begin();
+	for (int i = 0; i < size; i++, itr++)
 	{
-		
-		file << findUser(i) << endl;
+		file << *itr << endl;
 	}
 }
 
@@ -940,6 +941,7 @@ void System::fanPagesToFile(ofstream& file) const
 {
 
 	int size = fan_pages_.size();
+	file << size << endl;
 	list<FanPage>::const_iterator itr = fan_pages_.begin();
 	for (int i = 0; i < size; i++, itr++)
 	{
@@ -948,14 +950,150 @@ void System::fanPagesToFile(ofstream& file) const
 
 }
 
+void System::initializeSystem(const string& file_name)
+{
+	int num_of_users, num_of_pages;
+	ifstream file(file_name);
+	if (file.fail())
+		initiateCreation();
+	else
+	{
+		num_of_users = fileToUsers(file);
+		num_of_pages = fileToPages(file);
+		makeUsersConnections(file, num_of_users);
+	}
+	file.close();
+}
+
 void System::writeConnectionsToFile(ofstream& file) const
 {
-
 	int size = users_.size();
 	list<User>::const_iterator itr = users_.begin();
 	for (int i = 0; i < size; i++,itr++)
 	{
-		itr->writeConnections(file);
+		itr->connectionsToFile(file);
+	}
+}
+
+void System::makeUsersConnections(ifstream& file, int num_of_users)
+{
+
+	string friend_name, enter;
+	int numOfFriends, numOfFanPages;
+	getline(file, enter);
+
+	for (int i = 0; i < num_of_users; i++)
+	{
+		file >> numOfFriends;
+		getline(file, enter);
+		for (int j = 0; j < numOfFriends; j++)
+		{
+			getline(file, friend_name);
+			User* pfriend = findUserByName(friend_name);
+			makeConnection(*users[i], *pfriend);
+		}
+		file >> numOfFanPages;
+		getline(file, enter);
+		for (int j = 0; j < numOfFanPages; j++)
+		{
+			getline(file, friend_name);
+			FanPage* temp = findFanPageByName(friend_name);
+			users[i]->addFanpage(*temp);
+		}
+	}
+}
+
+User* System::findUserByName(string friend_name)
+{
+	list<User>::iterator itr = users_.begin();
+	for (int i = 0; i < users_.size(); i++, ++itr)
+	{
+		if (itr->getName() == friend_name)
+			return (&(*itr));
 	}
 
+	return &(*itr);
+}
+
+void System::makeConnection(User& user1, User& user2)//manually added
+{
+	user1.addFriend(user2);
+}
+
+
+//initiate users from file
+int System::fileToUsers(ifstream& file)
+{
+	int num_of_users, statuses_amount, day, month, year, seconds, minutes, hours, status_type;
+	string enter, user_name, status_text, media_description;
+
+	file >> num_of_users;
+
+	list<User>::iterator itr = users_.begin();
+	for (int i = 0; i < num_of_users; i++)
+	{
+		getline(file, enter);
+		getline(file, user_name);
+		file >> day >> month >> year;
+		users_.push_back(User(user_name, Date(day, month, year)));
+		itr++;
+		file >> statuses_amount;
+		for (int j = 0; j < statuses_amount; j++)
+		{
+			file >> status_type >> day >> month >> year >> seconds >> minutes >> hours;
+			switch (status_type)
+			{
+			case TEXT_STATUS:
+				itr->setStatus(new Status(status_text, Date(day, month, year), Clock(seconds, minutes,hours)));
+				break;
+			case PICTURE_STATUS:
+				file >> media_description;
+				itr->setStatus(new Status_Picture(status_text, media_description, Date(day, month, year), Clock(seconds, minutes, hours)));
+				break;
+			case VIDEO_STATUS:
+				file >> media_description;
+				itr->setStatus(new Status_Video(status_text, media_description, Date(day, month, year), Clock(seconds, minutes, hours)));
+				break;
+			}
+		}
+	}
+	return num_of_users;
+}
+
+//initiate fan pages from file
+int System::fileToPages(ifstream& file)
+{
+	int num_of_pages, statuses_amount, day, month, year, seconds, minutes, hours, status_type;
+	string enter, page_name, status_text, media_description;
+
+	file >> num_of_pages;
+
+	list<FanPage>::iterator itr = fan_pages_.begin();
+	for (int i = 0; i < num_of_pages; i++)
+	{
+		getline(file, enter);
+		getline(file, page_name);
+		fan_pages_.push_back(FanPage(page_name));
+		itr++;
+		file >> statuses_amount;
+		for (int j = 0; j < statuses_amount; j++)
+		{
+			file >> status_type >> day >> month >> year >> seconds >> minutes >> hours;
+			switch (status_type)
+			{
+			case TEXT_STATUS:
+				itr->setStatus(new Status(status_text, Date(day, month, year), Clock(seconds, minutes, hours)));
+				break;
+			case PICTURE_STATUS:
+				file >> media_description;
+				itr->setStatus(new Status_Picture(status_text, media_description, Date(day, month, year), Clock(seconds, minutes, hours)));
+				break;
+			case VIDEO_STATUS:
+				file >> media_description;
+				itr->setStatus(new Status_Video(status_text, media_description, Date(day, month, year), Clock(seconds, minutes, hours)));
+				break;
+			}
+		}
+	}
+	return num_of_pages;
 }
