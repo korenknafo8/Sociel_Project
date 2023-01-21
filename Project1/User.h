@@ -16,8 +16,7 @@ class User
 private:
 	vector<FanPage*>liked_pages_;
 	vector<User*>friends_;
-	list<Status>statuses_;
-	vector<Status*>all_statuses_;
+	vector<Status*>statuses_;
 	string name_;
 	Date date_of_birth_;
 	const int NOT_FOUND = -1;
@@ -32,12 +31,12 @@ public:
 	void setStatus(Status_Video* status);
 	void showStatuses() const;
 	void show10LatestStatuses() const;
-	void showFriendsStatuses() const;
+	void showFriendsTenStatuses() const;
 	void addFriend(User& new_friend);
 	void friendshipCancelation(int index);
 	string getName() const;
 	void showFriends() const; 
-	void addLikedFanPage(FanPage* new_page);
+	void addLikedPage(FanPage* new_page);
 	int findFriend(User& user) const;
 	void removeLikedPage(FanPage& liked_page);
 	int findLikedPage(FanPage& liked_page) const;
@@ -48,8 +47,8 @@ public:
 	bool operator>(User& other);
 	bool operator>(FanPage& other);
 	friend ostream& operator<<(std::ostream& os, const User& user);
-	void writeConnections(ofstream& file) const;
-
+	void connectionsToFile(ofstream& file) const;
+	void fileToConnection(ifstream& file) const;
 };
 
 #endif // !USER_H

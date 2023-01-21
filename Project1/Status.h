@@ -13,15 +13,15 @@ class Status
 {
 public:
 	Status(const string text) { text_ = text; };
-	Status(const string text, Date date, Clock time) { text_ = text; date_of_Status_ = date, time_of_Status_ = time; };
-	virtual void show() const;
+	Status(const string text, Date date, Clock time, int status_type = 0) { text_ = text; date_of_Status_ = date, time_of_Status_ = time; };
 	bool operator!=(Status other);
 	bool operator==(Status other);
+	virtual void show() const;
+	virtual void mediaToFile(ostream& os) const { };
 	friend ostream& operator<<(ostream& os, const Status& p);
-	virtual void toFile(ostream& os) const {}
 
 protected:
-	int status_type_;
+	int status_type_ = 1;
 	string text_;
 	Date date_of_Status_;
 	Clock time_of_Status_;
@@ -31,11 +31,12 @@ protected:
 class Status_Picture : public Status
 {
 public:
-	Status_Picture(string text, string ststus_picture) : Status(text) { text_ = text; picture_description_ = ststus_picture; };
-	Status_Picture(string text, string ststus_picture, Date date, Clock time) : Status(text) { text_ = text; picture_description_ = ststus_picture;
-	date_of_Status_ = date, time_of_Status_ = time; };
+	Status_Picture(string text, string ststus_picture) : Status(text) { text_ = text;
+	picture_description_ = ststus_picture; status_type_ = PICTURE_STATUS; };
+	Status_Picture(string text, string ststus_picture, Date date, Clock time) : Status(text) { text_ = text;
+	picture_description_ = ststus_picture; date_of_Status_ = date, time_of_Status_ = time; status_type_ = PICTURE_STATUS; };
 	virtual void show() const override;
-	virtual void toFile(ostream& os) const override;
+	virtual void mediaToFile(ostream& os) const override;
 
 private:
 	string picture_description_;
@@ -46,11 +47,12 @@ class Status_Video : public Status
 {
 
 public:
-	Status_Video(string text, string ststus_video) : Status(text) { text_ = text; video_description_ = ststus_video; };
-	Status_Video(string text, string ststus_video, Date date, Clock time) : Status(text) { text_ = text; video_description_ = ststus_video;
-	date_of_Status_ = date, time_of_Status_ = time; };
+	Status_Video(string text, string ststus_video) : Status(text) { text_ = text; 
+	video_description_ = ststus_video; status_type_ = VIDEO_STATUS; };
+	Status_Video(string text, string ststus_video, Date date, Clock time) : Status(text) { text_ = text;
+	video_description_ = ststus_video; date_of_Status_ = date, time_of_Status_ = time; status_type_ = VIDEO_STATUS;	};
 	virtual void show() const override;
-	virtual void toFile(ostream& os) const override;
+	virtual void mediaToFile(ostream& os) const override;
 
 private:
 	string video_description_;

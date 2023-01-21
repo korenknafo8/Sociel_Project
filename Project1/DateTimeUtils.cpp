@@ -71,7 +71,7 @@ Date::Date(const int& day, const int& month, const int& year)
 }
 
 /// <summary>
-/// prints the given day
+/// prints the given date
 /// </summary>
 void Date::showDate() const
 {

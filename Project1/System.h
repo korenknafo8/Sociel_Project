@@ -43,10 +43,9 @@ public:
 	int UserOrPageCheck() const;
 	string getVideo() const;
 	string getPicture() const;
-	void initializeSystem(const string& file);
-	int fileToUsers(ifstream& file);
-	int fileToPages(ifstream& file);
-	void makeUsersConnections(ifstream& file, int numOfUser);
+	User* findUserByName(string friend_name);
+	FanPage* findPageByName(string friend_name);
+
 
 	//1
 	void addUser();
@@ -65,7 +64,7 @@ public:
 
 	//4
 	void showUserOrPageStatuses();
-	void showsFanPageStatuses();
+	void showFanPageStatuses();
 	void showUserStatuses() const;
 
 	//5
@@ -97,13 +96,17 @@ public:
 
 
 	//Save to file
-	void saveToFile(string filename) const;
+	void dataToFile(string filename) const;
 	void usersToFile(ofstream& file) const;
 	void fanPagesToFile(ofstream& file) const;
 	void writeConnectionsToFile(ofstream& file) const;
-	void initialize(string filename);
 
-	
+	//from file
+	void initializeSystem(const string& file);
+	int fileToUsers(ifstream& file);
+	int fileToPages(ifstream& file);
+	void makeUsersConnections(ifstream& file, int numOfUser);
+	void makeConnection(User& user1, User& user2);
 
 };
 

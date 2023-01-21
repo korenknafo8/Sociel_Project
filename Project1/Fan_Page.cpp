@@ -34,17 +34,17 @@ void FanPage::setFanPageName(const string name)
 /// <param name="status">The status</param>
 void FanPage::setStatus(Status* new_status)
 {
-	all_statuses_.push_back(new_status);
+	statuses_.push_back(new_status);
 }
 
 void FanPage::setStatus(Status_Picture* new_status)
 {
-	all_statuses_.push_back(new_status);
+	statuses_.push_back(new_status);
 }
 
 void FanPage::setStatus(Status_Video* new_status)
 {
-	all_statuses_.push_back(new_status);
+	statuses_.push_back(new_status);
 }
 
 /// <summary>
@@ -52,15 +52,14 @@ void FanPage::setStatus(Status_Video* new_status)
 /// </summary>
 void FanPage::showStatuses() const
 {
-	if (all_statuses_.size() == 0)
+	if (statuses_.size() == 0)
 		cout << "No statuses to show." << endl;
 	else
 	{
 		cout << endl << "below are the statuses of " << getName() << ":" << endl;
-		list<Status>::const_iterator itr = statuses_.end();
 		for (int i = 0; i < statuses_.size(); ++i)
 		{
-			(--itr)->show();
+			statuses_[i]->show();
 			cout << endl;
 		}
 	}
@@ -146,7 +145,7 @@ User* FanPage::getFan(int index) const
 FanPage& FanPage::operator+=(User& other)
 {
 	addFanToPage(other);
-	other.addLikedFanPage(this);
+	other.addLikedPage(this);
 	return *this;
 }
 
@@ -165,11 +164,11 @@ bool FanPage::operator>(User& user)
 ostream& operator<<(std::ostream& os, const FanPage& fanpage)
 {
 	os << fanpage.name_ << endl;
-	int numOfPosts = fanpage.all_statuses_.size();
-	os << numOfPosts << endl;
-	for (int i = 0; i < numOfPosts; i++)
+	int statuses_size = fanpage.statuses_.size();
+	os << statuses_size << endl;
+	for (int i = 0; i < statuses_size; i++)
 	{
-		os << fanpage.all_statuses_[i] << endl;
+		os << *(fanpage.statuses_[i]) << endl;
 	}
 	return os;
 }

@@ -8,8 +8,7 @@ class FanPage
 {
 private:
 	vector<User*>fans_;
-	list<Status>statuses_;
-	vector<Status*>all_statuses_;
+	vector<Status*>statuses_;
 	string name_;
 	const int NOT_FOUND = -1;
 	

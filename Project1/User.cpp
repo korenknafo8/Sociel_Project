@@ -6,7 +6,7 @@ using namespace std;
 /// <summary>
 /// The constractor of a user class
 /// </summary>
-User::User(string name, int day, int month, int year) 
+User::User(string name, int day, int month, int year)
 {
 	setName(name);
 	date_of_birth_ = Date(day, month, year);
@@ -23,7 +23,7 @@ User::User(string name, Date date_of_birth)
 /// </summary>
 User::~User()
 {
-	
+
 }
 
 /// <summary>
@@ -51,17 +51,17 @@ string User::getName() const
 /// <param name="status">status</param>
 void User::setStatus(Status* new_status)
 {
-	all_statuses_.push_back(new_status);
+	statuses_.push_back(new_status);
 }
 
 void User::setStatus(Status_Picture* new_status)
 {
-	all_statuses_.push_back(new_status);
+	statuses_.push_back(new_status);
 }
 
 void User::setStatus(Status_Video* new_status)
 {
-	all_statuses_.push_back(new_status);
+	statuses_.push_back(new_status);
 }
 
 /// <summary>
@@ -69,16 +69,15 @@ void User::setStatus(Status_Video* new_status)
 /// </summary>
 void User::showStatuses() const
 {
-	if (all_statuses_.size() == 0)
+	if (statuses_.size() == 0)
 		cout << "No statuses to show." << endl;
 	else
 	{
 		cout << endl << "below are the statuses of " << getName() << ":" << endl;
-		list<Status>::const_iterator itr = statuses_.end();
 		for (int i = 0; i < statuses_.size(); ++i)
 		{
-		(--itr)->show();
-		cout << endl;
+			statuses_[i]->show();
+			cout << endl;
 		}
 	}
 }
@@ -88,19 +87,23 @@ void User::showStatuses() const
 /// </summary>
 void User::show10LatestStatuses() const
 {
-	cout << endl << "below are the statuses of " << getName() << ":" << endl;
-	list<Status>::const_iterator itr = statuses_.end();
-	for (int i = 0; i < statuses_.size() && i<10; ++i) {
-		cout << i + 1 << " - ";
-		(--itr)->show();
-		cout << endl;
+	if (statuses_.size() == 0)
+		cout << "No statuses to show." << endl;
+	else
+	{
+		cout << endl << "below are the statuses of " << getName() << ":" << endl;
+		for (int i = 0; i < statuses_.size() && i < 10; ++i) {
+			cout << i + 1 << " - ";
+			statuses_[i]->show();
+			cout << endl;
+		}
 	}
 }
 
 /// <summary>
 /// Present all or 10 latest statuses of the friends of a single user
 /// </summary>
-void User::showFriendsStatuses() const
+void User::showFriendsTenStatuses() const
 {
 	for (int i = 0; i < friends_.size(); i++)
 	{
@@ -128,14 +131,14 @@ void User::addFriend(User& other)
 void User::showFriends() const
 {
 	int index;
-	if (friends_.size() != 0) 
+	if (friends_.size() != 0)
 	{
 		cout << "All friends: " << endl;
 		for (index = 0; index < friends_.size(); index++)
 			if (friends_[index] != NULL)
 				cout << index + 1 << " - " << friends_[index]->getName() << endl;
 	}
-	else 
+	else
 		cout << "The user " << getName() << " has no friends to show." << endl;
 }
 
@@ -146,9 +149,9 @@ void User::showFriends() const
 void User::friendshipCancelation(int index)
 {
 	int this_index = friends_[index]->findFriend(*this); //in this case allways find the user
-	friends_[index]->friends_[this_index] = friends_[index]->friends_[friends_.size()-1];
+	friends_[index]->friends_[this_index] = friends_[index]->friends_[friends_.size() - 1];
 	friends_[index]->friends_.pop_back();
-	friends_[index] = friends_[friends_.size()-1];
+	friends_[index] = friends_[friends_.size() - 1];
 	friends_.pop_back();
 }
 
@@ -157,7 +160,7 @@ void User::friendshipCancelation(int index)
 /// </summary>
 /// <param name="name"></param>
 /// <returns></returns>
-int User::findFriend(User& user) const 
+int User::findFriend(User& user) const
 {
 	for (int index = 0; index < friends_.size(); index++)
 	{
@@ -198,7 +201,7 @@ int User::findLikedPage(FanPage& liked_page) const
 /// Adding a fan page to be in the liked fan pages of a user
 /// </summary>
 /// <param name="new_page">name of page to add</param>
-void User::addLikedFanPage(FanPage* new_page)
+void User::addLikedPage(FanPage* new_page)
 {
 	liked_pages_.push_back(new_page);
 }
@@ -246,27 +249,27 @@ bool User::operator>(FanPage& other)
 ostream& operator<<(std::ostream& os, const User& user)
 {
 	os << user.name_ << "\n" << user.date_of_birth_ << endl;
-	int numOfPosts = user.all_statuses_.size();
-	os << numOfPosts << endl;
-
-	for (int i = 0; i < numOfPosts; i++)
+	int statuses_amount = user.statuses_.size();
+	
+	os << statuses_amount << endl;
+	for (int i = 0; i < statuses_amount; i++)
 	{
-		os << user.all_statuses_[i] << endl;
+		os << *(user.statuses_[i]) << endl;
 	}
 	return os;
 }
 
-void User::writeConnections(ofstream& file) const
+void User::connectionsToFile(ofstream& file) const
 {
-	int friendSize = friends_.size();
-	int fanPageSize = liked_pages_.size();
-	file << friendSize << endl;
-	for (int i = 0; i < friendSize; i++)
+	int friends_size = friends_.size();
+	int liked_pages_size = liked_pages_.size();
+	file << friends_size << endl;
+	for (int i = 0; i < friends_size; i++)
 	{
 		file << friends_[i]->getName() << endl;
 	}
-	file << fanPageSize << endl;
-	for (int i = 0; i < fanPageSize; i++)
+	file << liked_pages_size << endl;
+	for (int i = 0; i < liked_pages_size; i++)
 	{
 		file << liked_pages_[i]->getName() << endl;
 	}

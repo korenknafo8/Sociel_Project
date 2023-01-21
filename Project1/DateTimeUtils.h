@@ -24,6 +24,7 @@ public:
 	Date(const int& day, const int& month, const int& year);
 	void showDate() const;
 	friend ostream& operator<<(std::ostream& os, const Date& date);
+
 private:
 	int day_,month_, year_;
 };
