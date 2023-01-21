@@ -924,7 +924,6 @@ void System::usersToFile(ofstream& file) const
 
 void System::fanPagesToFile(ofstream& file) const
 {
-
 	int size = fan_pages_.size();
 	file << size << endl;
 	list<FanPage>::const_iterator itr = fan_pages_.begin();
