@@ -18,12 +18,23 @@ User::User(string name, Date date_of_birth)
 	date_of_birth_ = date_of_birth;
 }
 
+User::User(const User& other)
+{
+	name_ = other.name_;
+	date_of_birth_ = other.date_of_birth_;
+	friends_ = other.friends_;
+	liked_pages_ = other.liked_pages_;
+	for (int i = 0; i < statuses_.size(); i++)
+		statuses_[i] = new Status(*(other.statuses_[i]));
+}
+
 /// <summary>
 /// destructor
 /// </summary>
 User::~User()
 {
-
+	for (int i = 0; i < statuses_.size(); i++)
+		delete statuses_[i];
 }
 
 /// <summary>

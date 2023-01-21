@@ -14,16 +14,37 @@ void Status::show() const
 	time_of_Status_.showTime();
 }
 
+
+
+
+
+
+
+Status_Picture::Status_Picture(Status_Picture& other)
+{
+	picture_description_ = other.picture_description_;
+}
+
 void Status_Picture::show() const
 {
 	cout << "Picture description: " << picture_description_ << endl;
 	Status::show();
 }
 
+
+
 void Status_Video::show() const
 {
 	cout << "Video description: " << video_description_ << endl;
 	Status::show();
+}
+
+Status::Status(Status& other)
+{
+	status_type_ = other.status_type_;
+	text_ = other.text_;
+	date_of_Status_ = other.date_of_Status_;
+	time_of_Status_ = other.time_of_Status_;
 }
 
 bool Status::operator!=(Status other)
@@ -38,7 +59,7 @@ bool Status::operator==(Status other)
 
 ostream& operator<<(ostream& os, const Status& status)
 {
-	os << status.status_type_;
+	os << status.status_type_<<"\n";
 	if (status.status_type_ != TEXT_STATUS)
 		status.mediaToFile(os);
 	os << status.date_of_Status_ << "\n" << status.time_of_Status_;
@@ -48,12 +69,12 @@ ostream& operator<<(ostream& os, const Status& status)
 
 void Status_Video::mediaToFile(ostream& os) const
 {
-	os << "\n" << video_description_;
+	os << video_description_<<"\n";
 	Status::mediaToFile(os);
 }
 
 void Status_Picture::mediaToFile(ostream& os) const
 {
-	os << "\n" << picture_description_;
+	os << picture_description_<<"\n";
 	Status::mediaToFile(os);
 }

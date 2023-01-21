@@ -24,6 +24,7 @@ private:
 public:
 	User(string name, int day, int month, int year); //for init
 	User(string name, Date date_of_birth); //for add user
+	User(const User& other);
 	~User();
 	void setName(const string& name);
 	void setStatus(Status* status);
@@ -48,7 +49,6 @@ public:
 	bool operator>(FanPage& other);
 	friend ostream& operator<<(std::ostream& os, const User& user);
 	void connectionsToFile(ofstream& file) const;
-	void fileToConnection(ifstream& file) const;
 };
 
 #endif // !USER_H

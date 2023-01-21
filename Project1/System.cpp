@@ -1038,22 +1038,29 @@ int System::fileToUsers(ifstream& file)
 		file >> statuses_amount;
 		for (int j = 0; j < statuses_amount; j++)
 		{
-			file >> status_type >> day >> month >> year  >> seconds >> minutes >> hours;
-			getline(file, enter);
-			getline(file, status_text);
+			file >> status_type;
 			switch (status_type)
 			{
 			case TEXT_STATUS:
+				file>> day >> month >> year >> seconds >> minutes >> hours;
+				getline(file, enter);
+				getline(file, status_text);
 				puser->setStatus(new Status(status_text, Date(day, month, year), Clock(seconds, minutes,hours)));
 				break;
 			case PICTURE_STATUS:
 				getline(file, enter);
 				getline(file, media_description);
+				file >> day >> month >> year >> seconds >> minutes >> hours;
+				getline(file, enter);
+				getline(file, status_text);
 				puser->setStatus(new Status_Picture(status_text, media_description, Date(day, month, year), Clock(seconds, minutes, hours)));
 				break;
 			case VIDEO_STATUS:
 				getline(file, enter);
 				getline(file, media_description);
+				file >> day >> month >> year >> seconds >> minutes >> hours;
+				getline(file, enter);
+				getline(file, status_text);
 				puser->setStatus(new Status_Video(status_text, media_description, Date(day, month, year), Clock(seconds, minutes, hours)));
 				break;
 			}
